@@ -8,12 +8,12 @@ package gui;
  *
  * @author linyu
  */
-public class Default extends javax.swing.JFrame {
+public class ManagerDashboard extends javax.swing.JFrame {
 
     /**
      * Creates new form Default
      */
-    public Default() {
+    public ManagerDashboard() {
         initComponents();
     }
     
@@ -41,14 +41,13 @@ public class Default extends javax.swing.JFrame {
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        btnStaffDashboard = new javax.swing.JButton();
-        btnManagerDashboard = new javax.swing.JButton();
+        btnStaff = new javax.swing.JButton();
+        btnUser = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -231,17 +230,11 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 250, 800);
 
-        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel2.setText("Categories");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
-
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Train Sets");
+        title.setText("Staff List");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -250,7 +243,7 @@ public class Default extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addContainerGap(601, Short.MAX_VALUE))
+                .addContainerGap(616, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,31 +294,31 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(320, 280, 630, 500);
 
-        btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnStaffDashboard.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
-        btnStaffDashboard.setText("Staff interface");
-        btnStaffDashboard.setBorder(null);
-        btnStaffDashboard.addActionListener(new java.awt.event.ActionListener() {
+        btnStaff.setBackground(new java.awt.Color(0, 102, 0));
+        btnStaff.setForeground(new java.awt.Color(204, 204, 204));
+        btnStaff.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
+        btnStaff.setText("Staff interface");
+        btnStaff.setBorder(null);
+        btnStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffDashboardActionPerformed(evt);
+                btnStaffActionPerformed(evt);
             }
         });
-        jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(840, 10, 130, 32);
+        jPanel1.add(btnStaff);
+        btnStaff.setBounds(840, 10, 130, 32);
 
-        btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnManagerDashboard.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
-        btnManagerDashboard.setText("Manager interface");
-        btnManagerDashboard.setBorder(null);
-        btnManagerDashboard.addActionListener(new java.awt.event.ActionListener() {
+        btnUser.setBackground(new java.awt.Color(0, 102, 0));
+        btnUser.setForeground(new java.awt.Color(204, 204, 204));
+        btnUser.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
+        btnUser.setText("User interface");
+        btnUser.setBorder(null);
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManagerDashboardActionPerformed(evt);
+                btnUserActionPerformed(evt);
             }
         });
-        jPanel1.add(btnManagerDashboard);
-        btnManagerDashboard.setBounds(840, 50, 150, 32);
+        jPanel1.add(btnUser);
+        btnUser.setBounds(840, 50, 150, 32);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -370,22 +363,22 @@ public class Default extends javax.swing.JFrame {
         title.setText("Rolling Stock");
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
-    private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed
+    private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
         // log out
         StaffDashboard StaffDashboardFrame = new StaffDashboard();
         StaffDashboardFrame.setVisible(true);
         StaffDashboardFrame.pack();
         StaffDashboardFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_btnStaffDashboardActionPerformed
+    }//GEN-LAST:event_btnStaffActionPerformed
 
-    private void btnManagerDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerDashboardActionPerformed
-        ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
-        ManagerDashboardFrame.setVisible(true);
-        ManagerDashboardFrame.pack();
-        ManagerDashboardFrame.setLocationRelativeTo(null);
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        Default DefaultFrame = new Default();
+        DefaultFrame.setVisible(true);
+        DefaultFrame.pack();
+        DefaultFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_btnManagerDashboardActionPerformed
+    }//GEN-LAST:event_btnUserActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         Login LoginFrame = new Login();
@@ -400,15 +393,14 @@ public class Default extends javax.swing.JFrame {
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnManagerDashboard;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnStaffDashboard;
+    private javax.swing.JButton btnStaff;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton btnUser;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

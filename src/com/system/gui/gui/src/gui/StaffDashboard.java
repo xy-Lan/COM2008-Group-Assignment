@@ -8,12 +8,12 @@ package gui;
  *
  * @author linyu
  */
-public class Default extends javax.swing.JFrame {
+public class StaffDashboard extends javax.swing.JFrame {
 
     /**
      * Creates new form Default
      */
-    public Default() {
+    public StaffDashboard() {
         initComponents();
     }
     
@@ -32,7 +32,7 @@ public class Default extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnTrainSets = new javax.swing.JButton();
+        btnDashboard = new javax.swing.JButton();
         btnTrackPacks = new javax.swing.JButton();
         btnLocomotives = new javax.swing.JButton();
         btnTrack = new javax.swing.JButton();
@@ -40,15 +40,17 @@ public class Default extends javax.swing.JFrame {
         btnControllers = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
+        btnTrainSets1 = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        btnStaffDashboard = new javax.swing.JButton();
-        btnManagerDashboard = new javax.swing.JButton();
+        btnUser = new javax.swing.JButton();
+        btnManager = new javax.swing.JButton();
+        btnPendingOrders = new javax.swing.JButton();
+        btnListCustomers1 = new javax.swing.JButton();
+        btnAddProduct1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -68,14 +70,14 @@ public class Default extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
 
-        btnTrainSets.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrainSets.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrainSets.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrainSets.setText("Train Sets");
-        btnTrainSets.setBorder(null);
-        btnTrainSets.addActionListener(new java.awt.event.ActionListener() {
+        btnDashboard.setBackground(new java.awt.Color(0, 102, 0));
+        btnDashboard.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        btnDashboard.setText("Dashboard");
+        btnDashboard.setBorder(null);
+        btnDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrainSetsActionPerformed(evt);
+                btnDashboardActionPerformed(evt);
             }
         });
 
@@ -166,6 +168,17 @@ public class Default extends javax.swing.JFrame {
             }
         });
 
+        btnTrainSets1.setBackground(new java.awt.Color(0, 102, 0));
+        btnTrainSets1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnTrainSets1.setForeground(new java.awt.Color(255, 255, 255));
+        btnTrainSets1.setText("Train Sets");
+        btnTrainSets1.setBorder(null);
+        btnTrainSets1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTrainSets1ActionPerformed(evt);
+            }
+        });
+
         btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
         btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
         btnLogOut.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
@@ -183,7 +196,7 @@ public class Default extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTrainSets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLocomotives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnTrackPacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRollingStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
@@ -201,7 +214,8 @@ public class Default extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnTrainSets1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -212,7 +226,9 @@ public class Default extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRecentOrders)
                 .addGap(155, 155, 155)
-                .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTrainSets1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTrackPacks, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,7 +239,7 @@ public class Default extends javax.swing.JFrame {
                 .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                 .addComponent(btnLogOut)
                 .addGap(61, 61, 61))
         );
@@ -231,17 +247,11 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 250, 800);
 
-        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel2.setText("Categories");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
-
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Train Sets");
+        title.setText("Dashboard");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -250,7 +260,7 @@ public class Default extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addContainerGap(601, Short.MAX_VALUE))
+                .addContainerGap(588, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,34 +276,15 @@ public class Default extends javax.swing.JFrame {
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel6.setBackground(new java.awt.Color(24, 150, 62));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+            .addGap(0, 668, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(401, Short.MAX_VALUE))
+            .addGap(0, 528, Short.MAX_VALUE)
         );
 
         jScrollPane3.setViewportView(jPanel5);
@@ -301,31 +292,67 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(320, 280, 630, 500);
 
-        btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnStaffDashboard.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
-        btnStaffDashboard.setText("Staff interface");
-        btnStaffDashboard.setBorder(null);
-        btnStaffDashboard.addActionListener(new java.awt.event.ActionListener() {
+        btnUser.setBackground(new java.awt.Color(0, 102, 0));
+        btnUser.setForeground(new java.awt.Color(204, 204, 204));
+        btnUser.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
+        btnUser.setText("User interface");
+        btnUser.setBorder(null);
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffDashboardActionPerformed(evt);
+                btnUserActionPerformed(evt);
             }
         });
-        jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(840, 10, 130, 32);
+        jPanel1.add(btnUser);
+        btnUser.setBounds(840, 10, 130, 32);
 
-        btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnManagerDashboard.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
-        btnManagerDashboard.setText("Manager interface");
-        btnManagerDashboard.setBorder(null);
-        btnManagerDashboard.addActionListener(new java.awt.event.ActionListener() {
+        btnManager.setBackground(new java.awt.Color(0, 102, 0));
+        btnManager.setForeground(new java.awt.Color(204, 204, 204));
+        btnManager.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
+        btnManager.setText("Manager interface");
+        btnManager.setBorder(null);
+        btnManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManagerDashboardActionPerformed(evt);
+                btnManagerActionPerformed(evt);
             }
         });
-        jPanel1.add(btnManagerDashboard);
-        btnManagerDashboard.setBounds(840, 50, 150, 32);
+        jPanel1.add(btnManager);
+        btnManager.setBounds(840, 50, 150, 32);
+
+        btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
+        btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
+        btnPendingOrders.setText("Pending orders");
+        btnPendingOrders.setBorder(null);
+        btnPendingOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPendingOrdersActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnPendingOrders);
+        btnPendingOrders.setBounds(640, 210, 140, 32);
+
+        btnListCustomers1.setBackground(new java.awt.Color(0, 102, 0));
+        btnListCustomers1.setForeground(new java.awt.Color(255, 255, 255));
+        btnListCustomers1.setText("Customer List");
+        btnListCustomers1.setBorder(null);
+        btnListCustomers1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListCustomers1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnListCustomers1);
+        btnListCustomers1.setBounds(280, 210, 140, 32);
+
+        btnAddProduct1.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddProduct1.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddProduct1.setText("Add products");
+        btnAddProduct1.setBorder(null);
+        btnAddProduct1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProduct1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAddProduct1);
+        btnAddProduct1.setBounds(460, 210, 140, 32);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -341,9 +368,9 @@ public class Default extends javax.swing.JFrame {
         title.setText("Locomotives");
     }//GEN-LAST:event_btnLocomotivesActionPerformed
 
-    private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         title.setText("Train Sets");
-    }//GEN-LAST:event_btnTrainSetsActionPerformed
+    }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
         // Jump to My Details page:
@@ -370,51 +397,71 @@ public class Default extends javax.swing.JFrame {
         title.setText("Rolling Stock");
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
-    private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
         // log out
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
+        Default DefaultFrame = new Default();
+        DefaultFrame.setVisible(true);
+        DefaultFrame.pack();
+        DefaultFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_btnStaffDashboardActionPerformed
+    }//GEN-LAST:event_btnUserActionPerformed
 
-    private void btnManagerDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerDashboardActionPerformed
+    private void btnManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerActionPerformed
         ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
         ManagerDashboardFrame.setVisible(true);
         ManagerDashboardFrame.pack();
         ManagerDashboardFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_btnManagerDashboardActionPerformed
+    }//GEN-LAST:event_btnManagerActionPerformed
+
+    private void btnPendingOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendingOrdersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPendingOrdersActionPerformed
+
+    private void btnTrainSets1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSets1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTrainSets1ActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
         this.dispose();
+        
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnListCustomers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCustomers1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnListCustomers1ActionPerformed
+
+    private void btnAddProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddProduct1;
     private javax.swing.JButton btnControllers;
+    private javax.swing.JButton btnDashboard;
+    private javax.swing.JButton btnListCustomers1;
     private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnManagerDashboard;
+    private javax.swing.JButton btnManager;
     private javax.swing.JButton btnMyDetails;
+    private javax.swing.JButton btnPendingOrders;
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnStaffDashboard;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;
-    private javax.swing.JButton btnTrainSets;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton btnTrainSets1;
+    private javax.swing.JButton btnUser;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel title;
