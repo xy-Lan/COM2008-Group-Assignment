@@ -16,4 +16,5 @@ Thumbs.db
 *.iml
 .idea/
 .vscode/
-/bin/
+/src/com/system/gui/gui/nbproject/private/
+/src/com/system/gui/gui/build/
