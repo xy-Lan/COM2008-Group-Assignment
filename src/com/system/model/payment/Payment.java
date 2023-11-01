@@ -1,10 +1,12 @@
 package com.system.model.payment;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Payment {
 
 	private String transactionID;
-	private Float amount;
+	private String userID;
+	private BigDecimal amount;
 	private Date paymentDate;
 	private PaymentStatus paymentStatus;
 	private PaymentMethod paymentMethod;

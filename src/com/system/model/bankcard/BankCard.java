@@ -1,6 +1,7 @@
 package com.system.model.bankcard;
 public class BankCard {
-
+    
+	private String customerID;
 	private String cardNumber;
 	private Integer expiryMonth;
 	private Integer expiryYear;

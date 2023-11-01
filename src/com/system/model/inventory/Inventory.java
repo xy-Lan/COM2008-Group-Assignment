@@ -3,23 +3,30 @@ import com.system.model.user.*;
 
 public class Inventory {
 
-	Staff updater;
+	private String updaterID;
 	private String productCode;
 	private Integer quantity;
+	private User updater;
 
-	public void increaseStock() {
-		// TODO - implement Inventory.increaseStock
-		throw new UnsupportedOperationException();
-	}
+	private void checkStaffRole() {
+        if (!updater.hasRole(Role.STAFF)) {
+            throw new UnsupportedOperationException("Only staff can perform this operation.");
+        }
+    }
 
-	public void decreaseStock() {
-		// TODO - implement Inventory.decreaseStock
-		throw new UnsupportedOperationException();
-	}
+    public void increaseStock() {
+        checkStaffRole();
+        // TODO - implement Inventory.increaseStock
+    }
 
-	public void checkStock() {
-		// TODO - implement Inventory.checkStock
-		throw new UnsupportedOperationException();
-	}
+    public void decreaseStock() {
+        checkStaffRole();
+        // TODO - implement Inventory.decreaseStock
+    }
+
+    public void checkStock() {
+        checkStaffRole();
+        // TODO - implement Inventory.checkStock
+    }
 
 }
