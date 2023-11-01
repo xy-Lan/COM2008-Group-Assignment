@@ -4,11 +4,10 @@ import com.system.model.user.*;
 
 public class Address {
 
-	Collection<UserAbstract> occupiedBy;
-	private String addressID;
+	Collection<User> users = new ArrayList<>();
 	private String houseNumber;
+	private String postCode;
 	private String roadName;
 	private String cityName;
-	private String postCode;
-
+	
 }
