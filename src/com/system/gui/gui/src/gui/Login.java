@@ -1,5 +1,10 @@
 package gui;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -7,6 +12,29 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        try {
+            test();
+        } catch (Exception ex) {}
+    }
+
+    public void test() throws Exception {
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery("select * from `inventory`");
+            while (res.next()) {
+                System.out.println(res.getString(1));
+            }
+            System.out.println("Done!");
+            res.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            if (con != null) con.close();
+        }
     }
 
     /**
