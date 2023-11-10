@@ -20,3 +20,5 @@ Thumbs.db
 /src/com/system/gui/gui/build/
 /out/production/COM2008-Group-Assignment/com/system/gui/build/
 /out/production/COM2008-Group-Assignment/com/system/gui/nbproject/private/
+
+.gradle/
