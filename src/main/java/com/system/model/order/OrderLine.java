@@ -1,7 +1,7 @@
-package main.java.com.system.model.order;
+package com.system.model.order;
 import java.math.BigDecimal;
 import java.util.*;
-import main.java.com.system.model.product.abstractproduct.*;
+import com.system.model.product.abstractproduct.*;
 
 public class OrderLine {
 

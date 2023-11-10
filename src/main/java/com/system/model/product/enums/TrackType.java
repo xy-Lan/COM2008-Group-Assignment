@@ -1,4 +1,4 @@
-package main.java.com.system.model.product.enums;
+package com.system.model.product.enums;
 public enum TrackType {
 	STRAIGHT,
 	CURVE,

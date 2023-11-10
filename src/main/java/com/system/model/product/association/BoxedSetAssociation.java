@@ -1,7 +1,7 @@
-package main.java.com.system.model.product.association;
+package com.system.model.product.association;
 
-import main.java.com.system.model.product.abstractproduct.BoxedSet;
-import main.java.com.system.model.product.abstractproduct.Part;
+import com.system.model.product.abstractproduct.BoxedSet;
+import com.system.model.product.abstractproduct.Part;
 
 public class BoxedSetAssociation {
     private BoxedSet boxedSet;

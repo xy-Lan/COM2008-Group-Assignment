@@ -1,6 +1,6 @@
-package main.java.com.system.model.product.abstractproduct;
-import main.java.com.system.model.order.*;
-import main.java.com.system.model.product.enums.Gauge;
+package com.system.model.product.abstractproduct;
+import com.system.model.order.*;
+import com.system.model.product.enums.Gauge;
 
 import java.math.BigDecimal;
 import java.util.*;

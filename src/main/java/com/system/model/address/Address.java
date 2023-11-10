@@ -1,6 +1,6 @@
-package main.java.com.system.model.address;
+package com.system.model.address;
 import java.util.*;
-import main.java.com.system.model.user.*;
+import com.system.model.user.*;
 
 public class Address {
 

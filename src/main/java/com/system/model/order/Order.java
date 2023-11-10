@@ -1,8 +1,8 @@
-package main.java.com.system.model.order;
+package com.system.model.order;
 
 import java.util.Date;
 
-import main.java.com.system.model.user.*;
+import com.system.model.user.*;
 
 public class Order {
 

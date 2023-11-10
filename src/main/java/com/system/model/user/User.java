@@ -1,12 +1,12 @@
-package main.java.com.system.model.user;
+package com.system.model.user;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.system.model.address.*;
-import main.java.com.system.model.inventory.Inventory;
-import main.java.com.system.model.order.*;
-import main.java.com.system.model.payment.Payment;
+import com.system.model.address.*;
+import com.system.model.inventory.Inventory;
+import com.system.model.order.*;
+import com.system.model.payment.Payment;
 
 public class User {
 

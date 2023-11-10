@@ -1,6 +1,6 @@
-package main.java.com.system.model.bankcard;
+package com.system.model.bankcard;
 
-import main.java.com.system.model.user.*;
+import com.system.model.user.*;
 
 public class BankCard {
 

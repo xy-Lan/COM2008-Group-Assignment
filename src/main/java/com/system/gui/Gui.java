@@ -1,5 +1,5 @@
 
-package main.java.com.system.gui;
+package com.system.gui;
 
 
 public class Gui {

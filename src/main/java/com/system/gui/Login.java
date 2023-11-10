@@ -1,4 +1,4 @@
-package main.java.com.system.gui;
+package com.system.gui;
 
 import org.netbeans.lib.awtextra.*;
 

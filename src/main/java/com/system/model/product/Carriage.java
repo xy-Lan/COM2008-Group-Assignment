@@ -1,7 +1,7 @@
-package main.java.com.system.model.product;
-import main.java.com.system.model.product.abstractproduct.*;
-import main.java.com.system.model.product.*;
-import main.java.com.system.model.product.enums.*;
+package com.system.model.product;
+import com.system.model.product.abstractproduct.*;
+import com.system.model.product.*;
+import com.system.model.product.enums.*;
 
 public class Carriage extends Part {
 

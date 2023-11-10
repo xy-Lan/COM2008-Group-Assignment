@@ -11,7 +11,6 @@
 	<classpathentry excluding="resources/" kind="src" output="build/classes/java/test" path="src/test">
 		<attributes>
 			<attribute name="test" value="true"/>
-			<attribute name="optional" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -22,7 +21,7 @@
 			<attribute name="resource" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="test/resources/|test/|resources/" kind="src" output="build/classes/java/main" path="src">
+	<classpathentry kind="src" output="build/classes/java/main" path="src/main/java">
 		<attributes>
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>

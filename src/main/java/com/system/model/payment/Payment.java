@@ -1,4 +1,4 @@
-package main.java.com.system.model.payment;
+package com.system.model.payment;
 import java.math.BigDecimal;
 import java.util.Date;
 

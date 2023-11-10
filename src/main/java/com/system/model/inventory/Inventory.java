@@ -1,5 +1,5 @@
-package main.java.com.system.model.inventory;
-import main.java.com.system.model.user.*;
+package com.system.model.inventory;
+import com.system.model.user.*;
 
 public class Inventory {
 
