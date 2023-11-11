@@ -1,0 +1,10 @@
+package project.model.product;
+import project.model.product.abstractproduct.*;
+import project.model.product.enums.*;
+
+
+public class Track extends Part {
+
+	private TrackType trackType;
+
+}
