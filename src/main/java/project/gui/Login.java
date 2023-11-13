@@ -1,5 +1,7 @@
 package project.gui;
 
+import project.service.MysqlService;
+
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -174,13 +176,17 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 
-        System.out.println(jTextField1.getText());
+        System.out.println("Text: " + jTextField1.getText());
 
-        Default DefaultFrame = new Default();
-        DefaultFrame.setVisible(true);
-        DefaultFrame.pack();
-        DefaultFrame.setLocationRelativeTo(null);
-        this.dispose();
+        if (MysqlService.getInstance().login(jTextField1.getText(), String.valueOf(jPasswordField1.getPassword()))) {
+            Default DefaultFrame = new Default();
+            DefaultFrame.setVisible(true);
+            DefaultFrame.pack();
+            DefaultFrame.setLocationRelativeTo(null);
+            this.dispose();
+        }
+
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
