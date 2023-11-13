@@ -153,24 +153,29 @@ public class Login extends javax.swing.JFrame {
         Login.getAccessibleContext().setAccessibleName("LOGIN");
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
+        
       
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // onClick: Jump to sign up page
+    /*
+     * Login Event
+     */
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        
         SignUp SignUpFrame = new SignUp();
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+
+        System.out.println(jTextField1.getText());
+
         Default DefaultFrame = new Default();
         DefaultFrame.setVisible(true);
         DefaultFrame.pack();
