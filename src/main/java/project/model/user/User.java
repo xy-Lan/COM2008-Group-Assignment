@@ -1,7 +1,9 @@
 package project.model.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import project.model.address.*;
 import project.model.inventory.Inventory;
@@ -20,6 +22,19 @@ public class User {
 	private List<Payment> payments = new ArrayList<>();
 	private List<Order> orders = new ArrayList<>();
 	private Address residesAt;
+
+	public User(String email, String userID) {
+		this.email = email;
+		this.userID = userID;
+	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 
 	public void updateDetails() {
 		// TODO - implement User.updateDetails
@@ -154,6 +169,16 @@ public class User {
 	public void removeUserFromStaff() {
 		// TODO - implement Manager.removeUserFromStaff
 		throw new UnsupportedOperationException();
+	}
+
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("email", email);
+		map.put("userId", userID);
+
+		return map;
+
 	}
 
 }

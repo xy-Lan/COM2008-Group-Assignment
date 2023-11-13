@@ -1,8 +1,10 @@
 package project.utils;
 
+import project.model.user.User;
+
 public class UserSessionManager {
     private static UserSessionManager instance;
-    private String loggedInUser;
+    private User loggedInUser;
 
     private UserSessionManager() {
         // Private constructor to enforce singleton pattern
@@ -15,11 +17,11 @@ public class UserSessionManager {
         return instance;
     }
 
-    public synchronized void setLoggedInUser(String username) {
+    public synchronized void setLoggedInUser(User username) {
         this.loggedInUser = username;
     }
 
-    public synchronized String getLoggedInUser() {
+    public synchronized User getLoggedInUser() {
         return loggedInUser;
     }
 

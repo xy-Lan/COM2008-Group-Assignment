@@ -4,6 +4,8 @@
  */
 package project.gui;
 
+import project.utils.UserSessionManager;
+
 /**
  *
  * @author linyu
@@ -215,7 +217,7 @@ public class MyDetails extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel4.setText("User's email");
+        jLabel4.setText(UserSessionManager.getInstance().getLoggedInUser().getEmail());
 
         jLabel5.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         jLabel5.setText("Address:");

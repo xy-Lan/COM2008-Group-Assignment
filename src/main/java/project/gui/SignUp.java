@@ -1,6 +1,8 @@
 
 package project.gui;
 
+import project.model.user.User;
+import project.service.MysqlService;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -87,6 +89,11 @@ public class SignUp extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Sign up");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 16)); // NOI18N
         jLabel5.setText("Forename");
@@ -263,12 +270,26 @@ public class SignUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("Creating user");
+        System.out.println(jPasswordField1.getPassword());
+        System.out.println(jPasswordField2.getPassword());
+        System.out.println(jPasswordField1.getPassword() != jPasswordField2.getPassword());
+        // if (jPasswordField1.getPassword() != jPasswordField2.getPassword()) return;
+
+        User newUser = new User(jTextField1.getText(), "2");
+        System.out.println(newUser.toMap());
+
+        MysqlService.getInstance().signUp(newUser, String.valueOf(jPasswordField1.getPassword()));
+    }
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }
 
   
 

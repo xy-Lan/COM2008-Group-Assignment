@@ -17,7 +17,6 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
         System.out.println("Starting");
-        System.out.println("Done");
         MysqlService.getInstance();
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);

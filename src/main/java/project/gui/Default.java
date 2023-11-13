@@ -16,7 +16,7 @@ public class Default extends javax.swing.JFrame {
      * Creates new form Default
      */
     public Default() {
-        System.out.println("User: " + UserSessionManager.getInstance().getLoggedInUser());
+        System.out.println("User: " + UserSessionManager.getInstance().getLoggedInUser().toMap());
         initComponents();
     }
     

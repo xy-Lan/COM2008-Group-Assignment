@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import project.model.user.User;
 import project.utils.UserSessionManager;
 
 public class MysqlService {
@@ -84,12 +85,46 @@ public class MysqlService {
         return null;
     }
 
+    public void signUp(User user, String password) {
+        System.out.println("Calling sign up...");
+        try {
+            Connection connection = getConnection();
+
+            String insertUserSQL = "INSERT INTO users (user_id, email) VALUES (?, ?)";
+            try (PreparedStatement userStatement = connection.prepareStatement(insertUserSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                userStatement.setString(1, user.getUserID());
+                userStatement.setString(2, user.getEmail());
+                System.out.println(userStatement);
+                userStatement.executeUpdate();
+
+                try (ResultSet generatedKeys = userStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int userId = generatedKeys.getInt(1);
+
+                        String insertPasswordSQL = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
+                        try (PreparedStatement passwordStatement = connection.prepareStatement(insertPasswordSQL)) {
+                            passwordStatement.setInt(1, userId);
+                            passwordStatement.setString(2, password);
+                            passwordStatement.executeUpdate();
+
+                            System.out.println("Successfully added");
+                        }
+                    } else {
+                        throw new SQLException("Failed to get the user ID.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+    }
+
 
     public boolean login(String username, String password) {
 
         Connection connection = getConnection();
 
-        String sql = "SELECT u.user_id FROM users u " +
+        String sql = "SELECT u.user_id, u.email FROM users u " +
                         "JOIN hashed_passwords p ON u.user_id = p.user_id " +
                         "WHERE u.email = ? AND p.password_hash = ?";
 
@@ -105,8 +140,10 @@ public class MysqlService {
                 try {
                     while (resultSet.next()) {
                         String id = resultSet.getString("user_id");
+                        String email = resultSet.getString("email");
                         System.out.println("Found user with id: " + id);
-                        UserSessionManager.getInstance().setLoggedInUser(id);
+                        User user = new User(email, id);
+                        UserSessionManager.getInstance().setLoggedInUser(user);
                         return true;
                     }
                     connection.close();
