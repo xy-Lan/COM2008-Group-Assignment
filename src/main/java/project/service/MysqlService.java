@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import project.utils.UserSessionManager;
+
 public class MysqlService {
 
     private static final String JDBC_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team015";
@@ -104,6 +106,7 @@ public class MysqlService {
                     while (resultSet.next()) {
                         String id = resultSet.getString("user_id");
                         System.out.println("Found user with id: " + id);
+                        UserSessionManager.getInstance().setLoggedInUser(id);
                         return true;
                     }
                     connection.close();

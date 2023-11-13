@@ -4,6 +4,8 @@
  */
 package project.gui;
 
+import project.utils.UserSessionManager;
+
 /**
  *
  * @author linyu
@@ -14,6 +16,7 @@ public class Default extends javax.swing.JFrame {
      * Creates new form Default
      */
     public Default() {
+        System.out.println("User: " + UserSessionManager.getInstance().getLoggedInUser());
         initComponents();
     }
     
