@@ -1,9 +1,7 @@
 package project.model.user;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +12,14 @@ import project.model.address.*;
 import project.model.inventory.Inventory;
 import project.model.order.*;
 import project.model.payment.Payment;
+import project.service.MysqlService;
 
 public class User {
 
 	private List<Role> roles = new ArrayList<>();
 	private String email;
 	private String password;
-	private String userID;
+	private int userID;
 	// Used only when the user is Staff
 	private List<Inventory> inventories = new ArrayList<>();
 	// Used only when the user is Customer
@@ -28,13 +27,20 @@ public class User {
 	private List<Order> orders = new ArrayList<>();
 	private Address residesAt;
 
-	public User(String email, String userID) {
+	public User(String email) {
 		this.email = email;
-		this.userID = userID;
 	}
 
-	public String getUserID() {
+	public void setUserID(int id) {
+		userID = id;
+	}
+
+	public int getUserID() {
 		return userID;
+	}
+
+	public void setEmail(String _email) {
+		email = _email;
 	}
 
 	public String getEmail() {
@@ -48,11 +54,6 @@ public class User {
 
 	public void selfRegister() {
 		// TODO - implement User.selfRegister
-		throw new UnsupportedOperationException();
-	}
-
-	public void login() {
-		// TODO - implement User.login
 		throw new UnsupportedOperationException();
 	}
 
@@ -202,6 +203,32 @@ public class User {
 
 		return map;
 
+	}
+
+	public void updateDatabase() {
+
+		try {
+			MysqlService mySqlService = MysqlService.getInstance();
+			Connection con = mySqlService.getConnection();
+
+			String sql = "UPDATE users SET email = ?, forename = ?, surname = ?, " + "house_number = ?, post_code = ?, role = ? WHERE user_id = ?";
+
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+			preparedStatement.setString(1, getEmail());
+			preparedStatement.setString(2, ""); 
+			preparedStatement.setString(3, "");
+			preparedStatement.setString(4, "");
+			preparedStatement.setString(5, "");
+			preparedStatement.setString(6, ""); 
+			preparedStatement.setInt(7, userID);
+
+			preparedStatement.executeUpdate();
+
+			System.out.println("User details updated successfully!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
