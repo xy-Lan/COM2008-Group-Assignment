@@ -2,7 +2,7 @@ package project.model.product;
 import project.model.product.abstractproduct.*;
 import project.model.product.enums.*;
 
-public class Locomotive {
+public class Locomotive extends Part {
 
 	private DCCType dccCode;
 	private Era era;

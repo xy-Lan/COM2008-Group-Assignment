@@ -22,7 +22,8 @@ public class User {
 	private List<Payment> payments = new ArrayList<>();
 	private List<Order> orders = new ArrayList<>();
 	private Address residesAt;
-
+    
+	// in User.java we only keep setter and getter method and some simple help method
 	public User(String email, String userID) {
 		this.email = email;
 		this.userID = userID;
@@ -36,25 +37,19 @@ public class User {
 		return email;
 	}
 
-	public void updateDetails() {
-		// TODO - implement User.updateDetails
-		throw new UnsupportedOperationException();
-	}
+	public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void selfRegister() {
-		// TODO - implement User.selfRegister
-		throw new UnsupportedOperationException();
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void login() {
-		// TODO - implement User.login
-		throw new UnsupportedOperationException();
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void viewOrders() {
-		// TODO - implement Customer.viewOrders
-		throw new UnsupportedOperationException();
-	}
+    
 
 	/**
 	 * Checks if the user has the specified role.
@@ -66,6 +61,18 @@ public class User {
 		return roles.contains(role);
 	}
 
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("email", email);
+		map.put("userId", userID);
+
+		return map;
+
+	}
+    
+
+	// These commented out methods are part of the business logic and they are moved to UserService.java
 	/**
 	 * Adds the specified role to the user.
 	 * If the user already has the role, it will not be added again.
@@ -78,107 +85,118 @@ public class User {
 		}
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'STAFF' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void viewPendingOrders() {
-		// TODO - implement Staff.viewPendingOrders
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'STAFF' role in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void viewPendingOrders() {
+	// 	// TODO - implement Staff.viewPendingOrders
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void updateBankingDetails() {
-		// TODO - implement Customer.updateBankingDetails
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
+	//  * in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void updateBankingDetails() {
+	// 	// TODO - implement Customer.updateBankingDetails
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void addCard() {
-		// TODO - implement Customer.addCard
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
+	//  * in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void addCard() {
+	// 	// TODO - implement Customer.addCard
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void removeCard() {
-		// TODO - implement Customer.removeCard
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
+	//  * in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void removeCard() {
+	// 	// TODO - implement Customer.removeCard
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void appointUserAsStaff() {
-		// TODO - implement Manager.appointUserAsStaff
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void appointUserAsStaff() {
+	// 	// TODO - implement Manager.appointUserAsStaff
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
-	public void removeUserFromStaff() {
-		// TODO - implement Manager.removeUserFromStaff
-		throw new UnsupportedOperationException();
-	}
+	// /**
+	//  * Views the pending orders.
+	//  * <p>
+	//  * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
+	//  * their Role list.
+	//  * </p>
+	//  * 
+	//  * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
+	//  *                                       role
+	//  */
+	// public void removeUserFromStaff() {
+	// 	// TODO - implement Manager.removeUserFromStaff
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = new HashMap<>();
+	// public void updateDetails() {
+	// 	// TODO - implement User.updateDetails
+	// 	throw new UnsupportedOperationException();
+	// }
 
-		map.put("email", email);
-		map.put("userId", userID);
+	// public void selfRegister() {
+	// 	// TODO - implement User.selfRegister
+	// 	throw new UnsupportedOperationException();
+	// }
 
-		return map;
+	// public void login() {
+	// 	// TODO - implement User.login
+	// 	throw new UnsupportedOperationException();
+	// }
 
-	}
+	// public void viewOrders() {
+	// 	// TODO - implement Customer.viewOrders
+	// 	throw new UnsupportedOperationException();
+	// }
 
+	
 }

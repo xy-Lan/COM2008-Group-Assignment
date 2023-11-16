@@ -7,7 +7,7 @@ public class Payment {
 	private String transactionID;
 	private String userID;
 	private BigDecimal amount;
-	private Date paymentDate;
+	private Date paymentDate;   
 	private PaymentStatus paymentStatus;
 	private PaymentMethod paymentMethod;
 
@@ -25,7 +25,7 @@ public class Payment {
 		// TODO - implement Payment.verifyPayment
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public void updatePaymentStatus() {
 		// TODO - implement Payment.updatePaymentStatus
 		throw new UnsupportedOperationException();
