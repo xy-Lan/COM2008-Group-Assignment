@@ -90,10 +90,9 @@ public class MysqlService {
         try {
             Connection connection = getConnection();
 
-            String insertUserSQL = "INSERT INTO users (user_id, email) VALUES (?, ?)";
+            String insertUserSQL = "INSERT INTO users (email) VALUES (?)";
             try (PreparedStatement userStatement = connection.prepareStatement(insertUserSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                userStatement.setString(1, user.getUserID());
-                userStatement.setString(2, user.getEmail());
+                userStatement.setString(1, user.getEmail());
                 System.out.println(userStatement);
                 userStatement.executeUpdate();
 
@@ -101,7 +100,7 @@ public class MysqlService {
                     if (generatedKeys.next()) {
                         int userId = generatedKeys.getInt(1);
 
-                        String insertPasswordSQL = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
+                        String insertPasswordSQL = "INSERT INTO hashed_passwords (user_id, password_hash) VALUES (?, ?)";
                         try (PreparedStatement passwordStatement = connection.prepareStatement(insertPasswordSQL)) {
                             passwordStatement.setInt(1, userId);
                             passwordStatement.setString(2, password);
