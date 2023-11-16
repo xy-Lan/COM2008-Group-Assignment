@@ -18,8 +18,7 @@ Thumbs.db
 .vscode/
 /src/com/system/gui/gui/nbproject/private/
 /src/com/system/gui/gui/build/
-/out/production/COM2008-Group-Assignment/com/system/gui/build/
-/out/production/COM2008-Group-Assignment/com/system/gui/nbproject/private/
+out/
 
 .gradle/
 gradle/

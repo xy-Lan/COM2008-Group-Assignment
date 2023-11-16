@@ -85,7 +85,7 @@ public class MysqlService {
         return null;
     }
 
-    public void signUp(User user, String password) {
+    public User signUp(User user, String password) {
         System.out.println("Calling sign up...");
         try {
             Connection connection = getConnection();
@@ -107,6 +107,8 @@ public class MysqlService {
                             passwordStatement.executeUpdate();
 
                             System.out.println("Successfully added");
+                            user.setUserID(userId);
+                            return user;
                         }
                     } else {
                         throw new SQLException("Failed to get the user ID.");
@@ -116,6 +118,7 @@ public class MysqlService {
         } catch (SQLException e) {
             e.printStackTrace(); 
         }
+        return null;
     }
 
 
@@ -138,10 +141,11 @@ public class MysqlService {
             if (resultSet != null) {
                 try {
                     while (resultSet.next()) {
-                        String id = resultSet.getString("user_id");
+                        int id = resultSet.getInt("user_id");
                         String email = resultSet.getString("email");
                         System.out.println("Found user with id: " + id);
-                        User user = new User(email, id);
+                        User user = new User(email);
+                        user.setUserID(id);
                         UserSessionManager.getInstance().setLoggedInUser(user);
                         return true;
                     }
