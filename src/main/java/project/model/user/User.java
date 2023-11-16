@@ -1,5 +1,10 @@
 package project.model.user;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +81,8 @@ public class User {
 		if (!roles.contains(role)) {
 			roles.add(role);
 		}
+
+
 	}
 
 	/**
@@ -89,8 +96,24 @@ public class User {
 	 *                                       role
 	 */
 	public void viewPendingOrders() {
-		// TODO - implement Staff.viewPendingOrders
-		throw new UnsupportedOperationException();
+		
+		try (
+			Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+			PreparedStatement pstmt = con.prepareStatement("SELECT * FROM orders");
+			ResultSet resultSet = pstmt.executeQuery()) {
+			
+				while (resultSet.next()) {
+					int column1Value = resultSet.getInt("order_number");
+					String column2Value = resultSet.getString("date");
+					String column3Value = resultSet.getString("user_id");
+					String column4value = resultSet.getString("status");
+
+					System.out.println("Order Number: " + column1Value + ", Date: " + column2Value + ", User ID: " + column3Value + ", Status: " + column4value);	
+				}
+		
+		} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
 	}
 
 	/**

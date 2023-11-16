@@ -29,6 +29,7 @@
 	</classpathentry>
 	<classpathentry kind="src" output="build/classes/java/main" path="sources">
 		<attributes>
+			<attribute name="optional" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -46,6 +47,16 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+		<attributes>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/thoma/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.11.4/7ec0925cc3aef0335bbc7d57edfd42b0f86f8267/protobuf-java-3.11.4.jar" sourcepath="C:/Users/thoma/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.11.4/1e3a86dde8ecf9410e23f22a67ad062316fe94a/protobuf-java-3.11.4-sources.jar">
+		<attributes>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/thoma/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.23/14d64ac509adccaff444513c12646d93e4ed8be8/mysql-connector-java-8.0.23.jar" sourcepath="C:/Users/thoma/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.23/9cf5e908096e71cb12eadcd0e1c4696aa1cdb59b/mysql-connector-java-8.0.23-sources.jar">
 		<attributes>
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
