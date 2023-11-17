@@ -1,10 +1,5 @@
 package project.daoimpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import project.model.user.*;
 import project.service.MysqlService;
 import project.model.inventory.*;
@@ -14,6 +9,7 @@ import project.model.address.*;
 import project.dao.UserDao;
 
 import java.util.List;
+import java.sql.*;
 
 public class UserDaoImpl implements UserDao {
 
@@ -72,10 +68,13 @@ public class UserDaoImpl implements UserDao {
     public void removeUserRole(String userId, Role role) {
     }
 
+
+
     @Override
     public List<Inventory> getUserInventories(String userId) {
         return null;
     }
+
 
     @Override
     public void addInventoryToUser(String userId, Inventory inventory) {

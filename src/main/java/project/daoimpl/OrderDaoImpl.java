@@ -7,10 +7,7 @@ import project.dao.OrderDao;
 import project.model.order.Order;
 import project.service.MysqlService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class OrderDaoImpl implements OrderDao{
     

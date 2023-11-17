@@ -2,11 +2,16 @@ package project.daoimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 import project.dao.AddressDao;
 import project.model.address.Address;
+import project.service.MysqlService;
 
 public class AddressDaoImpl implements AddressDao{
+
+    private MysqlService mysqlService;
+
     @Override
     public void addAddress(Address address) {
         // Implement logic to add address to the database

@@ -20,12 +20,14 @@ public class InventoryService {
 
     private List<Inventory> inventories;
 
+    // Additional parameters may be required
     private void checkStaffRole() {
         if (!updater.hasRole(Role.STAFF)) {
             throw new UnsupportedOperationException("Only staff can perform this operation.");
         }
     }
 
+    // Additional parameters may be required
     public void increaseStock(String productCode, int newShipmentQuantity) {
         checkStaffRole();
 
@@ -47,6 +49,7 @@ public class InventoryService {
         }
     }
 
+    // Additional parameters may be required
     public void decreaseStock(String productCode, int quantityDecrease) {
         checkStaffRole();
 
@@ -68,6 +71,7 @@ public class InventoryService {
         }
     }
 
+    // Additional parameters may be required
     public void checkStock() {
         checkStaffRole();
         // TODO - implement Inventory.checkStock

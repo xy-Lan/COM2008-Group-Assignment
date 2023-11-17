@@ -9,6 +9,16 @@ import java.sql.SQLException;
 import project.model.user.User;
 import project.utils.UserSessionManager;
 
+/*
+The MysqlService class is designed as a centralized service
+to manage database connections and operations for MySQL. Each DaoImpl
+(Data Access Object Implementation) needs an instance of MysqlService
+as a parameter to perform database operations like queries and updates.
+This design ensures that all DAOs share the same configuration and
+connection management logic, leading
+to more maintainable and consistent database interaction across
+the application.
+*/
 public class MysqlService {
 
     private static final String JDBC_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team015";
