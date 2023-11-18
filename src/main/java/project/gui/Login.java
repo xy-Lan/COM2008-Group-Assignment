@@ -183,6 +183,12 @@ public class Login extends javax.swing.JFrame {
 
         System.out.println("Text: " + jTextField1.getText());
 
+//        Default DefaultFrame = new Default();
+//        DefaultFrame.setVisible(true);
+//        DefaultFrame.pack();
+//        DefaultFrame.setLocationRelativeTo(null);
+//        this.dispose();
+
         if (MysqlService.getInstance().login(jTextField1.getText(), String.valueOf(jPasswordField1.getPassword()))) {
             Default DefaultFrame = new Default();
             DefaultFrame.setVisible(true);

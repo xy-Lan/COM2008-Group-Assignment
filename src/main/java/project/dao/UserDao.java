@@ -10,12 +10,16 @@ import project.model.user.*;
 
 public interface UserDao {
     // Basic CRUD operations
-    void addUser(User user);
+    int addUser(User user);
     User getUserById(String userId);
     User getUserByEmail(String email);
     List<User> getAllUsers();
     void updateUser(User user);
     void deleteUser(String userId);
+
+    void addUserPasswordHash(int userId, String passwordHash);
+
+    String getUserPasswordHash(String email);
 
     // Methods for handling user roles
     List<Role> getUserRoles(String userId);

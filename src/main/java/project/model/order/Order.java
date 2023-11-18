@@ -1,6 +1,8 @@
 package project.model.order;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import project.model.user.*;
 
@@ -10,6 +12,7 @@ public class Order {
 	private Date date;
 	private OrderStatus orderStatus;
 	private User orderedBy;
+    private List<OrderLine> orderItems;
 
 	// public void creatOrder() {
 	// 	// TODO - implement Order.creatOrder
@@ -53,6 +56,21 @@ public class Order {
 	// 	// Implement order fulfilment logic
 	// 	//
 	// }
+
+//    public static Order createOrderFromCart(Cart cart, User user) {
+//        Order order = new Order();
+//        order.orderNumber = order.getOrderNumber();
+//        order.date = new Date(); // Current date
+//        order.orderStatus = OrderStatus.PENDING; // Initial status
+//        order.orderedBy = user;
+//
+//        // Convert Cart items to Order items
+//        order.orderItems = cart.getItems().entrySet().stream()
+//                .map(entry -> new OrderItem(entry.getKey(), entry.getValue()))
+//                .collect(Collectors.toList());
+//
+//        return order;
+//    }
     
 	// getter and setter method
 	public String getOrderNumber() {

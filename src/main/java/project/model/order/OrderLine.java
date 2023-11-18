@@ -43,6 +43,16 @@ public class OrderLine {
 		this.orderNumber = orderNumber;
 	}
 
+	/**
+	 * Calculates the total price of this order line.
+	 * @return The total price for the quantity of products in this order line.
+	 */
+	public BigDecimal getTotalPrice() {
+		BigDecimal quantityBigDecimal = new BigDecimal(this.quantity);
+
+		return this.lineCost.multiply(quantityBigDecimal);
+	}
+
 //	public void calculateLineCost() {
 //		// TODO - implement OrderLine.calculateLineCost
 //		throw new UnsupportedOperationException();
