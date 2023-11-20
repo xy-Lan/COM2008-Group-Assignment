@@ -63,28 +63,28 @@ public class UserService {
         userDao.updateUser(user);
     }
 
-    public User getUserById(String userId) {
+    public User getUserById(int userId) {
         // Retrieve user information by user ID
         return userDao.getUserById(userId);
     }
 
     // Delete a user
-    public void deleteUser(String userId) {
+    public void deleteUser(int userId) {
         // Logic to delete a user
         userDao.deleteUser(userId);
     }
 
     // Assigning roles to user
-    public void assignRoleToUser(String userId, Role role) {
+    public void assignRoleToUser(int userId, Role role) {
         userDao.addUserRole(userId, role);
     }
     
     // Deleting a user's role
-    public void removeRoleFromUser(String userId, Role role) {
+    public void removeRoleFromUser(int userId, Role role) {
         userDao.removeUserRole(userId, role);
     }
 
-    public void viewOrders(String userId) {
+    public void viewOrders(int userId) {
 		// TODO - implement Customer.viewOrders
 		throw new UnsupportedOperationException();
 	}

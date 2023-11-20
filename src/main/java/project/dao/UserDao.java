@@ -11,24 +11,26 @@ import project.model.user.*;
 public interface UserDao {
     // Basic CRUD operations
     int addUser(User user);
-    User getUserById(String userId);
+    User getUserById(int userId);
     User getUserByEmail(String email);
     List<User> getAllUsers();
     void updateUser(User user);
-    void deleteUser(String userId);
+    void deleteUser(int userId);
 
     void addUserPasswordHash(int userId, String passwordHash);
 
     String getUserPasswordHash(String email);
 
     // Methods for handling user roles
-    List<Role> getUserRoles(String userId);
-    void addUserRole(String userId, Role role);
-    void removeUserRole(String userId, Role role);
+    List<Role> getUserRoles(int userId);
+    void addUserRole(int userId, Role role);
+    void removeUserRole(int userId, Role role);
 
     // Methods for handling inventories for staff users
-    List<Inventory> getUserInventories(String userId);
-    void addInventoryToUser(String userId, Inventory inventory);
+    List<Inventory> getUserInventories(int userId);
+    void addInventoryToUser(int userId, Inventory inventory);
+    void removeInventoryFromUser(int userId, Inventory inventory);
+
     void removeInventoryFromUser(String userId, Inventory inventory);
 
     // Methods for handling payment information for customer users

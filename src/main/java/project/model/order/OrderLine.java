@@ -52,10 +52,4 @@ public class OrderLine {
 
 		return this.lineCost.multiply(quantityBigDecimal);
 	}
-
-//	public void calculateLineCost() {
-//		// TODO - implement OrderLine.calculateLineCost
-//		throw new UnsupportedOperationException();
-//	}
-
 }
