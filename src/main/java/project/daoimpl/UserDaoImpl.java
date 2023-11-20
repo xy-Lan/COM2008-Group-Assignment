@@ -194,9 +194,10 @@ public class UserDaoImpl implements UserDao {
     public void addOrderToUser(String userId, Order order) {
     }
 
-    @Override
-    public void updateOrderStatus(String userId, String orderId, OrderStatus status) {
-    }
+    // @Override
+    // this method has been implement in OrderDao
+    // public void updateOrderStatus(String userId, String orderId, OrderStatus status) {
+    // }
 
     @Override
     public Address getUserAddress(String userId) {

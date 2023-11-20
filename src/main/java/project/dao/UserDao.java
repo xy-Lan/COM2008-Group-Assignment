@@ -41,7 +41,7 @@ public interface UserDao {
     // Methods for handling user orders
     List<Order> getUserOrders(String userId);
     void addOrderToUser(String userId, Order order);
-    void updateOrderStatus(String userId, String orderId, OrderStatus status);
+    // void updateOrderStatus(String userId, String orderId, OrderStatus status);
 
     // Methods for handling user address
     Address getUserAddress(String userId);

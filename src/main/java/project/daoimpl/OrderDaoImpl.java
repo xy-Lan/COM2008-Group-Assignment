@@ -170,7 +170,7 @@ public class OrderDaoImpl implements OrderDao{
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     OrderLine orderLine = new OrderLine();
-                    // 假设您有一个方法来从 ResultSet 填充 OrderLine 对象的属性
+                    // Suppose you have a method to populate the properties of an OrderLine object from a ResultSet
                     populateOrderLineFromResultSet(orderLine, resultSet);
                     return Optional.of(orderLine);
                 }
