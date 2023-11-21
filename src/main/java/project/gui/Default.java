@@ -4,7 +4,13 @@
  */
 package project.gui;
 
+import project.dao.TrainSetDao;
+import project.daoimpl.TrainSetDaoImpl;
+import project.model.product.TrainSet;
 import project.utils.UserSessionManager;
+
+import javax.swing.*;
+import java.util.List;
 
 /**
  *
@@ -46,7 +52,7 @@ public class Default extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel5 = new javax.swing.JPanel();
+        productContainer = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         btnStaffDashboard = new javax.swing.JButton();
         btnManagerDashboard = new javax.swing.JButton();
@@ -276,24 +282,24 @@ public class Default extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+        productContainer.setLayout(productContainerLayout);
+        productContainerLayout.setHorizontalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(productContainerLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(70, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        productContainerLayout.setVerticalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(productContainerLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(401, Short.MAX_VALUE))
         );
 
-        jScrollPane3.setViewportView(jPanel5);
+        jScrollPane3.setViewportView(productContainer);
 
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(320, 280, 630, 500);
@@ -390,6 +396,17 @@ public class Default extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void loadTrainSets() {
+//        TrainSetDao TrainSetDao = null;
+//        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+//        for (TrainSet trainSet : allTrainSets) {
+//            JPanel trainSetPanel = new JPanel(new GridLayout(1, 2));
+//            trainSetPanel.add(new JLabel("Name: " + trainSet.getName()));
+//            trainSetPanel.add(new JLabel("Price: " + trainSet.getPrice()));
+//            productContainer.add(trainSetPanel);
+//        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnControllers;
@@ -408,10 +425,10 @@ public class Default extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel productContainer;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
