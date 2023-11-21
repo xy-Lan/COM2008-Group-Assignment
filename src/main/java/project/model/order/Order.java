@@ -8,18 +8,25 @@ import project.model.user.*;
 
 public class Order {
 
-	private String orderNumber;
+	private int orderNumber;
 	private Date date;
-	private OrderStatus orderStatus;
+	private OrderStatus orderStatus = OrderStatus.PENDING;
 	private User user;
     private List<OrderLine> orderLines;
 
+    public Order(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+        this.user = user;
+    }
+
 	// getter and setter method
-	public String getOrderNumber() {
+	public int getOrderNumber() {
         return orderNumber;
     }
 
-	public void setOrderNumber(String orderNumber) {
+	public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 
