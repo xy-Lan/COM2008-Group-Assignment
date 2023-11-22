@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.dao.OrderDao;
+import project.dao.UserDao;
 import project.model.order.Order;
 import project.model.order.OrderLine;
+import project.model.user.User;
 import project.service.MysqlService;
 
+import javax.swing.text.html.Option;
 import java.sql.*;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -24,6 +27,8 @@ public class OrderDaoImpl implements OrderDao{
     private static final String INSERT_ORDER_SQL = "INSERT INTO orders (user_id, order_status) VALUES (?, ?);";
 
     private MysqlService mysqlService;
+
+    private UserDao userDao = new UserDaoImpl(mysqlService);
 
     public OrderDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;
@@ -58,17 +63,38 @@ public class OrderDaoImpl implements OrderDao{
             }
         } catch (SQLException e) {
             // Log the exception and rethrow it as an unchecked exception.
-            LOGGER.log(Level.SEVERE, "Database operation failed", e);
+            LOGGER.log(Level.SEVERE, "AddOrder method:Database operation failed", e);
             throw new RuntimeException("Error accessing the database", e);
         }
     }
 
     @Override
     public Optional<Order> getOrderById(String orderId) {
-        // Implement the logic to retrieve an order by its order number
-        // Example: "SELECT * FROM orders WHERE orderNumber = ?"
-        // Process the ResultSet and return the Order object
-        return null; // Actually return the retrieved order
+        String query = "SELECT * FROM orders WHERE order_number = ?"; // Suppose the field name is order_number
+
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, orderId); //Set orderId to the query parameter
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int orderNumber = resultSet.getInt("order_number");
+                int userID = resultSet.getInt("user_id");
+                // Get user from userDao
+                Optional<User> user = userDao.getUserById(userID);
+                
+                /*Create a new Order object containing the User object obtained from userDao (if it exists), otherwise an IllegalArgumentException will be thrown*/
+                Order order = new Order(user.orElseThrow(() -> new IllegalArgumentException("User email is required"))); 
+                order.setOrderNumber(orderNumber);
+                return Optional.of(order);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getOrderById method:Database operation failed", e);
+            throw new RuntimeException("Error accessing the database", e);
+        }
+        return Optional.empty(); // Returns empty Optional if no order was found
+
     }
 
     @Override

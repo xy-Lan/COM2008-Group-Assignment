@@ -20,9 +20,7 @@ public abstract class Product {
 		this.productCode = productCode;
 	}
 
-	public String getBrandName() {
-		return brandName;
-	}
+	public String getBrandName() {return brandName;}
 
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
@@ -47,6 +45,8 @@ public abstract class Product {
 	public Gauge getGaugeType() {
 		return gaugeType;
 	}
+
+
 
 	public void setGaugeType(Gauge gaugeType) {
 		this.gaugeType = gaugeType;

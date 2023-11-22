@@ -26,7 +26,7 @@ public class User {
 	private Address residesAt;
 
 	public User(String email) {
-		this.email = email;
+		this.email= email;
 	}
 
 	public void setUserID(int id) {
