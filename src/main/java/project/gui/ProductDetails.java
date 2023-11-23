@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package project.gui;
 
-import project.dao.TrainSetDao;
-import project.daoimpl.TrainSetDaoImpl;
-import project.model.product.TrainSet;
+package project.gui;
+import project.dao.*;
+import project.daoimpl.*;
+import project.model.product.*;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -16,15 +12,16 @@ import java.util.List;
  *
  * @author linyu
  */
-public class Default extends javax.swing.JFrame {
+public class ProductDetails extends javax.swing.JFrame {
 
     /**
      * Creates new form Default
      */
-    public Default() {
-        System.out.println("User: " + UserSessionManager.getInstance().getLoggedInUser().toMap());
+    public ProductDetails() {
         initComponents();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,20 +44,17 @@ public class Default extends javax.swing.JFrame {
         btnControllers = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
-        btnLogOut = new javax.swing.JButton();
+        btnLogOut2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        productContainer = new javax.swing.JPanel();
-        productPanel = new javax.swing.JPanel();
-        nameLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner();
-        jLabel4 = new javax.swing.JLabel();
+        btnLogOut = new javax.swing.JButton();
+        btnLogOut1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnStaffDashboard = new javax.swing.JButton();
-        btnManagerDashboard = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        btnAddOrderLine = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -175,13 +169,13 @@ public class Default extends javax.swing.JFrame {
             }
         });
 
-        btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
-        btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut.setText("Log out");
-        btnLogOut.setBorder(null);
-        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut2.setBackground(new java.awt.Color(0, 102, 0));
+        btnLogOut2.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogOut2.setText("Log out");
+        btnLogOut2.setBorder(null);
+        btnLogOut2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOutActionPerformed(evt);
+                btnLogOut2ActionPerformed(evt);
             }
         });
 
@@ -208,7 +202,7 @@ public class Default extends javax.swing.JFrame {
                                         .addComponent(btnRecentOrders))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
-                                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnLogOut2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -232,7 +226,7 @@ public class Default extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
-                .addComponent(btnLogOut)
+                .addComponent(btnLogOut2)
                 .addGap(61, 61, 61))
         );
 
@@ -241,15 +235,15 @@ public class Default extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel2.setText("Categories");
+        jLabel2.setText("Train sets");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
+        jLabel2.setBounds(279, 56, 175, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Train Sets");
+        title.setText("Product name");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -258,7 +252,7 @@ public class Default extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addContainerGap(601, Short.MAX_VALUE))
+                .addContainerGap(553, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,107 +265,56 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(jPanel3);
         jPanel3.setBounds(250, 120, 750, 70);
 
-        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        productPanel.setBackground(new java.awt.Color(24, 150, 62));
-
-        nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
-        nameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        nameLabel.setText("Name:");
-
-        jButton1.setText("View details");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
+        btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogOut.setText("Staff interface");
+        btnLogOut.setBorder(null);
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLogOutActionPerformed(evt);
             }
         });
+        jPanel1.add(btnLogOut);
+        btnLogOut.setBounds(840, 10, 130, 17);
 
-        jLabel4.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Price:");
+        btnLogOut1.setBackground(new java.awt.Color(0, 102, 0));
+        btnLogOut1.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogOut1.setText("Manager interface");
+        btnLogOut1.setBorder(null);
+        btnLogOut1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOut1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLogOut1);
+        btnLogOut1.setBounds(840, 50, 150, 17);
 
         jLabel1.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\main\\resources\\images\\tran_sets.jpg")); // NOI18N
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(270, 210, 240, 160);
 
-        javax.swing.GroupLayout productPanelLayout = new javax.swing.GroupLayout(productPanel);
-        productPanel.setLayout(productPanelLayout);
-        productPanelLayout.setHorizontalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productPanelLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(114, 114, 114)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                    .addComponent(quantityVal))
-                .addGap(15, 15, 15))
-        );
-        productPanelLayout.setVerticalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productPanelLayout.createSequentialGroup()
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(productPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(5, 5, 5)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jLabel3.setText("Name");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(630, 230, 35, 17);
 
-        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
-        productContainer.setLayout(productContainerLayout);
-        productContainerLayout.setHorizontalGroup(
-            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productContainerLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
-        );
-        productContainerLayout.setVerticalGroup(
-            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productContainerLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(401, Short.MAX_VALUE))
-        );
+        jLabel4.setText("Brand");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(630, 260, 41, 17);
 
-        jScrollPane3.setViewportView(productContainer);
+        jLabel5.setText("Type");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(630, 290, 28, 17);
 
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(320, 280, 630, 500);
-
-        btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnStaffDashboard.setText("Staff interface");
-        btnStaffDashboard.setBorder(null);
-        btnStaffDashboard.addActionListener(new java.awt.event.ActionListener() {
+        btnAddOrderLine.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddOrderLine.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddOrderLine.setText("Add to basket");
+        btnAddOrderLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffDashboardActionPerformed(evt);
+                btnAddOrderLineActionPerformed(evt);
             }
         });
-        jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(840, 10, 130, 17);
-
-        btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnManagerDashboard.setText("Manager interface");
-        btnManagerDashboard.setBorder(null);
-        btnManagerDashboard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManagerDashboardActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnManagerDashboard);
-        btnManagerDashboard.setBounds(840, 50, 150, 17);
+        jPanel1.add(btnAddOrderLine);
+        btnAddOrderLine.setBounds(770, 610, 140, 60);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -416,24 +359,8 @@ public class Default extends javax.swing.JFrame {
         title.setText("Rolling Stock");
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
-    private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed
-        // log out
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnStaffDashboardActionPerformed
-
-    private void btnManagerDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerDashboardActionPerformed
-        ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
-        ManagerDashboardFrame.setVisible(true);
-        ManagerDashboardFrame.pack();
-        ManagerDashboardFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnManagerDashboardActionPerformed
-
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // log out
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
         LoginFrame.pack();
@@ -441,48 +368,44 @@ public class Default extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLogOut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOut1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnLogOut1ActionPerformed
 
-    private void loadTrainSets() {
-//        TrainSetDao TrainSetDao = null;
-//        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
-//        for (TrainSet trainSet : allTrainSets) {
-//            JPanel trainSetPanel = new JPanel(new GridLayout(1, 2));
-//            trainSetPanel.add(new JLabel("Name: " + trainSet.getName()));
-//            trainSetPanel.add(new JLabel("Price: " + trainSet.getPrice()));
-//            productContainer.add(trainSetPanel);
-//        }
-    }
+    private void btnLogOut2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOut2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogOut2ActionPerformed
+
+    private void btnAddOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderLineActionPerformed
+        // TODO add your handling code here:
+        //Add a product to orderline
+
+    }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddOrderLine;
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnManagerDashboard;
+    private javax.swing.JButton btnLogOut1;
+    private javax.swing.JButton btnLogOut2;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnStaffDashboard;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JPanel productContainer;
-    private javax.swing.JPanel productPanel;
-    private javax.swing.JSpinner quantityVal;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

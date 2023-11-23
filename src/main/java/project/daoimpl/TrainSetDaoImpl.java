@@ -67,7 +67,11 @@ public class TrainSetDaoImpl implements TrainSetDao {
                 ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+<<<<<<< HEAD
+
+=======
                 TrainSet trainSet = TrainSet.fromResultSet(rs);
+>>>>>>> 54baf0e598c22aa3119dc855bb7d89d0d799bf1d
                 trainSets.add(trainSet);
             }
         } catch (SQLException e) {
