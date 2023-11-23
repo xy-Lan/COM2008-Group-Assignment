@@ -1,6 +1,7 @@
 package project.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import project.model.address.Address;
 import project.model.inventory.Inventory;
@@ -11,7 +12,7 @@ import project.model.user.*;
 public interface UserDao {
     // Basic CRUD operations
     int addUser(User user);
-    User getUserById(int userId);
+    Optional<User> getUserById(int userId);
     User getUserByEmail(String email);
     List<User> getAllUsers();
     void updateUser(User user);

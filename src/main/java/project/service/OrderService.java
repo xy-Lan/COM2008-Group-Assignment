@@ -48,8 +48,7 @@ public class OrderService {
 
 		try {
 			// Create a new order instance
-			Order order = new Order();
-			order.setUser(user);
+			Order order = new Order(user);
 			order.setOrderStatus(OrderStatus.PENDING);
 			order.setOrderLines(new ArrayList<>()); // Initialize with an empty list of order lines
 
@@ -94,6 +93,7 @@ public class OrderService {
 	 * @param productCode The product code of the order line to be removed.
 	 * @throws IllegalArgumentException if the order line specified by orderNumber and productCode is not found.
 	 */
+
 	public void removeOrderLine(String orderNumber, String productCode) {
 		// Retrieve the order by its ID
 		Optional<OrderLine> orderLineOptional = orderDao.findOrderLineByOrderNumberAndProductCode(orderNumber, productCode);

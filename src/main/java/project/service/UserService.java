@@ -8,6 +8,7 @@ import project.model.user.User;
 import project.security.PasswordEncryption;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class UserService {
     
@@ -63,7 +64,7 @@ public class UserService {
         userDao.updateUser(user);
     }
 
-    public User getUserById(int userId) {
+    public Optional<User> getUserById(int userId) {
         // Retrieve user information by user ID
         return userDao.getUserById(userId);
     }

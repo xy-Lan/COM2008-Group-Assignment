@@ -11,6 +11,7 @@ import project.dao.UserDao;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,8 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;
     }
+
+
 
     @Override
     public int addUser(User user) {
@@ -57,9 +60,10 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error accessing the database", e);
+            throw new RuntimeException("Error accessing the database", e);
             // Error handling: return 0 or consider rethrowing the exception or using a custom error strategy
-            return 0;
+//            return 0;
         }
     }
 
@@ -75,9 +79,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public Optional<User> getUserById(int userId) {
         // Implement JDBC code to retrieve a User by userId from the database
-        return null; // Replace with actual user retrieved from the database
+        String query = "SELECT * FROM users WHERE user_id = ?";
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String userEmail = resultSet.getString("email");
+
+                User user = new User(userEmail);
+                user.setUserID(userId);
+                return Optional.of(user);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error accessing the database", e);
+            throw new RuntimeException("Error accessing the database", e);
+        }
+        return Optional.empty();
     }
 
     @Override

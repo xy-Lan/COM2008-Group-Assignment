@@ -26,7 +26,24 @@ public class User {
 	private Address residesAt;
 
 	public User(String email) {
-		this.email = email;
+		this.email= email;
+	}
+
+	public User(int userID) {
+		this.userID = userID;
+	}
+    
+	// Static method to create Order object from ResultSet
+	public static User fromResultSet(ResultSet resultSet) throws SQLException {
+        //Extract basic properties
+		int userId = resultSet.getInt("user_id");
+		String email = resultSet.getString("email");
+
+		// Create the User object. I've chosen to use the userID as the constructor parameter.
+		User user = new User(userId);
+		user.setEmail(email);
+
+		return user;
 	}
 
 	public void setUserID(int id) {
@@ -48,6 +65,9 @@ public class User {
 	public String getPasswordHash() {
 		return passwordHash;
 	}
+
+	
+
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
