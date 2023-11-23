@@ -1,5 +1,7 @@
 package project.model.order;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,22 @@ public class Order {
             throw new IllegalArgumentException("User cannot be null.");
         }
         this.user = user;
+    }
+    
+    // Static method to create Order object from ResultSet
+    public static Order fromResultSet(ResultSet resultSet, User user) throws SQLException {
+        int orderNumber = resultSet.getInt("order_number");
+        Date date = resultSet.getDate("date");
+        OrderStatus orderStatus = OrderStatus.valueOf(resultSet.getString("status"));
+
+        Order order = new Order(user);
+        order.setOrderNumber(orderNumber);
+        order.setDate(date);
+        order.setOrderStatus(orderStatus);
+
+        // Note: orderLines and other possible details are not handled here.
+
+        return order;
     }
 
 	// getter and setter method

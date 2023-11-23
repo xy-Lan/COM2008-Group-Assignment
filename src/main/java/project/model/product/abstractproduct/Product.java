@@ -1,5 +1,7 @@
 package project.model.product.abstractproduct;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import project.model.order.*;
@@ -11,6 +13,12 @@ public abstract class Product {
 	private String productName;
 	private BigDecimal retailPrice;
 	private Gauge gaugeType;
+
+	// public Product (String productCode) {
+	// 	this.productCode = productCode;
+	// }
+
+	
 
 	public String getProductCode() {
 		return productCode;

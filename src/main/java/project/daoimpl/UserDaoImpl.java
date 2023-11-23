@@ -25,6 +25,8 @@ public class UserDaoImpl implements UserDao {
         this.mysqlService = mysqlService;
     }
 
+
+
     @Override
     public int addUser(User user) {
         // Implement JDBC code to insert a new User into the database

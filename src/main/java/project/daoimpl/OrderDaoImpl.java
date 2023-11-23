@@ -24,8 +24,6 @@ public class OrderDaoImpl implements OrderDao{
      */
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private static final String INSERT_ORDER_SQL = "INSERT INTO orders (user_id, order_status) VALUES (?, ?);";
-
     private MysqlService mysqlService;
 
     private UserDao userDao = new UserDaoImpl(mysqlService);
@@ -36,9 +34,10 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public void addOrder(Order order) {
-        // Assume INSERT_ORDER_SQL is a constant with your SQL insert statement.
+        String query = "INSERT INTO orders (user_id, order_status) VALUES (?, ?);";
+
         try (Connection connection = mysqlService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDER_SQL, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setInt(1, order.getUser().getUserID()); 
             System.out.println("userId: " + order.getUser().getUserID());// Assuming the user ID is an integer.
@@ -90,6 +89,7 @@ public class OrderDaoImpl implements OrderDao{
                 return Optional.of(order);
             }
         } catch (SQLException e) {
+           //  Handling or logging exceptions
             LOGGER.log(Level.SEVERE, "getOrderById method:Database operation failed", e);
             throw new RuntimeException("Error accessing the database", e);
         }
@@ -99,10 +99,27 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public List<Order> getAllOrders() {
-        // Implement the logic to retrieve all orders
-        // Example: "SELECT * FROM orders"
-        // Iterate through the ResultSet, build a list of orders and return it
-        return new ArrayList<>(); // Actually return a list of all orders
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id";
+
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                // Suppose the Order class has a constructor that accepts a ResultSet.
+                int userID = resultSet.getInt("user_id");
+                User user = new User(userID);
+                Order order = new Order(user);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            // Handling or logging exceptions
+            LOGGER.log(Level.SEVERE, "Error retrieving all orders", e);
+            throw  new RuntimeException("Error accessing the database", e);
+        }
+
+        return orders;
     }
 
     @Override
@@ -128,16 +145,53 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public void deleteOrder(String orderId) {
-        // Implement the logic to delete an order by its order number
-        // Example: "DELETE FROM orders WHERE orderNumber = ?"
+    public void deleteOrder(String orderNumber) {
+        String query = "DELETE FROM orders WHERE order_number = ?";
+
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, orderNumber); // Set orderId as a query parameter
+            int affectedRows = preparedStatement.executeUpdate(); // Performing a delete operation
+
+            if (affectedRows == 0) {
+                // If no rows are affected, it means that no corresponding orders were found for deletion
+                LOGGER.log(Level.WARNING, "No order found with orderId: " + orderNumber);
+            } else {
+                LOGGER.log(Level.INFO, "Order deleted successfully: " + orderNumber);
+            }
+        } catch (SQLException e) {
+            //Handling or logging exceptions
+            LOGGER.log(Level.SEVERE, "Error deleting order with orderId: " + orderNumber, e);
+            throw  new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override
     public List<Order> getOrdersByUserId(String userId) {
-        // Implement the logic to retrieve orders for a specific user
-        // Example: "SELECT * FROM orders WHERE userId = ?"
-        return new ArrayList<>(); // Actually return a list of orders for the specific user
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ?";
+
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userId); // Set userId as a query parameter
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                // The Order class has a constructor that accepts a ResultSet.
+                User user = User.fromResultSet(resultSet);
+                Order order = Order.fromResultSet(resultSet, user);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            // Handling or logging exceptions
+            LOGGER.log(Level.SEVERE, "Error retrieving orders for userId: " + userId, e);
+            throw  new RuntimeException("Database operation failed", e);
+        }
+
+        return orders; // Returns a list of orders for a specific user
+
     }
 
     @Override

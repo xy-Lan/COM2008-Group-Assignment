@@ -1,19 +1,41 @@
 package project.model.inventory;
+import project.dao.UserDao;
 import project.model.user.*;
 import java.sql.*;
+import java.util.Optional;
 
 public class Inventory {
 
-	private String updaterID;
+	private int updaterID;
 	private String productCode;
 	private Integer quantity;
-	private User updater;
+    private User updater;
 
-	public String getUpdaterID() {
+    // Constructor of Inventory
+    public Inventory(int updaterID, String productCode, Integer quantity, User updater) {
+        this.updaterID = updaterID;
+        this.productCode = productCode;
+        this.quantity = quantity;
+         this.updater = updater;
+    }
+
+     // Static method to create an Inventory instance from a ResultSet
+    public static Inventory fromResultSet(ResultSet resultSet, UserDao userDao) throws SQLException {
+        int updaterID = resultSet.getInt("user_id");
+        String productCode = resultSet.getString("product_code");
+        Integer quantity = resultSet.getInt("quantity");
+
+        // Use Optional to handle a potentially null User
+        Optional<User> optionalUser = userDao.getUserById(updaterID);
+        User updater = optionalUser.orElse(null); //Returns null if Optional is null
+        return new Inventory(updaterID, productCode, quantity, updater);
+    }
+
+	public int getUpdaterID() {
 		return updaterID;
 	}
 
-	public void setUpdaterID(String updaterID) {
+	public void setUpdaterID(int updaterID) {
 		this.updaterID = updaterID;
 	}
 
