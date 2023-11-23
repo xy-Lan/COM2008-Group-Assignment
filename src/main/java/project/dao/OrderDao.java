@@ -12,7 +12,7 @@ public interface OrderDao {
     void addOrder(Order order);
 
     // Retrieves an order by its order number from the database
-    Optional<Order> getOrderById(String orderNumber);
+    Optional<Order> getOrderById(int orderNumber);
 
     // Retrieves all orders from the database
     List<Order> getAllOrders();
@@ -21,16 +21,16 @@ public interface OrderDao {
     void updateOrderStatus(Order order);
 
     // Deletes an order by its order number from the database
-    void deleteOrder(String orderId);
+    void deleteOrder(int orderNumber);
 
     // Retrieves all orders for a specific user from the database
-    List<Order> getOrdersByUserId(String userId);
+    List<Order> getOrdersByUserId(int userId);
 
     // Other order-related methods...
     void addOrderLine(OrderLine orderLine);
 
     void deleteOrderLine(OrderLine orderLine);
 
-    Optional<OrderLine> findOrderLineByOrderNumberAndProductCode(String orderNumber, String productCode);
+    Optional<OrderLine> findOrderLineByOrderNumberAndProductCode(int orderNumber, String productCode);
 
 }

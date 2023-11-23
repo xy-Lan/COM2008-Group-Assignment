@@ -32,19 +32,19 @@ public interface UserDao {
     void addInventoryToUser(int userId, Inventory inventory);
     void removeInventoryFromUser(int userId, Inventory inventory);
 
-    void removeInventoryFromUser(String userId, Inventory inventory);
+    void removeInventoryFromUser(int userID, Inventory inventory);
 
     // Methods for handling payment information for customer users
-    List<Payment> getUserPayments(String userId);
-    void addPaymentToUser(String userId, Payment payment);
-    void removePaymentFromUser(String userId, String paymentId);
+    List<Payment> getUserPayments(int userID);
+    void addPaymentToUser(int userID, Payment payment);
+    void removePaymentFromUser(int userID, String paymentId);
 
     // Methods for handling user orders
-    List<Order> getUserOrders(String userId);
-    void addOrderToUser(String userId, Order order);
-    // void updateOrderStatus(String userId, String orderId, OrderStatus status);
+    List<Order> getUserOrders(int userID);
+    void addOrderToUser(int userID, Order order);
+    // void updateOrderStatus(int userID, String orderId, OrderStatus status);
 
     // Methods for handling user address
-    Address getUserAddress(String userId);
-    void updateUserAddress(String userId, Address address);
+    Address getUserAddress(int userID);
+    void updateUserAddress(int userID, Address address);
 }

@@ -16,6 +16,10 @@ public class ProductDaoImpl implements ProductDao {
 
     private MysqlService mysqlService;
 
+    public ProductDaoImpl (MysqlService mysqlService) {
+        this.mysqlService = mysqlService;
+    }
+
     @Override
     public void addProduct(Product product) {
         String sql = "INSERT INTO product (product_code, brand_name, product_name,retail_price, gauge_type) VALUES (?, ?, ?, ?, ?)";

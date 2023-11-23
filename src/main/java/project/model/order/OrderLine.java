@@ -9,7 +9,9 @@ public class OrderLine {
 	private String productCode;
 	private Integer quantity;
 	private BigDecimal lineCost;
-	private String orderNumber;
+	private int orderNumber;
+
+
 
 	public String getProductCode() {
 		return productCode;
@@ -35,11 +37,11 @@ public class OrderLine {
 		this.lineCost = lineCost;
 	}
 
-	public String getOrderNumber() {
+	public int getOrderNumber() {
 		return orderNumber;
 	}
 
-	public void setOrderNumber(String orderNumber) {
+	public void setOrderNumber(int orderNumber) {
 		this.orderNumber = orderNumber;
 	}
 

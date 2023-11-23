@@ -68,17 +68,17 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public Optional<Order> getOrderById(String orderId) {
+    public Optional<Order> getOrderById(int orderNumber) {
         String query = "SELECT * FROM orders WHERE order_number = ?"; // Suppose the field name is order_number
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, orderId); //Set orderId to the query parameter
+            preparedStatement.setInt(1, orderNumber); //Set orderId to the query parameter
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int orderNumber = resultSet.getInt("order_number");
+//                t("order_number");int orderNumber = resultSet.getIn
                 int userID = resultSet.getInt("user_id");
                 // Get user from userDao
                 Optional<User> user = userDao.getUserById(userID);
@@ -145,13 +145,13 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public void deleteOrder(String orderNumber) {
+    public void deleteOrder(int orderNumber) {
         String query = "DELETE FROM orders WHERE order_number = ?";
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, orderNumber); // Set orderId as a query parameter
+            preparedStatement.setInt(1, orderNumber); // Set orderId as a query parameter
             int affectedRows = preparedStatement.executeUpdate(); // Performing a delete operation
 
             if (affectedRows == 0) {
@@ -168,14 +168,14 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public List<Order> getOrdersByUserId(String userId) {
+    public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ?";
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, userId); // Set userId as a query parameter
+            preparedStatement.setInt(1, userId); // Set userId as a query parameter
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -201,7 +201,7 @@ public class OrderDaoImpl implements OrderDao{
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
-            pstmt.setString(1, orderLine.getOrderNumber());
+            pstmt.setInt(1, orderLine.getOrderNumber());
             pstmt.setString(2, orderLine.getProductCode());
             pstmt.setInt(3, orderLine.getQuantity());
             pstmt.setBigDecimal(4, orderLine.getLineCost());
@@ -223,7 +223,7 @@ public class OrderDaoImpl implements OrderDao{
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
-            pstmt.setString(1, orderLine.getOrderNumber());
+            pstmt.setInt(1, orderLine.getOrderNumber());
             pstmt.setString(2, orderLine.getProductCode());
 
             // Execute the SQL statement and get the count of affected rows in the database
@@ -241,13 +241,13 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public Optional<OrderLine> findOrderLineByOrderNumberAndProductCode(String orderNumber, String productCode) {
+    public Optional<OrderLine> findOrderLineByOrderNumberAndProductCode(int orderNumber, String productCode) {
         String sql = "SELECT * FROM order_lines WHERE order_number = ? AND product_code = ?";
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, orderNumber);
+            preparedStatement.setInt(1, orderNumber);
             preparedStatement.setString(2, productCode);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -270,7 +270,7 @@ public class OrderDaoImpl implements OrderDao{
         // Assume that the OrderLine has these properties: productCode, quantity, lineCost, etc.
         //  Extract the values of these properties from the resultSet and set them to the orderLine object.
 
-        orderLine.setOrderNumber(resultSet.getString("order_number"));
+        orderLine.setOrderNumber(resultSet.getInt("order_number"));
         orderLine.setProductCode(resultSet.getString("product_code"));
         orderLine.setQuantity(resultSet.getInt("quantity"));
         orderLine.setLineCost(resultSet.getBigDecimal("line_cost"));
