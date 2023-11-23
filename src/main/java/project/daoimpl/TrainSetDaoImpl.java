@@ -45,6 +45,7 @@ public class TrainSetDaoImpl implements TrainSetDao {
                 trainSet.setProductName(rs.getString("product_name"));
                 trainSet.setBrandName(rs.getString("brand_name"));
                 trainSet.setRetailPrice(rs.getBigDecimal("retail_price"));
+//                trainSet.setGaugeType(rs.getGaugeType("retail_price"));
                 trainSets.add(trainSet);
             }
         } catch (SQLException e) {
