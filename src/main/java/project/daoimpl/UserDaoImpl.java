@@ -185,10 +185,7 @@ public class UserDaoImpl implements UserDao {
     public void addInventoryToUser(int userId, Inventory inventory) {
     }
 
-    @Override
-    public void removeInventoryFromUser(int userId, Inventory inventory) {
 
-    }
 
     @Override
     public void removeInventoryFromUser(int userID, Inventory inventory) {

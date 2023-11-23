@@ -30,7 +30,7 @@ public interface UserDao {
     // Methods for handling inventories for staff users
     List<Inventory> getUserInventories(int userId);
     void addInventoryToUser(int userId, Inventory inventory);
-    void removeInventoryFromUser(int userId, Inventory inventory);
+
 
     void removeInventoryFromUser(int userID, Inventory inventory);
 
