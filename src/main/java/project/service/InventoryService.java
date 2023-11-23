@@ -28,7 +28,7 @@ public class InventoryService {
     }
 
     // Additional parameters may be required
-    public void increaseStock(String productCode, int newShipmentQuantity) {
+    public Boolean increaseStock(String productCode, int newShipmentQuantity) {
         checkStaffRole();
 
         try (
@@ -40,35 +40,37 @@ public class InventoryService {
             int rowsUpdated = pstmt.executeUpdate();
 
             if (rowsUpdated > 0) {
-                System.out.println("Change Successful");
+                return true;
             } else {
-                System.out.println("Change Unsuccessful");
+                return false;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 
     // Additional parameters may be required
-    public void decreaseStock(String productCode, int quantityDecrease) {
+    public Boolean decreaseStock(String productCode, int quantityDecrease) {
         checkStaffRole();
 
         try (
                 Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-                PreparedStatement pstmt = con.prepareStatement("UPDATE `inventory` SET `quantity` = `quantity` + ? WHERE `product_code` = ?")
+                PreparedStatement pstmt = con.prepareStatement("UPDATE `inventory` SET `quantity` = `quantity` - ? WHERE `product_code` = ?")
         ) {
             pstmt.setInt(1, quantityDecrease);
             pstmt.setString(2, productCode);
             int rowsUpdated = pstmt.executeUpdate();
 
             if (rowsUpdated > 0) {
-                System.out.println("Change Successful");
+                return true;
             } else {
-                System.out.println("Change Unsuccessful");
+                return false;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 
     // Additional parameters may be required

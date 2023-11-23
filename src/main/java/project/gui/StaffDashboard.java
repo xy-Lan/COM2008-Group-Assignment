@@ -436,6 +436,11 @@ public class StaffDashboard extends javax.swing.JFrame {
 
     private void btnAddProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct1ActionPerformed
         // TODO add your handling code here:
+        StockAdjust StockAdjustFrame = new StockAdjust();
+        StockAdjustFrame.setVisible(true);
+        StockAdjustFrame.pack();
+        StockAdjustFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
 
