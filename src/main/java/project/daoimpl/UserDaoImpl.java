@@ -185,49 +185,46 @@ public class UserDaoImpl implements UserDao {
     public void addInventoryToUser(int userId, Inventory inventory) {
     }
 
-    @Override
-    public void removeInventoryFromUser(int userId, Inventory inventory) {
 
+
+    @Override
+    public void removeInventoryFromUser(int userID, Inventory inventory) {
     }
 
     @Override
-    public void removeInventoryFromUser(String userId, Inventory inventory) {
-    }
-
-    @Override
-    public List<Payment> getUserPayments(String userId) {
+    public List<Payment> getUserPayments(int userID) {
         return null;
     }
 
     @Override
-    public void addPaymentToUser(String userId, Payment payment) {
+    public void addPaymentToUser(int userID, Payment payment) {
     }
 
     @Override
-    public void removePaymentFromUser(String userId, String paymentId) {
+    public void removePaymentFromUser(int userID, String paymentId) {
     }
 
     @Override
-    public List<Order> getUserOrders(String userId) {
+    public List<Order> getUserOrders(int userID) {
         return null;
     }
 
     @Override
-    public void addOrderToUser(String userId, Order order) {
+    public void addOrderToUser(int userID, Order order) {
     }
 
     // @Override
     // this method has been implement in OrderDao
-    // public void updateOrderStatus(String userId, String orderId, OrderStatus status) {
+    // public void updateOrderStatus(int userID, String orderId, OrderStatus status) {
     // }
 
     @Override
-    public Address getUserAddress(String userId) {
+    public Address getUserAddress(int userID) {
         return null;
     }
 
     @Override
-    public void updateUserAddress(String userId, Address address) {
+    public void updateUserAddress(int userID, Address address) {
     }
 }
 

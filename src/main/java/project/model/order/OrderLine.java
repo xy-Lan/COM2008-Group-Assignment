@@ -11,6 +11,7 @@ public class OrderLine {
 	private BigDecimal lineCost;
 	private int orderNumber;
 
+<<<<<<< HEAD
 	public OrderLine(String productCode, Integer quantity, BigDecimal lineCost, int orderNumber) {
 		this.productCode = productCode;
 		this.quantity = quantity;
@@ -18,6 +19,9 @@ public class OrderLine {
 		this.orderNumber = orderNumber;
 
 	}
+=======
+
+>>>>>>> fa1fed46745d879d62a77a25155a4c6ab8b8a9fc
 
 	public String getProductCode() {
 		return productCode;

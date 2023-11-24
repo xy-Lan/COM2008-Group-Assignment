@@ -100,7 +100,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void viewPendingOrders(String userId) {
+	public void viewPendingOrders(int userID) {
 		// TODO - implement Staff.viewPendingOrders
 		throw new UnsupportedOperationException();
 	}
@@ -116,7 +116,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void updateBankingDetails(String userId) {
+	public void updateBankingDetails(int userID) {
 		// TODO - implement Customer.updateBankingDetails
 		throw new UnsupportedOperationException();
 	}
@@ -132,7 +132,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void addCard(String userId) {
+	public void addCard(int userID) {
 		// TODO - implement Customer.addCard
 		throw new UnsupportedOperationException();
 	}
@@ -148,7 +148,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void removeCard(String userId) {
+	public void removeCard(int userID) {
 		// TODO - implement Customer.removeCard
 		throw new UnsupportedOperationException();
 	}
@@ -163,7 +163,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void appointUserAsStaff(String userId) {
+	public void appointUserAsStaff(int userID) {
 		// TODO - implement Manager.appointUserAsStaff
 		throw new UnsupportedOperationException();
 	}
@@ -178,7 +178,7 @@ public class UserService {
 	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
 	 *                                       role
 	 */
-	public void removeUserFromStaff(String userId) {
+	public void removeUserFromStaff(int userID) {
 		// TODO - implement Manager.removeUserFromStaff
 		throw new UnsupportedOperationException();
 	}

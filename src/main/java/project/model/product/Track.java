@@ -1,6 +1,7 @@
 package project.model.product;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import project.model.product.abstractproduct.*;
@@ -28,5 +29,25 @@ public class Track extends Part {
         return new Track(productCode, brandName, productName, retailPrice, gaugeType, trackType);
     }
 
+    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getBrandName());
+        preparedStatement.setString(3, this.getProductName());
+        preparedStatement.setBigDecimal(4, this.getRetailPrice());
+        preparedStatement.setString(5, this.getGaugeType().name());
+    }
 
+    public void setTrackTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getTrackType().name());
+    }
+
+
+    public TrackType getTrackType() {
+        return trackType;
+    }
+
+    public void setTrackType(TrackType trackType) {
+        this.trackType = trackType;
+    }
 }

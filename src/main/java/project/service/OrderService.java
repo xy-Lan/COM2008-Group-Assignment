@@ -94,7 +94,7 @@ public class OrderService {
 	 * @throws IllegalArgumentException if the order line specified by orderNumber and productCode is not found.
 	 */
 
-	public void removeOrderLine(String orderNumber, String productCode) {
+	public void removeOrderLine(int orderNumber, String productCode) {
 		// Retrieve the order by its ID
 		Optional<OrderLine> orderLineOptional = orderDao.findOrderLineByOrderNumberAndProductCode(orderNumber, productCode);
 

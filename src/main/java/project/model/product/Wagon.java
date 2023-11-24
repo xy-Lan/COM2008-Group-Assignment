@@ -1,5 +1,6 @@
 package project.model.product;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -30,4 +31,33 @@ public class Wagon extends Part {
         return new Wagon(productCode, brandName, productName, retailPrice, gaugeType, wagonType, era);
     }
 
+    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getBrandName());
+        preparedStatement.setString(3, this.getProductName());
+        preparedStatement.setBigDecimal(4, this.getRetailPrice());
+        preparedStatement.setString(5, this.getGaugeType().name());
+    }
+
+    public void setWagonTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getWagonType().name());
+        preparedStatement.setString(3, this.getEra().name());
+    }
+
+    public WagonType getWagonType() {
+        return wagonType;
+    }
+
+    public void setWagonType(WagonType wagonType) {
+        this.wagonType = wagonType;
+    }
+
+    public Era getEra() {
+        return era;
+    }
+
+    public void setEra(Era era) {
+        this.era = era;
+    }
 }

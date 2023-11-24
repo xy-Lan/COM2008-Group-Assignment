@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package project.gui;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 
 /**
  *
@@ -42,17 +45,16 @@ public class StaffDashboard extends javax.swing.JFrame {
         btnLogOut = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel5 = new javax.swing.JPanel();
         btnUser = new javax.swing.JButton();
         btnManager = new javax.swing.JButton();
         btnPendingOrders = new javax.swing.JButton();
         btnListCustomers1 = new javax.swing.JButton();
         btnAddProduct1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\4105931-add-to-cart-buy-cart-sell-shop-shopping-cart_113919.png")); // NOI18N
         jMenuItem1.setText("jMenuItem1");
         jPopupMenu1.add(jMenuItem1);
 
@@ -146,7 +148,6 @@ public class StaffDashboard extends javax.swing.JFrame {
 
         btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
         btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
-        btnMyDetails.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\user_icon_149851.png")); // NOI18N
         btnMyDetails.setText("My Details");
         btnMyDetails.setBorder(null);
         btnMyDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +158,6 @@ public class StaffDashboard extends javax.swing.JFrame {
 
         btnRecentOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnRecentOrders.setForeground(new java.awt.Color(204, 204, 204));
-        btnRecentOrders.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnRecentOrders.setText("Recent Orders");
         btnRecentOrders.setBorder(null);
         btnRecentOrders.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +179,6 @@ public class StaffDashboard extends javax.swing.JFrame {
 
         btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
         btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnLogOut.setText("Log out");
         btnLogOut.setBorder(null);
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
@@ -271,28 +270,8 @@ public class StaffDashboard extends javax.swing.JFrame {
         jPanel1.add(jPanel3);
         jPanel3.setBounds(250, 120, 750, 70);
 
-        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 668, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 528, Short.MAX_VALUE)
-        );
-
-        jScrollPane3.setViewportView(jPanel5);
-
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(320, 280, 630, 500);
-
         btnUser.setBackground(new java.awt.Color(0, 102, 0));
         btnUser.setForeground(new java.awt.Color(204, 204, 204));
-        btnUser.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnUser.setText("User interface");
         btnUser.setBorder(null);
         btnUser.addActionListener(new java.awt.event.ActionListener() {
@@ -301,11 +280,10 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 32);
+        btnUser.setBounds(840, 10, 130, 16);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
-        btnManager.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnManager.setText("Manager interface");
         btnManager.setBorder(null);
         btnManager.addActionListener(new java.awt.event.ActionListener() {
@@ -314,7 +292,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 32);
+        btnManager.setBounds(840, 50, 150, 16);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -351,12 +329,56 @@ public class StaffDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(btnAddProduct1);
         btnAddProduct1.setBounds(460, 210, 140, 32);
+ 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel());
+        loadData();
+
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(300, 280, 660, 500);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadData() {
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("Product Code");
+        model.addColumn("Product Brand");
+        model.addColumn("Product Name");
+        model.addColumn("Product Price");
+        model.addColumn("Quantity");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT product.product_code, product.brand_name, product.product_name, product.retail_price, inventory.quantity FROM product JOIN inventory ON product.product_code = inventory.product_code")
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[5];
+                row[0] = rs.getString("product_code");
+                row[1] = rs.getString("brand_name");
+                row[2] = rs.getString("product_name");
+                row[3] = rs.getDouble("retail_price");
+                row[4] = rs.getInt("quantity");
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }
+    
 
     private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
         title.setText("Track Packs");
@@ -436,6 +458,11 @@ public class StaffDashboard extends javax.swing.JFrame {
 
     private void btnAddProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct1ActionPerformed
         // TODO add your handling code here:
+        StockAdjust StockAdjustFrame = new StockAdjust();
+        StockAdjustFrame.setVisible(true);
+        StockAdjustFrame.pack();
+        StockAdjustFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
 
@@ -459,9 +486,9 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

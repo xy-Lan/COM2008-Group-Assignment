@@ -16,7 +16,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
     }
 
     @Override
-    public OrderLine getOrderLine(String orderNumber) {
+    public OrderLine getOrderLine(int orderNumber) {
         // Implement logic to retrieve an order line from the database
         return null;
     }
@@ -33,7 +33,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
     }
 
     @Override
-    public void deleteOrderLine(String orderNumber) {
+    public void deleteOrderLine(int orderNumber) {
         // Implement logic to delete an order line from the database
     }
 

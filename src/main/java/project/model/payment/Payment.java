@@ -10,14 +10,14 @@ import com.google.protobuf.Timestamp;
 public class Payment {
 
 	private String transactionID;
-	private String userID;
+	private int userID;
 	private BigDecimal amount;
 	private Date paymentDate;
 	private PaymentStatus paymentStatus;
 	private PaymentMethod paymentMethod;
 
 	// Constructor for Payment
-	public Payment(String transactionID, String userID, BigDecimal amount, Date paymentDate,
+	public Payment(String transactionID, int userID, BigDecimal amount, Date paymentDate,
 			PaymentStatus paymentStatus, PaymentMethod paymentMethod) {
 		this.transactionID = transactionID;
 		this.userID = userID;
@@ -30,7 +30,7 @@ public class Payment {
 	//Static method to create a Payment instance from a ResultSet
 	public static Payment fromResultSet(ResultSet resultSet) throws SQLException {
 		String transactionID = resultSet.getString("transaction_id");
-		String userID = resultSet.getString("user_id");
+		int userID = resultSet.getInt("user_id");
 		BigDecimal amount = resultSet.getBigDecimal("amount");
 
 		// Get payment_date of type java.sql.
