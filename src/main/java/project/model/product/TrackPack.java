@@ -29,17 +29,15 @@ public class TrackPack extends BoxedSet {
         return new TrackPack(productCode, brandName, productName, retailPrice, gaugeType, packType);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO track_pack (product_code, pack_type) VALUES (?, ?)";
     }
 
-    public void setTrackPackTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getPackType().name());
+        preparedStatement.setString(2, this.packType.name());
     }
 
     public TrackPackType getPackType() {

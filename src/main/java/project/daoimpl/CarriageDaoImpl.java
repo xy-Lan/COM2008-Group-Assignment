@@ -3,39 +3,104 @@ package project.daoimpl;
 import project.dao.CarriageDao;
 import project.dao.ProductDao;
 import project.model.product.Carriage;
+import project.model.product.abstractproduct.Product;
+import project.model.product.enums.CarriageType;
+import project.model.product.enums.Era;
 import project.service.MysqlService;
 
 import java.util.List;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class CarriageDaoImpl implements CarriageDao {
+public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
+    private static final Logger LOGGER = Logger.getLogger(CarriageDaoImpl.class.getName());
     private MysqlService mysqlService;
-    private ProductDao productDao;
 
-    /**
-     * Constructor for CarriageDaoImpl.
-     * This constructor takes a ProductDao instance as a parameter and assigns it
-     * to the internal member variable. By doing this, CarriageDaoImpl has access
-     * to ProductDao's methods, allowing it to perform database operations related
-     * to Product, which Carriage extends. This approach of passing dependencies
-     * is known as dependency injection, which facilitates easier testing and
-     * decouples CarriageDaoImpl from the specific implementation of ProductDao.
-     *
-     * @param productDao The ProductDao instance to be used for product-related database operations.
-     */
-    public CarriageDaoImpl(ProductDao productDao) {
-        this.productDao = productDao;
+    public CarriageDaoImpl(MysqlService mysqlService) {
+        super(mysqlService);
     }
 
     @Override
     public void addCarriage(Carriage carriage) {
-        // Implement logic to add a carriage to the database
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = mysqlService.getConnection();
+            connection.setAutoCommit(false); // Start transaction
+
+            // First, the super class method is called to handle the generic Product property
+            super.addProduct(carriage);
+
+            // Then, add Carriage-specific properties
+            String sqlCarriage = "INSERT INTO carriage (product_code, carriage_type, era) VALUES (?, ?, ?)";
+            preparedStatement = connection.prepareStatement(sqlCarriage);
+
+            // Setting the parameters of a preparedStatement
+            preparedStatement.setString(1, carriage.getProductCode());
+            preparedStatement.setString(2, carriage.getCarriageType().name());
+            preparedStatement.setString(3, carriage.getEra().name());
+
+            preparedStatement.executeUpdate();
+
+            connection.commit(); // submit transaction
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback(); // transaction bollback
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
+            LOGGER.log(Level.SEVERE, "Error adding carriage to the database", e);
+            throw new RuntimeException("Database operation failed", e);
+        } finally {
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
+            if (connection != null) try { connection.close(); } catch (SQLException e) { /* ignored */ }
+        }
     }
 
     @Override
-    public Carriage getCarriage(String id) {
-        // Implement logic to retrieve a carriage from the database
-        return null;
+    public Carriage getCarriage(String productCode) {
+        Carriage carriage = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = mysqlService.getConnection();
+
+            // Get generic Product property
+            Product product = super.getProduct(productCode);
+            if (!(product instanceof Carriage)) {
+                throw new RuntimeException("Product with code " + productCode + " is not a Carriage.");
+            }
+            carriage = (Carriage) product;
+
+            // Get Carriage-specific properties
+            String sqlCarriage = "SELECT carriage_type, era FROM carriage WHERE product_code = ?";
+            preparedStatement = connection.prepareStatement(sqlCarriage);
+            preparedStatement.setString(1, productCode);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                CarriageType carriageType = CarriageType.valueOf(resultSet.getString("carriage_type"));
+                Era era = Era.valueOf(resultSet.getString("era"));
+
+                carriage.setCarriageType(carriageType);
+                carriage.setEra(era);
+            }
+
+            return carriage;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving carriage with productCode: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { /* ignored */ }
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
+            if (connection != null) try { connection.close(); } catch (SQLException e) { /* ignored */ }
+        }
     }
 
     @Override

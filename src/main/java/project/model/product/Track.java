@@ -29,17 +29,15 @@ public class Track extends Part {
         return new Track(productCode, brandName, productName, retailPrice, gaugeType, trackType);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO track (product_code, track_type) VALUES (?, ?)";
     }
 
-    public void setTrackTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getTrackType().name());
+        preparedStatement.setString(2, this.trackType.name());
     }
 
 

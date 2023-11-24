@@ -25,11 +25,14 @@ public class TrainSet extends BoxedSet {
         return new TrainSet(productCode, brandName, productName, retailPrice, gaugeType);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        // Since TrainSet doesn't have a specific table, returning an empty string here.
+        return "";
+    }
+
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        // Since TrainSet has no parameters specific to it, nothing is done here.
     }
 }

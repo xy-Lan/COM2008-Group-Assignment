@@ -10,13 +10,11 @@ import project.model.product.enums.*;
 public class Controller extends Part {
 
 	private ControllerType conTrollerType;
-	private Era era;
 	private Boolean isDigital;
 
-	public Controller (String productCode, String brandName, String productName, BigDecimal retailPrice, Gauge gaugeType, ControllerType conTrollerType, Era era, Boolean isDigital) {
+	public Controller (String productCode, String brandName, String productName, BigDecimal retailPrice, Gauge gaugeType, ControllerType conTrollerType, Boolean isDigital) {
         super(productCode, brandName, productName, retailPrice, gaugeType);
         this.conTrollerType = conTrollerType;
-        this.era = era;
 		this.isDigital = isDigital;
     }
 
@@ -27,26 +25,22 @@ public class Controller extends Part {
         String productName = resultSet.getString("product_name");
         BigDecimal retailPrice = resultSet.getBigDecimal("retail_price");
         Gauge gaugeType = Gauge.valueOf(resultSet.getString("gauge_type")); 
-        ControllerType conTrollerType = ControllerType.valueOf(resultSet.getString("controller_type")); 
-        Era era = Era.valueOf(resultSet.getString("era")); 
+        ControllerType conTrollerType = ControllerType.valueOf(resultSet.getString("controller_type"));
         Boolean isDigital = resultSet.getBoolean("is_digital"); 
 
-        return new Controller(productCode, brandName, productName, retailPrice, gaugeType, conTrollerType, era, isDigital);
+        return new Controller(productCode, brandName, productName, retailPrice, gaugeType, conTrollerType, isDigital);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO controller (product_code, controller_type, era, is_digital) VALUES (?, ?, ?, ?)";
     }
 
-    public void setControllerTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getControllerType().name());
-        preparedStatement.setString(3, this.getEra().name());
-        preparedStatement.setBoolean(4, this.getIsDigital());
+        preparedStatement.setString(2, this.conTrollerType.name());
+        preparedStatement.setBoolean(3, this.isDigital);
     }
 
     public ControllerType getControllerType() {
@@ -57,13 +51,6 @@ public class Controller extends Part {
         this.conTrollerType = conTrollerType;
     }
 
-    public Era getEra() {
-        return era;
-    }
-
-    public void setEra(Era era) {
-        this.era = era;
-    }
 
     public Boolean getIsDigital() {
         return isDigital;
