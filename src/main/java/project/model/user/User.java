@@ -73,6 +73,9 @@ public class User {
 		this.passwordHash = passwordHash;
 	}
 
+	public void setOrders (List<Order> orders){ this.orders = orders; }
+	public List<Order> getOrders(){ return orders; }
+
 	public void updateDetails() {
 		// TODO - implement User.updateDetails
 		throw new UnsupportedOperationException();

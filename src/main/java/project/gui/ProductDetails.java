@@ -9,6 +9,7 @@ import project.model.user.User;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,7 +21,12 @@ public class ProductDetails extends javax.swing.JFrame {
     /**
      * Creates new form Default
      */
-    public ProductDetails() {
+    private String productCode;
+    private BigDecimal price;
+
+    public ProductDetails(String productCode, BigDecimal price) {
+        this.productCode = productCode;
+        this.price = price;
         initComponents();
     }
     
@@ -58,6 +64,7 @@ public class ProductDetails extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
+        quantityVal = new javax.swing.JSpinner();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -318,6 +325,8 @@ public class ProductDetails extends javax.swing.JFrame {
         });
         jPanel1.add(btnAddOrderLine);
         btnAddOrderLine.setBounds(770, 610, 140, 60);
+        jPanel1.add(quantityVal);
+        quantityVal.setBounds(780, 560, 110, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -381,11 +390,13 @@ public class ProductDetails extends javax.swing.JFrame {
 
     private void btnAddOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderLineActionPerformed
         //Add a product to orderline
+        int quantity = (Integer) quantityVal.getValue();
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         // TODO If there is already a order, then just add a orderline
         Order order = new Order(currentUser);
-        OrderLine orderLine = new OrderLine();
-
+        OrderLine orderLine = new OrderLine(productCode, quantity, price, order.getOrderNumber());
+        OrderDao orderDao = null;
+        orderDao.addOrderLine(orderLine);
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
 
@@ -412,6 +423,7 @@ public class ProductDetails extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JSpinner quantityVal;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

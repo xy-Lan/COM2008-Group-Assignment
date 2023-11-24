@@ -10,6 +10,7 @@ import project.model.product.TrainSet;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -278,18 +279,11 @@ public class Default extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        nameLabel.setText("Name:");
 
         btnViewDetails.setText("View details");
-        btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewDetailsActionPerformed(evt);
-            }
-        });
 
         priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        priceLabel.setText("Price:");
 
         defaultImage.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\main\\resources\\images\\tran_sets.jpg")); // NOI18N
 
@@ -327,8 +321,6 @@ public class Default extends javax.swing.JFrame {
             .addComponent(defaultImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
-        productContainer.setLayout(productContainerLayout);
 
 
         scrollPanel.setViewportView(productContainer);
@@ -376,6 +368,7 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
         title.setText("Train Sets");
+        loadTrainSets();
     }//GEN-LAST:event_btnTrainSetsActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
@@ -428,19 +421,39 @@ public class Default extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void btnViewDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewDetailsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewDetailsActionPerformed
 
     private void loadTrainSets() {
-//        TrainSetDao TrainSetDao = null;
-//        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
-//        for (TrainSet trainSet : allTrainSets) {
-//            JPanel trainSetPanel = new JPanel(new GridLayout(1, 2));
-//            trainSetPanel.add(new JLabel("Name: " + trainSet.getName()));
-//            trainSetPanel.add(new JLabel("Price: " + trainSet.getPrice()));
-//            productContainer.add(trainSetPanel);
-//        }
+        TrainSetDao TrainSetDao = null;
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        for (TrainSet trainSet : allTrainSets) {
+            javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+            productContainer.setLayout(productContainerLayout);
+            productContainerLayout.setHorizontalGroup(
+                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(productContainerLayout.createSequentialGroup()
+                                    .addGap(21, 21, 21)
+                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addContainerGap(70, Short.MAX_VALUE))
+            );
+            productContainerLayout.setVerticalGroup(
+                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(productContainerLayout.createSequentialGroup()
+                                    .addGap(27, 27, 27)
+                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addContainerGap(401, Short.MAX_VALUE))
+            );
+            nameLabel.setText("Name: " + trainSet.getProductName());
+            priceLabel.setText("Price: " + trainSet.getProductName());
+            btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    viewProductDetails(trainSet.getProductCode(), trainSet.getRetailPrice());
+                }
+            });
+        }
+    }
+
+    private void viewProductDetails(String productCode, BigDecimal price){
+        new ProductDetails(productCode, price);
     }
 
 
