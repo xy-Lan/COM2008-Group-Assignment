@@ -1,5 +1,6 @@
 package project.model.product.abstractproduct;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -18,7 +19,19 @@ public abstract class Product {
 	// 	this.productCode = productCode;
 	// }
 
-	
+	public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
+		preparedStatement.setString(1, this.getProductCode());
+		preparedStatement.setString(2, this.getBrandName());
+		preparedStatement.setString(3, this.getProductName());
+		preparedStatement.setBigDecimal(4, this.getRetailPrice());
+		preparedStatement.setString(5, this.getGaugeType().name());
+	}
+    
+	// Each subclass must implement this method to provide the SQL statement to insert into its particular table.
+	public abstract String getSubclassTableSql();
+    
+	// Each subclass must implement this method to set table-specific parameters
+	public abstract void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException;
 
 	public String getProductCode() {
 		return productCode;

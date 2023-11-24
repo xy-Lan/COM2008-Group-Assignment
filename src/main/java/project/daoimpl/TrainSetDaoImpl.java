@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.logging.*;
 import java.sql.*;
 
-public class TrainSetDaoImpl implements TrainSetDao {
+public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
     private MysqlService mysqlService;
-    private ProductDao productDao;
 
     private static final Logger LOGGER = Logger.getLogger(TrainSetDaoImpl.class.getName());
 
-    public TrainSetDaoImpl(ProductDao productDao) {
-        this.productDao = productDao;
+    public TrainSetDaoImpl(MysqlService mysqlService) {
+        super(mysqlService);
     }
 
     @Override
     public void addTrainSet(TrainSet trainSet) {
         // Implement logic to add a train set to the database
+        super.addProduct(trainSet);
     }
 
     @Override

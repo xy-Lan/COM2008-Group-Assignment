@@ -1,6 +1,6 @@
 package project.daoimpl;
 
-import project.dao.ProductDao;
+import project.dao.*;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.service.MysqlService;
@@ -16,34 +16,48 @@ public class ProductDaoImpl implements ProductDao {
 
     private MysqlService mysqlService;
 
-    public ProductDaoImpl (MysqlService mysqlService) {
+    public ProductDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;
     }
 
     @Override
     public void addProduct(Product product) {
-        String sql = "INSERT INTO product (product_code, brand_name, product_name,retail_price, gauge_type) VALUES (?, ?, ?, ?, ?)";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 
-        try (Connection connection = mysqlService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try {
+            connection = mysqlService.getConnection();
+            connection.setAutoCommit(false); // Start transaction
 
-            preparedStatement.setString(1, product.getProductCode());
-            preparedStatement.setString(2, product.getBrandName());
-            preparedStatement.setString(3, product.getProductName());
-            preparedStatement.setBigDecimal(4, product.getRetailPrice());
-            preparedStatement.setString(5, product.getGaugeType().name());
+            // Insert common attributes into the product table
+            String sqlProduct = "INSERT INTO product (product_code, brand_name, product_name, retail_price, gauge_type) VALUES (?, ?, ?, ?, ?)";
+            preparedStatement = connection.prepareStatement(sqlProduct);
 
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating product failed, no rows affected.");
-            }
+            // Set parameters for the product table
+            product.setProductTableParameters(preparedStatement);
+            preparedStatement.executeUpdate();
 
+            connection.commit(); // Commit transaction
         } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback(); // Rollback transaction
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
             LOGGER.log(Level.SEVERE, "Error adding product to the database", e);
             throw new RuntimeException("Database operation failed", e);
+        } finally {
+            // Close resources
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
+            if (connection != null) try {
+                connection.setAutoCommit(true); // Reset to default auto-commit mode
+                connection.close();
+            } catch (SQLException e) { /* ignored */ }
         }
-
     }
+
 
     @Override
     public Product getProduct(String productCode) {
@@ -58,22 +72,32 @@ public class ProductDaoImpl implements ProductDao {
                 char firstChar = productCode.charAt(0);
                 switch (firstChar) {
                     case 'R':
-                        return Track.fromResultSet(resultSet);
+                        TrackDao trackDao = new TrackDaoImpl(mysqlService);
+                        return trackDao.getTrack(productCode);
                     case 'C':
-                        return Controller.fromResultSet(resultSet);
+                        ControllerDao controllerDao = new ControllerDaoImpl(mysqlService);
+                        return controllerDao.getController(productCode);
                     case 'L':
-                        return Locomotive.fromResultSet(resultSet);
+                        LocomotiveDao locomotiveDao = new LocomotiveDaoImpl(mysqlService);
+                        return locomotiveDao.getLocomotive(productCode);
                     case 'S':
                         String productTypePrefix = productCode.length() >= 2 ? productCode.substring(0, 2) : "";
-                        return switch (productTypePrefix) {
-                            case "SW" -> Wagon.fromResultSet(resultSet);
-                            case "SC" -> Carriage.fromResultSet(resultSet);
-                            default -> throw new IllegalArgumentException("Unknown rolling stock type: " + productTypePrefix);
-                        };
+                        switch (productTypePrefix) {
+                            case "SW":
+                                WagonDao wagonDao = new WagonDaoImpl(mysqlService);
+                                return wagonDao.getWagon(productCode);
+                            case "SC":
+                                CarriageDao carriageDao = new CarriageDaoImpl(mysqlService);
+                                return carriageDao.getCarriage(productCode);
+                            default:
+                                throw new IllegalArgumentException("Unknown rolling stock type: " + productTypePrefix);
+                        }
                     case 'M':
-                        return TrainSet.fromResultSet(resultSet);
+                        TrainSetDao trainSetDao = new TrainSetDaoImpl(mysqlService);
+                        return trainSetDao.getTrainSet(productCode);
                     case 'P':
-                        return TrackPack.fromResultSet(resultSet);
+                        TrackPackDao trackPackDao = new TrackPackDaoImpl(mysqlService);
+                        return trackPackDao.getTrackPack(productCode);
                     default:
                         throw new IllegalArgumentException("Unknown product type: " + firstChar);
                 }

@@ -31,18 +31,16 @@ public class Locomotive extends Part {
         return new Locomotive(productCode, brandName, productName, retailPrice, gaugeType, dccType, era);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO locomotive (product_code, dcc_type, era) VALUES (?, ?, ?)";
     }
 
-    public void setLocomotiveTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getDccType().name());
-        preparedStatement.setString(3, this.getEra().name());
+        preparedStatement.setString(2, this.dccType.name());
+        preparedStatement.setString(3, this.era.name());
     }
 
     public Boolean hasSoundCapability() {

@@ -31,18 +31,16 @@ public class Wagon extends Part {
         return new Wagon(productCode, brandName, productName, retailPrice, gaugeType, wagonType, era);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO wagon (product_code, wagon_type, era) VALUES (?, ?, ?)";
     }
 
-    public void setWagonTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getWagonType().name());
-        preparedStatement.setString(3, this.getEra().name());
+        preparedStatement.setString(2, this.wagonType.name());
+        preparedStatement.setString(3, this.era.name());
     }
 
     public WagonType getWagonType() {

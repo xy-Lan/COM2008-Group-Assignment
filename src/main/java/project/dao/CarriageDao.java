@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CarriageDao {
     void addCarriage(Carriage carriage);
-    Carriage getCarriage(String id); // 假设有一个唯一标识符
+    Carriage getCarriage(String id); 
     List<Carriage> getAllCarriages();
     void updateCarriage(Carriage carriage);
     void deleteCarriage(String id);

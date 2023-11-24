@@ -33,18 +33,25 @@ public class Carriage extends Part {
         return new Carriage(productCode, brandName, productName, retailPrice, gaugeType, carriageType, era);
     }
 
-    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getBrandName());
-        preparedStatement.setString(3, this.getProductName());
-        preparedStatement.setBigDecimal(4, this.getRetailPrice());
-        preparedStatement.setString(5, this.getGaugeType().name());
+
+    @Override
+    public String getSubclassTableSql() {
+        return "INSERT INTO carriage (product_code, carriage_type, era) VALUES (?, ?, ?)";
     }
 
-    public void setCarriageTableParameters(PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, this.getProductCode());
-        preparedStatement.setString(2, this.getCarriageType().name());
-        preparedStatement.setString(3, this.getEra().name());
+        preparedStatement.setString(2, this.carriageType.name());
+        preparedStatement.setString(3, this.era.name());
+    }
+    
+	public void setCarriageType(CarriageType carriageType) {
+        this.carriageType = carriageType;
+    }
+
+	public void setEra(Era era) {
+        this.era = era;
     }
 
     public CarriageType getCarriageType() {
