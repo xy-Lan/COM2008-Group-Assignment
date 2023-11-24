@@ -1,5 +1,6 @@
 package project.model.product;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,6 +32,45 @@ public class Controller extends Part {
         Boolean isDigital = resultSet.getBoolean("is_digital"); 
 
         return new Controller(productCode, brandName, productName, retailPrice, gaugeType, conTrollerType, era, isDigital);
+    }
+
+    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getBrandName());
+        preparedStatement.setString(3, this.getProductName());
+        preparedStatement.setBigDecimal(4, this.getRetailPrice());
+        preparedStatement.setString(5, this.getGaugeType().name());
+    }
+
+    public void setControllerTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getControllerType().name());
+        preparedStatement.setString(3, this.getEra().name());
+        preparedStatement.setBoolean(4, this.getIsDigital());
+    }
+
+    public ControllerType getControllerType() {
+        return conTrollerType;
+    }
+
+    public void setControllerType(ControllerType conTrollerType) {
+        this.conTrollerType = conTrollerType;
+    }
+
+    public Era getEra() {
+        return era;
+    }
+
+    public void setEra(Era era) {
+        this.era = era;
+    }
+
+    public Boolean getIsDigital() {
+        return isDigital;
+    }
+
+    public void setIsDigital(Boolean isDigital) {
+        this.isDigital = isDigital;
     }
 
 }

@@ -1,5 +1,6 @@
 package project.model.product;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,5 +23,13 @@ public class TrainSet extends BoxedSet {
         Gauge gaugeType = Gauge.valueOf(resultSet.getString("gauge_type")); 
 
         return new TrainSet(productCode, brandName, productName, retailPrice, gaugeType);
+    }
+
+    public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString(2, this.getBrandName());
+        preparedStatement.setString(3, this.getProductName());
+        preparedStatement.setBigDecimal(4, this.getRetailPrice());
+        preparedStatement.setString(5, this.getGaugeType().name());
     }
 }
