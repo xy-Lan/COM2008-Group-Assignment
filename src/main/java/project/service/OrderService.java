@@ -70,7 +70,7 @@ public class OrderService {
 	 * @param orderLine The OrderLine object to be added.
 	 * @throws IllegalArgumentException if the order specified by orderNumber does not exist.
 	 */
-	public void addOrderLine(String orderNumber, OrderLine orderLine)  {
+	public void addOrderLine(int orderNumber, OrderLine orderLine)  {
 		// Retrieve the order by its ID
 		Optional<Order> orderOptional = orderDao.getOrderById(orderNumber);
 		if (!orderOptional.isPresent()) {

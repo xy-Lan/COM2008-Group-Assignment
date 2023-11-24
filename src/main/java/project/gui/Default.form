@@ -390,7 +390,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+        <Container class="javax.swing.JScrollPane" name="scrollPanel">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -439,15 +439,15 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel1" min="-2" pref="231" max="-2" attributes="0"/>
+                              <Component id="defaultImage" min="-2" pref="231" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel4" min="-2" pref="108" max="-2" attributes="0"/>
+                                  <Component id="priceLabel" min="-2" pref="108" max="-2" attributes="0"/>
                                   <Component id="nameLabel" min="-2" pref="73" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jButton1" pref="115" max="32767" attributes="0"/>
+                                  <Component id="btnViewDetails" pref="115" max="32767" attributes="0"/>
                                   <Component id="quantityVal" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
@@ -469,12 +469,12 @@
                               </Group>
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnViewDetails" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="priceLabel" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="defaultImage" alignment="1" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -490,17 +490,17 @@
                         <Property name="text" type="java.lang.String" value="Name:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
+                    <Component class="javax.swing.JButton" name="btnViewDetails">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="View details"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewDetailsActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JSpinner" name="quantityVal">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel4">
+                    <Component class="javax.swing.JLabel" name="priceLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Microsoft YaHei UI" size="24" style="0"/>
@@ -511,7 +511,7 @@
                         <Property name="text" type="java.lang.String" value="Price:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel1">
+                    <Component class="javax.swing.JLabel" name="defaultImage">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="2" name="D:\COM2008-Group-Assignment\src\main\resources\images\tran_sets.jpg"/>

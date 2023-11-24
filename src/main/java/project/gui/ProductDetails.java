@@ -2,7 +2,10 @@
 package project.gui;
 import project.dao.*;
 import project.daoimpl.*;
+import project.model.order.Order;
+import project.model.order.OrderLine;
 import project.model.product.*;
+import project.model.user.User;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -377,8 +380,11 @@ public class ProductDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOut2ActionPerformed
 
     private void btnAddOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderLineActionPerformed
-        // TODO add your handling code here:
         //Add a product to orderline
+        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+        // TODO If there is already a order, then just add a orderline
+        Order order = new Order(currentUser);
+        OrderLine orderLine = new OrderLine();
 
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
