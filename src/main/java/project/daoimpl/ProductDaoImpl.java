@@ -14,7 +14,7 @@ import java.util.logging.*;
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public ProductDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;
@@ -127,30 +127,30 @@ public class ProductDaoImpl implements ProductDao {
 
                 switch (firstChar) {
                     case 'R':
-                        product = Track.fromResultSet(rs);
+                        product = new TrackDaoImpl(mysqlService).getTrack(productCode);
                         break;
                     case 'C':
-                        product = Controller.fromResultSet(rs);
+                        product = new ControllerDaoImpl(mysqlService).getController(productCode);
                         break;
                     case 'L':
-                        product = Locomotive.fromResultSet(rs);
+                        product = new LocomotiveDaoImpl(mysqlService).getLocomotive(productCode);
                         break;
                     case 'S':
                         String productTypePrefix = productCode.length() >= 2 ? productCode.substring(0, 2) : "";
                         product = switch (productTypePrefix) {
-                            case "SW" -> Wagon.fromResultSet(rs);
-                            case "SC" -> Carriage.fromResultSet(rs);
-                            default -> {
+                            case "SW" -> new WagonDaoImpl(mysqlService).getWagon(productCode);
+                            case "SC" -> new CarriageDaoImpl(mysqlService).getCarriage(productCode);
+                            default-> {
                                 LOGGER.log(Level.WARNING, "Unknown rolling stock type: " + productTypePrefix);
                                 yield null;
                             }
                         };
                         break;
                     case 'M':
-                        product = TrainSet.fromResultSet(rs);
+                        product = new TrainSetDaoImpl(mysqlService).getTrainSet(productCode);
                         break;
                     case 'P':
-                        product = TrackPack.fromResultSet(rs);
+                        product = new TrackPackDaoImpl(mysqlService).getTrackPack(productCode);
                         break;
                     default:
                         product = null; // handle unknown types

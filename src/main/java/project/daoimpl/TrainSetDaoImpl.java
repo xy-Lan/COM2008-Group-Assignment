@@ -12,7 +12,7 @@ import java.sql.*;
 
 public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     private static final Logger LOGGER = Logger.getLogger(TrainSetDaoImpl.class.getName());
 

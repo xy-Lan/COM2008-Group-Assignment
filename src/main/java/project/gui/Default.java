@@ -446,7 +446,7 @@ public class Default extends javax.swing.JFrame {
                                     .addContainerGap(401, Short.MAX_VALUE))
             );
             nameLabel.setText("Name: " + trainSet.getProductName());
-            priceLabel.setText("Price: " + trainSet.getProductName());
+            priceLabel.setText("Price: " + trainSet.getRetailPrice());
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     viewProductDetails(trainSet.getProductCode(), trainSet.getRetailPrice());

@@ -11,7 +11,7 @@ import project.service.MysqlService;
 
 public class BankCardDaoImpl implements BankCardDao {
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public BankCardDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;

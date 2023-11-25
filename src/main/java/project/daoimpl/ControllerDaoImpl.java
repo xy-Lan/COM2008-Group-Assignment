@@ -7,6 +7,7 @@ import project.model.product.abstractproduct.Product;
 import project.model.product.enums.ControllerType;
 import project.service.MysqlService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
     private static final Logger LOGGER = Logger.getLogger(ControllerDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public ControllerDaoImpl(MysqlService mysqlService) {
         super(mysqlService);
@@ -105,9 +106,26 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
 
     @Override
     public List<Controller> getAllControllers() {
-        // Implement logic to retrieve all controllers from the database
-        return null;
+        List<Controller> controllers = new ArrayList<>();
+        // The SQL query should fetch all relevant properties of the Controller.
+        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, c.controller_type," +
+                " c.is_digital FROM product p JOIN controller c ON p.product_code = c.product_code";
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Using the Methods for Creating a Controller from a ResultSet
+                Controller controller = Controller.fromResultSet(rs);
+                controllers.add(controller);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all controllers", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return controllers;
     }
+
 
     @Override
     public void updateController(Controller controller) {
