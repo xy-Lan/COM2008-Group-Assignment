@@ -52,6 +52,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         btnAddProduct1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -280,7 +281,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 16);
+        btnUser.setBounds(840, 10, 130, 17);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
@@ -292,7 +293,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 16);
+        btnManager.setBounds(840, 50, 150, 17);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,14 +330,27 @@ public class StaffDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(btnAddProduct1);
         btnAddProduct1.setBounds(460, 210, 140, 32);
- 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel());
-        loadData();
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(300, 280, 660, 500);
+
+        jButton1.setBackground(new java.awt.Color(0, 102, 0));
+        jButton1.setText("jButton1");
+        jPanel1.add(jButton1);
+        jButton1.setBounds(860, 220, 78, 23);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -482,6 +496,7 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets1;
     private javax.swing.JButton btnUser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
