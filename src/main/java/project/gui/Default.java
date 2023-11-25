@@ -11,7 +11,9 @@ import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -276,53 +278,20 @@ public class Default extends javax.swing.JFrame {
         scrollPanel.setBackground(new java.awt.Color(255, 255, 255));
         scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        productPanel.setBackground(new java.awt.Color(24, 150, 62));
-
-        nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
-        nameLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-        btnViewDetails.setText("View details");
-
-        priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
-        priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-        defaultImage.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\main\\resources\\images\\tran_sets.jpg")); // NOI18N
-
-        javax.swing.GroupLayout productPanelLayout = new javax.swing.GroupLayout(productPanel);
-        productPanel.setLayout(productPanelLayout);
-        productPanelLayout.setHorizontalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productPanelLayout.createSequentialGroup()
-                .addComponent(defaultImage, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(114, 114, 114)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnViewDetails, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                    .addComponent(quantityVal))
-                .addGap(15, 15, 15))
-        );
-        productPanelLayout.setVerticalGroup(
-            productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productPanelLayout.createSequentialGroup()
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(productPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(5, 5, 5)
-                .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnViewDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(defaultImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-
+//        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+//        productContainer.setLayout(productContainerLayout);
+//        productContainerLayout.setHorizontalGroup(
+//                productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(productContainerLayout.createSequentialGroup()
+//                                .addGap(21, 21, 21)
+//                                .addContainerGap(70, Short.MAX_VALUE))
+//        );
+//        productContainerLayout.setVerticalGroup(
+//                productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(productContainerLayout.createSequentialGroup()
+//                                .addGap(27, 27, 27)
+//                                .addContainerGap(401, Short.MAX_VALUE))
+//        );
 
         scrollPanel.setViewportView(productContainer);
 
@@ -428,35 +397,64 @@ public class Default extends javax.swing.JFrame {
         MysqlService mysqlService = new MysqlService();
         TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
         List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
         for (TrainSet trainSet : allTrainSets) {
-            javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
-            productContainer.setLayout(productContainerLayout);
-            productContainerLayout.setHorizontalGroup(
-                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(productContainerLayout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addContainerGap(70, Short.MAX_VALUE))
-            );
-            productContainerLayout.setVerticalGroup(
-                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(productContainerLayout.createSequentialGroup()
-                                    .addGap(27, 27, 27)
-                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addContainerGap(401, Short.MAX_VALUE))
-            );
-            nameLabel.setText("Name: " + trainSet.getProductName());
-            priceLabel.setText("Price: " + trainSet.getRetailPrice());
+            // Add a productPanel for every train set
+            JPanel productPanel = new JPanel();
+            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
+            productPanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.insets = new Insets(10,20,10,20);
+
+            JLabel nameLabel = new JLabel("Name: " + trainSet.getProductName());
+            JLabel priceLabel = new JLabel("Price: " + trainSet.getRetailPrice());
+            JLabel defaultImage = new JLabel();
+            JButton btnViewDetails = new JButton("View details");
+            //Set layout
+            productPanel.setBackground(new java.awt.Color(24, 150, 62));
+
+            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
+            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+            btnViewDetails.setText("View details");
+
+            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
+//            ImageIcon imageIcon = new ImageIcon(imageUrl);
+//
+//            defaultImage.setIcon(imageIcon); // NOI18N
+
+            productPanel.add(defaultImage, gbc);
+            productPanel.add(nameLabel, gbc);
+            productPanel.add(priceLabel, gbc);
+            productPanel.add(btnViewDetails, gbc);
+
+
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     viewProductDetails(trainSet.getProductCode(), trainSet.getRetailPrice());
                 }
             });
+
+            // Add the productPanel to the productContainer
+            productContainer.add(productPanel);
         }
+        //Refresh to update the panel
+        productContainer.revalidate();
+        productContainer.repaint();
     }
 
     private void viewProductDetails(String productCode, BigDecimal price){
-        new ProductDetails(productCode, price);
+//        new ProductDetails(productCode, price);
+        ProductDetails ProductDetailsFrame = new ProductDetails(productCode, price);
+        ProductDetailsFrame.setVisible(true);
+        ProductDetailsFrame.pack();
+        ProductDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
     }
 
 
