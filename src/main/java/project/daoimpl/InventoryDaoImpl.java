@@ -11,7 +11,7 @@ import project.service.MysqlService;
 
 public class InventoryDaoImpl implements InventoryDao {
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public InventoryDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;

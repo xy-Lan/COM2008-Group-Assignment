@@ -10,7 +10,7 @@ import project.service.MysqlService;
 
 public class AddressDaoImpl implements AddressDao{
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     @Override
     public void addAddress(Address address) {

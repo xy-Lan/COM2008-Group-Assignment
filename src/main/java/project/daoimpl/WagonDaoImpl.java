@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
     private static final Logger LOGGER = Logger.getLogger(WagonDaoImpl.class.getName());
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public WagonDaoImpl(MysqlService mysqlService) {
         super(mysqlService);

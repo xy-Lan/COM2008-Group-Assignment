@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
     private static final Logger LOGGER = Logger.getLogger(ControllerDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public ControllerDaoImpl(MysqlService mysqlService) {
         super(mysqlService);
@@ -108,7 +108,8 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
     public List<Controller> getAllControllers() {
         List<Controller> controllers = new ArrayList<>();
         // The SQL query should fetch all relevant properties of the Controller.
-        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, c.controller_type, c.is_digital FROM product p JOIN controller c ON p.product_code = c.product_code";
+        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, c.controller_type," +
+                " c.is_digital FROM product p JOIN controller c ON p.product_code = c.product_code";
         try (Connection conn = mysqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {

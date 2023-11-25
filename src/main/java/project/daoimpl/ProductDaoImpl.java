@@ -14,7 +14,7 @@ import java.util.logging.*;
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public ProductDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;

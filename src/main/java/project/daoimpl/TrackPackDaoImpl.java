@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
     private static final Logger LOGGER = Logger.getLogger(TrackPackDaoImpl.class.getName());
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public TrackPackDaoImpl(MysqlService mysqlService) {
         super(mysqlService);

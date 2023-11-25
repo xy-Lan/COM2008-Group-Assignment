@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  {
     private static final Logger LOGGER = Logger.getLogger(LocomotiveDaoImpl.class.getName());
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public LocomotiveDaoImpl(MysqlService mysqlService) {
         super(mysqlService);

@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.List;
 
 public class OrderLineDaoImpl implements OrderLineDao {
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     @Override
     public void addOrderLine(OrderLine orderLine) {

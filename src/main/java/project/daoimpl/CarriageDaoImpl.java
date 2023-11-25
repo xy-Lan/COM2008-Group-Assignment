@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
     private static final Logger LOGGER = Logger.getLogger(CarriageDaoImpl.class.getName());
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public CarriageDaoImpl(MysqlService mysqlService) {
         super(mysqlService);

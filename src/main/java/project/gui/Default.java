@@ -7,6 +7,7 @@ package project.gui;
 import project.dao.TrainSetDao;
 import project.daoimpl.TrainSetDaoImpl;
 import project.model.product.TrainSet;
+import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -423,7 +424,8 @@ public class Default extends javax.swing.JFrame {
 
 
     private void loadTrainSets() {
-        TrainSetDao TrainSetDao = null;
+        MysqlService mysqlService = new MysqlService();
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
         List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
         for (TrainSet trainSet : allTrainSets) {
             javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
@@ -443,7 +445,7 @@ public class Default extends javax.swing.JFrame {
                                     .addContainerGap(401, Short.MAX_VALUE))
             );
             nameLabel.setText("Name: " + trainSet.getProductName());
-            priceLabel.setText("Price: " + trainSet.getProductName());
+            priceLabel.setText("Price: " + trainSet.getRetailPrice());
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     viewProductDetails(trainSet.getProductCode(), trainSet.getRetailPrice());

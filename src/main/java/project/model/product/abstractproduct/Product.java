@@ -15,6 +15,15 @@ public abstract class Product {
 	private BigDecimal retailPrice;
 	private Gauge gaugeType;
 
+	public Product(String productCode, String brandName, String productName, BigDecimal retailPrice, Gauge gaugeType) {
+		this.productCode = productCode;
+		this.brandName = brandName;
+		this.productName = productName;
+		this.retailPrice = retailPrice;
+		this.gaugeType = gaugeType;
+	}
+
+
 	// public Product (String productCode) {
 	// 	this.productCode = productCode;
 	// }

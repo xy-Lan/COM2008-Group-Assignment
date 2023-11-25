@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao{
      */
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     private UserDao userDao = new UserDaoImpl(mysqlService);
 
@@ -83,7 +83,8 @@ public class OrderDaoImpl implements OrderDao{
                 // Get user from userDao
                 Optional<User> user = userDao.getUserById(userID);
                 
-                /*Create a new Order object containing the User object obtained from userDao (if it exists), otherwise an IllegalArgumentException will be thrown*/
+                /*Create a new Order object containing the User object obtained from userDao (if it exists), otherwise
+                 an IllegalArgumentException will be thrown*/
                 Order order = new Order(user.orElseThrow(() -> new IllegalArgumentException("User email is required"))); 
                 order.setOrderNumber(orderNumber);
                 return Optional.of(order);

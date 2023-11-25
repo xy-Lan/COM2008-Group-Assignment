@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
 
-    private MysqlService mysqlService;
+    private MysqlService mysqlService = new MysqlService();
 
     public UserDaoImpl(MysqlService mysqlService) {
         this.mysqlService = mysqlService;

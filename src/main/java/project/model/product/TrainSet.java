@@ -23,6 +23,7 @@ public class TrainSet extends BoxedSet {
         Gauge gaugeType = Gauge.valueOf(resultSet.getString("gauge_type")); 
 
         return new TrainSet(productCode, brandName, productName, retailPrice, gaugeType);
+
     }
 
     @Override
