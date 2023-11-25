@@ -8,6 +8,7 @@ import project.model.product.enums.Era;
 import project.model.product.enums.WagonType;
 import project.service.MysqlService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.Level;
@@ -106,9 +107,26 @@ public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
 
     @Override
     public List<Wagon> getAllWagons() {
-        // Implement logic to retrieve all wagons from the database
-        return null;
+        List<Wagon> wagons = new ArrayList<>();
+        // Define the SQL query to retrieve all wagons
+        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, w.wagon_type, w.era FROM product p JOIN wagon w ON p.product_code = w.product_code";
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Use the fromResultSet method to create a Wagon instance from the current row in the ResultSet
+                Wagon wagon = Wagon.fromResultSet(rs);
+                wagons.add(wagon);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all wagons", e);
+            // Handle exceptions and possibly throw a runtime exception
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return wagons;
     }
+
 
     @Override
     public void updateWagon(Wagon wagon) {

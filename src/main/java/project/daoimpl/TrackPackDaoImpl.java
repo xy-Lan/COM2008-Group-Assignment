@@ -7,6 +7,7 @@ import project.model.product.abstractproduct.Product;
 import project.model.product.enums.TrackPackType;
 import project.service.MysqlService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.Level;
@@ -102,9 +103,24 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
 
     @Override
     public List<TrackPack> getAllTrackPacks() {
-        // Implement logic to retrieve all track packs from the database
-        return null;
+        List<TrackPack> trackPacks = new ArrayList<>();
+        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, tp.pack_type FROM product p JOIN track_pack tp ON p.product_code = tp.product_code";
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Using the Create TrackPack from ResultSet method
+                TrackPack trackPack = TrackPack.fromResultSet(rs);
+                trackPacks.add(trackPack);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all track packs", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return trackPacks;
     }
+
 
     @Override
     public void updateTrackPack(TrackPack trackPack) {

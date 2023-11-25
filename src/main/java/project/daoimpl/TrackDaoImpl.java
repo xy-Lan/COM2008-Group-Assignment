@@ -7,6 +7,7 @@ import project.model.product.abstractproduct.Product;
 import project.model.product.enums.TrackType;
 import project.service.MysqlService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.Level;
@@ -101,9 +102,24 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
     @Override
     public List<Track> getAllTracks() {
-        // Implement logic to retrieve all tracks from the database
-        return null;
+        List<Track> tracks = new ArrayList<>();
+        String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, t.track_type FROM product p JOIN track t ON p.product_code = t.product_code";
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Using the fromResultSet method to create a Track instance from the current row in the ResultSet
+                Track track = Track.fromResultSet(rs);
+                tracks.add(track);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all tracks", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return tracks;
     }
+
 
     @Override
     public void updateTrack(Track track) {
