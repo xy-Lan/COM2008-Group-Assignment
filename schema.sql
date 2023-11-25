@@ -544,3 +544,196 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-11-15 23:53:40
+
+--
+-- Generates a five-digit serial number
+--
+
+DELIMITER //
+
+CREATE FUNCTION GenerateProductCode()
+RETURNS VARCHAR(6)
+BEGIN
+   RETURN SUBSTRING(CONCAT('1', LPAD(FLOOR(RAND()*90000), 4, '0')), 2, 5);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for train sets
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertTrainSet
+BEFORE INSERT ON train_set
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM train_set WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+
+   SET NEW.product_code = CONCAT('M', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for tracks
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertTrack
+BEFORE INSERT ON track
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM track WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+
+   SET NEW.product_code = CONCAT('R', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for track packs
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertTrackPack
+BEFORE INSERT ON track_pack
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM track_pack WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+
+   SET NEW.product_code = CONCAT('P', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for locomotives
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertLocomotive
+BEFORE INSERT ON locomotive
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM locomotive WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+   SET NEW.product_code = CONCAT('L', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for controllers
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertController
+BEFORE INSERT ON controller
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM controller WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+
+   SET NEW.product_code = CONCAT('C', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for rolling stocks
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertCarriage
+BEFORE INSERT ON carriage
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM carriage WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+   SET NEW.product_code = CONCAT('S', new_code);
+END //
+
+DELIMITER;
+
+--
+-- Generates product codes for rolling stocks
+--
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertWagon
+BEFORE INSERT ON wagon
+FOR EACH ROW
+BEGIN
+   DECLARE new_code VARCHAR(6);
+   DECLARE code_exists INT;
+   SET new_code = GenerateProductCode(); -- Generate a random number
+   SET code_exists = 1;
+
+   WHILE code_exists = 1 DO
+       SELECT COUNT(*) INTO code_exists FROM wagon WHERE product_code = new_code;
+       IF code_exists = 1 THEN
+           SET new_code = GenerateProductCode(); -- Regenerate a random number if it already exits
+       END IF;
+   END WHILE;
+   SET NEW.product_code = CONCAT('S', new_code);
+END //
+
+DELIMITER;

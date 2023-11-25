@@ -6,6 +6,7 @@ import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.user.User;
+import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -393,7 +394,8 @@ public class ProductDetails extends javax.swing.JFrame {
         // TODO If there is already a order, then just add a orderline
         Order order = new Order(currentUser);
         OrderLine orderLine = new OrderLine(productCode, quantity, price, order.getOrderNumber());
-        OrderDao orderDao = null;
+        MysqlService mysqlService = new MysqlService();
+        OrderDao orderDao = new OrderDaoImpl(mysqlService);
         orderDao.addOrderLine(orderLine);
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
