@@ -7,6 +7,7 @@ package project.gui;
 import project.dao.TrainSetDao;
 import project.daoimpl.TrainSetDaoImpl;
 import project.model.product.TrainSet;
+import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -423,7 +424,9 @@ public class Default extends javax.swing.JFrame {
 
 
     private void loadTrainSets() {
-        TrainSetDao TrainSetDao = null;
+        //TODO
+        MysqlService mysqlService = new MysqlService();
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
         List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
         for (TrainSet trainSet : allTrainSets) {
             javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
