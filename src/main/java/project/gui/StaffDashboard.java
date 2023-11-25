@@ -52,7 +52,6 @@ public class StaffDashboard extends javax.swing.JFrame {
         btnAddProduct1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -347,11 +346,6 @@ public class StaffDashboard extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(300, 280, 660, 500);
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 0));
-        jButton1.setText("jButton1");
-        jPanel1.add(jButton1);
-        jButton1.setBounds(860, 220, 78, 23);
-
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
 
@@ -496,7 +490,6 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets1;
     private javax.swing.JButton btnUser;
-    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -394,6 +394,8 @@ public class Default extends javax.swing.JFrame {
 
     private void loadTrainSets() {
         //TODO
+        productContainer.removeAll();
+        //List all the tran sets
         MysqlService mysqlService = new MysqlService();
         TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
         List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
