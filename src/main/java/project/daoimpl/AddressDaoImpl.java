@@ -3,6 +3,8 @@ package project.daoimpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import project.dao.AddressDao;
 import project.model.address.Address;
@@ -10,29 +12,124 @@ import project.service.MysqlService;
 
 public class AddressDaoImpl implements AddressDao{
 
+    private static final Logger LOGGER = Logger.getLogger(AddressDaoImpl.class.getName());
+
     private MysqlService mysqlService = new MysqlService();
+
+    public AddressDaoImpl (MysqlService mysqlService) {
+        this.mysqlService = mysqlService;
+    }
 
     @Override
     public void addAddress(Address address) {
-        // Implement logic to add address to the database
+        String sql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES (?, ?, ?, ?)";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = mysqlService.getConnection();
+            conn.setAutoCommit(false); // Disable auto-commit
+
+            stmt = conn.prepareStatement(sql);
+            address.setPreparedStatement(stmt);
+            stmt.executeUpdate();
+
+            conn.commit(); // Commit transaction
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); // Rollback transaction on error
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
+            LOGGER.log(Level.SEVERE, "Error adding address to the database", e);
+            throw new RuntimeException("Database operation failed", e);
+        } finally {
+            if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* ignored */ }
+            if (conn != null) try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { /* ignored */ }
+        }
     }
+
+
 
     @Override
     public Address getAddress(String houseNumber, String postCode) {
-        // Implement logic to retrieve an address from the database
-        return null; // Replace with actual retrieval logic
+        Address address = null;
+        String sql = "SELECT * FROM address WHERE house_number = ? AND post_code = ?";
+        // SQL query to retrieve an address from the database
+
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, houseNumber);
+            stmt.setString(2, postCode);
+
+            // Executing the query and processing the result set
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    address = Address.fromResultSet(rs); // Creating an Address Instance with fromResultSet
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving address from the database", e);
+            // Handle exceptions and possibly throw a runtime exception
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return address;
     }
+
 
     @Override
     public List<Address> getAllAddresses() {
-        // Implement logic to retrieve all addresses from the database
-        return new ArrayList<>(); // Replace with actual retrieval logic
+        List<Address> addresses = new ArrayList<>();
+        String sql = "SELECT * FROM address";
+        // SQL query to retrieve all addresses from the database
+
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Using the fromResultSet method to create an Address instance from the current row in the ResultSet
+                Address address = Address.fromResultSet(rs);
+                addresses.add(address);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all addresses", e);
+            // Handle exceptions and possibly throw a runtime exception
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return addresses;
     }
+
 
     @Override
     public void updateAddress(Address address) {
-        // Implement logic to update an existing address in the database
+        String sql = "UPDATE address SET road_name = ?, city_name = ? WHERE house_number = ? AND post_code = ?";
+        // SQL query to update an existing address in the database
+
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Setting parameters for the PreparedStatement
+            stmt.setString(1, address.getRoadName());
+            stmt.setString(2, address.getCityName());
+            stmt.setString(3, address.getHouseNumber());
+            stmt.setString(4, address.getPostCode());
+
+            // Executing the update statement
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                // Handle the situation when no rows are affected
+                throw new SQLException("Updating address failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating address in the database", e);
+            // Handle exceptions and possibly throw a runtime exception
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
+
 
     @Override
     public void deleteAddress(String houseNumber, String postCode) {

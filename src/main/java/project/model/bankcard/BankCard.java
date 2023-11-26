@@ -1,6 +1,11 @@
 package project.model.bankcard;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import project.model.user.*;
+import project.utils.EncryptionUtils;
 
 public class BankCard {
 
@@ -8,7 +13,26 @@ public class BankCard {
 	private String cardNumber;
 	private Integer expiryMonth;
 	private Integer expiryYear;
-	private Integer securityCode;
+	private String securityCode;
+
+	public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
+        stmt.setInt(1, this.getCustomer().getUserID()); 
+        stmt.setString(2, this.getCardNumber());       
+        stmt.setInt(3, this.getExpiryMonth());         
+        stmt.setInt(4, this.getExpiryYear());
+		stmt.setString(5, this.getSecurityCode());
+    }
+
+	 public static BankCard fromResultSet(ResultSet rs) throws SQLException {
+        BankCard bankCard = new BankCard();
+		int userID = rs.getInt("customer_id");
+        bankCard.setCustomer(new User(userID));
+        bankCard.setCardNumber(rs.getString("card_number"));
+        bankCard.setExpiryMonth(rs.getInt("expiry_month"));
+        bankCard.setExpiryYear(rs.getInt("expiry_year"));
+        return bankCard;
+    }
+	
 
 	public User getCustomer() {
 		return customer;
@@ -19,11 +43,11 @@ public class BankCard {
 	}
 
 	public String getCardNumber() {
-		return cardNumber;
+		return EncryptionUtils.decrypt(this.cardNumber);
 	}
 
 	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
+		this.cardNumber = EncryptionUtils.encrypt(cardNumber);
 	}
 
 	public Integer getExpiryMonth() {
@@ -42,13 +66,15 @@ public class BankCard {
 		this.expiryYear = expiryYear;
 	}
 
-	public Integer getSecurityCode() {
-		return securityCode;
+	public void setSecurityCode(String securityCode) {
+		this.securityCode = EncryptionUtils.encrypt(securityCode);
 	}
 
-	public void setSecurityCode(Integer securityCode) {
-		this.securityCode = securityCode;
+	public String getSecurityCode() {
+		String decryptedCode = EncryptionUtils.decrypt(this.securityCode);
+        return decryptedCode;
 	}
+
 
 //	public void processPayment() {
 //		// TODO - implement BankCard.processPayment

@@ -1,11 +1,9 @@
 package project.model.product;
 import java.math.BigDecimal;
-import java.net.ProtocolFamily;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import project.model.product.*;
 import project.model.product.abstractproduct.*;
 import project.model.product.enums.*;
 
@@ -61,4 +59,5 @@ public class Carriage extends Part {
     public Era getEra() {
         return era;
     }
+
 }

@@ -11,12 +11,9 @@ public interface BankCardDao {
     // Method to retrieve a BankCard by its card number
     BankCard getBankCardByNumber(String cardNumber);
 
-    // Method to update a BankCard's details
-    void updateBankCard(BankCard bankCard);
+    BankCard getBankCardByUserID(int userId);
 
     // Method to delete a BankCard from the data source
-    void deleteBankCard(String cardNumber);
+    void deleteBankCard(int userID);
 
-    // Method to list all BankCards
-    List<BankCard> getAllBankCards();
 }
