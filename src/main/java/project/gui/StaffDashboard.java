@@ -470,7 +470,6 @@ public class StaffDashboard extends javax.swing.JFrame {
         StockAdjustFrame.setVisible(true);
         StockAdjustFrame.pack();
         StockAdjustFrame.setLocationRelativeTo(null);
-        this.dispose();
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
 
