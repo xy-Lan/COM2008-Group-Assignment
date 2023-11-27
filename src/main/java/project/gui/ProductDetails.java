@@ -40,35 +40,27 @@ public class ProductDetails extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        // Create a SpinnerNumberModel with initial value 0, minimum 0, maximum 100, and step 1
-        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 1000, 1);
-
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnTrainSets = new javax.swing.JButton();
-        btnTrackPacks = new javax.swing.JButton();
-        btnLocomotives = new javax.swing.JButton();
-        btnTrack = new javax.swing.JButton();
-        btnRollingStock = new javax.swing.JButton();
-        btnControllers = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
-        btnLogOut2 = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
-        btnLogOut = new javax.swing.JButton();
-        btnLogOut1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btnStaffInterface = new javax.swing.JButton();
+        btnManagerInterface = new javax.swing.JButton();
+        defaultImage = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         brandLabel = new javax.swing.JLabel();
         productCodeLabel = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner(model);
+        quantityVal = new javax.swing.JSpinner();
         priceLabel = new javax.swing.JLabel();
         typeLabel = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -86,82 +78,6 @@ public class ProductDetails extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
-
-        btnTrainSets.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrainSets.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrainSets.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrainSets.setText("Train Sets");
-        btnTrainSets.setBorder(null);
-        btnTrainSets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrainSetsActionPerformed(evt);
-            }
-        });
-
-        btnTrackPacks.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrackPacks.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrackPacks.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrackPacks.setText("Track Packs");
-        btnTrackPacks.setBorder(null);
-        btnTrackPacks.setBorderPainted(false);
-        btnTrackPacks.setFocusPainted(false);
-        btnTrackPacks.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackPacksActionPerformed(evt);
-            }
-        });
-
-        btnLocomotives.setBackground(new java.awt.Color(0, 102, 0));
-        btnLocomotives.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnLocomotives.setForeground(new java.awt.Color(255, 255, 255));
-        btnLocomotives.setText("Locomotives");
-        btnLocomotives.setBorder(null);
-        btnLocomotives.setBorderPainted(false);
-        btnLocomotives.setFocusPainted(false);
-        btnLocomotives.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocomotivesActionPerformed(evt);
-            }
-        });
-
-        btnTrack.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrack.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrack.setText("Track");
-        btnTrack.setBorder(null);
-        btnTrack.setBorderPainted(false);
-        btnTrack.setFocusPainted(false);
-        btnTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackActionPerformed(evt);
-            }
-        });
-
-        btnRollingStock.setBackground(new java.awt.Color(0, 102, 0));
-        btnRollingStock.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnRollingStock.setForeground(new java.awt.Color(255, 255, 255));
-        btnRollingStock.setText("Rolling Stock");
-        btnRollingStock.setBorder(null);
-        btnRollingStock.setBorderPainted(false);
-        btnRollingStock.setFocusPainted(false);
-        btnRollingStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRollingStockActionPerformed(evt);
-            }
-        });
-
-        btnControllers.setBackground(new java.awt.Color(0, 102, 0));
-        btnControllers.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnControllers.setForeground(new java.awt.Color(255, 255, 255));
-        btnControllers.setText("Controllers");
-        btnControllers.setBorder(null);
-        btnControllers.setBorderPainted(false);
-        btnControllers.setFocusPainted(false);
-        btnControllers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnControllersActionPerformed(evt);
-            }
-        });
 
         btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
         btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
@@ -183,13 +99,13 @@ public class ProductDetails extends javax.swing.JFrame {
             }
         });
 
-        btnLogOut2.setBackground(new java.awt.Color(0, 102, 0));
-        btnLogOut2.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut2.setText("Log out");
-        btnLogOut2.setBorder(null);
-        btnLogOut2.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
+        btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogOut.setText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOut2ActionPerformed(evt);
+                btnLogOutActionPerformed(evt);
             }
         });
 
@@ -199,26 +115,17 @@ public class ProductDetails extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTrainSets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocomotives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTrackPacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRollingStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                    .addComponent(btnTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnControllers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(btnRecentOrders))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(btnLogOut2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(6, 6, 6)
+                                .addComponent(btnRecentOrders))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,31 +134,19 @@ public class ProductDetails extends javax.swing.JFrame {
                 .addComponent(btnMyDetails)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRecentOrders)
-                .addGap(155, 155, 155)
-                .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrackPacks, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRollingStock, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
-                .addComponent(btnLogOut2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 664, Short.MAX_VALUE)
+                .addComponent(btnLogOut)
                 .addGap(61, 61, 61))
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 250, 800);
+        jPanel2.setBounds(0, 0, 200, 800);
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Train sets");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 186, 43);
+        jLabel2.setBounds(230, 50, 176, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -266,7 +161,7 @@ public class ProductDetails extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addContainerGap(553, Short.MAX_VALUE))
+                .addContainerGap(603, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,64 +172,82 @@ public class ProductDetails extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(250, 120, 750, 70);
+        jPanel3.setBounds(200, 120, 800, 70);
 
-        btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
-        btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut.setText("Staff interface");
-        btnLogOut.setBorder(null);
-        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+        btnStaffInterface.setBackground(new java.awt.Color(0, 102, 0));
+        btnStaffInterface.setForeground(new java.awt.Color(204, 204, 204));
+        btnStaffInterface.setText("Staff interface");
+        btnStaffInterface.setBorder(null);
+        btnStaffInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOutActionPerformed(evt);
+                btnStaffInterfaceActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLogOut);
-        btnLogOut.setBounds(840, 10, 130, 17);
+        jPanel1.add(btnStaffInterface);
+        btnStaffInterface.setBounds(840, 10, 130, 17);
 
-        btnLogOut1.setBackground(new java.awt.Color(0, 102, 0));
-        btnLogOut1.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut1.setText("Manager interface");
-        btnLogOut1.setBorder(null);
-        btnLogOut1.addActionListener(new java.awt.event.ActionListener() {
+        btnManagerInterface.setBackground(new java.awt.Color(0, 102, 0));
+        btnManagerInterface.setForeground(new java.awt.Color(204, 204, 204));
+        btnManagerInterface.setText("Manager interface");
+        btnManagerInterface.setBorder(null);
+        btnManagerInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOut1ActionPerformed(evt);
+                btnManagerInterfaceActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLogOut1);
-        btnLogOut1.setBounds(840, 50, 150, 17);
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(270, 210, 240, 160);
-        nameLabel.setText("Name: " + trainSet.getProductName());
+        jPanel1.add(btnManagerInterface);
+        btnManagerInterface.setBounds(840, 50, 150, 17);
+        jPanel1.add(defaultImage);
+        defaultImage.setBounds(270, 210, 240, 160);
+
+        nameLabel.setText("Name");
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 230, 35, 17);
 
-        brandLabel.setText("Brand: " + trainSet.getBrandName());
+        brandLabel.setText("Brand");
         jPanel1.add(brandLabel);
         brandLabel.setBounds(630, 260, 41, 17);
-        productCodeLabel.setText("ProductCode: " + trainSet.getProductCode());
+
+        productCodeLabel.setText("Type");
         jPanel1.add(productCodeLabel);
         productCodeLabel.setBounds(630, 290, 28, 17);
 
         btnAddOrderLine.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddOrderLine.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         btnAddOrderLine.setForeground(new java.awt.Color(255, 255, 255));
         btnAddOrderLine.setText("Add to basket");
+        btnAddOrderLine.setMaximumSize(new java.awt.Dimension(151, 24));
+        btnAddOrderLine.setMinimumSize(new java.awt.Dimension(151, 24));
         btnAddOrderLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddOrderLineActionPerformed(evt);
             }
         });
         jPanel1.add(btnAddOrderLine);
-        btnAddOrderLine.setBounds(770, 610, 140, 60);
+        btnAddOrderLine.setBounds(770, 610, 160, 60);
         jPanel1.add(quantityVal);
         quantityVal.setBounds(780, 560, 110, 30);
 
-        priceLabel.setText("Price: " + trainSet.getRetailPrice());
+        priceLabel.setText("jLabel3");
         jPanel1.add(priceLabel);
         priceLabel.setBounds(630, 320, 41, 17);
 
-        typeLabel.setText("Type: " + trainSet.getGaugeType());
+        typeLabel.setText("jLabel3");
         jPanel1.add(typeLabel);
         typeLabel.setBounds(630, 350, 41, 17);
+
+        btnBack.setBackground(new java.awt.Color(0, 102, 0));
+        btnBack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("Back ");
+        btnBack.setBorder(null);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBack);
+        btnBack.setBounds(630, 613, 120, 60);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -342,17 +255,13 @@ public class ProductDetails extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
-        title.setText("Track Packs");
-    }//GEN-LAST:event_btnTrackPacksActionPerformed
-
-    private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
-        title.setText("Locomotives");
-    }//GEN-LAST:event_btnLocomotivesActionPerformed
-
-    private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
-        title.setText("Train Sets");
-    }//GEN-LAST:event_btnTrainSetsActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        Default DefaultFrame = new Default();
+        DefaultFrame.setVisible(true);
+        DefaultFrame.pack();
+        DefaultFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
         // Jump to My Details page:
@@ -367,17 +276,21 @@ public class ProductDetails extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
-    private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
-        title.setText("Controllers");
-    }//GEN-LAST:event_btnControllersActionPerformed
+    private void btnStaffInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffInterfaceActionPerformed
+        StaffDashboard StaffDashboardFrame = new StaffDashboard();
+        StaffDashboardFrame.setVisible(true);
+        StaffDashboardFrame.pack();
+        StaffDashboardFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnStaffInterfaceActionPerformed
 
-    private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
-        title.setText("Track");
-    }//GEN-LAST:event_btnTrackActionPerformed
-
-    private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
-        title.setText("Rolling Stock");
-    }//GEN-LAST:event_btnRollingStockActionPerformed
+    private void btnManagerInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerInterfaceActionPerformed
+        ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
+        ManagerDashboardFrame.setVisible(true);
+        ManagerDashboardFrame.pack();
+        ManagerDashboardFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnManagerInterfaceActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // log out
@@ -387,14 +300,6 @@ public class ProductDetails extends javax.swing.JFrame {
         LoginFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
-
-    private void btnLogOut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOut1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLogOut1ActionPerformed
-
-    private void btnLogOut2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOut2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLogOut2ActionPerformed
 
     private void btnAddOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderLineActionPerformed
         //Add a product to orderline
@@ -412,18 +317,13 @@ public class ProductDetails extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel brandLabel;
     private javax.swing.JButton btnAddOrderLine;
-    private javax.swing.JButton btnControllers;
-    private javax.swing.JButton btnLocomotives;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnLogOut1;
-    private javax.swing.JButton btnLogOut2;
+    private javax.swing.JButton btnManagerInterface;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
-    private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnTrack;
-    private javax.swing.JButton btnTrackPacks;
-    private javax.swing.JButton btnTrainSets;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnStaffInterface;
+    private javax.swing.JLabel defaultImage;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;

@@ -57,12 +57,6 @@ public class Default extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         scrollPanel = new javax.swing.JScrollPane();
         productContainer = new javax.swing.JPanel();
-        productPanel = new javax.swing.JPanel();
-        nameLabel = new javax.swing.JLabel();
-        btnViewDetails = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner();
-        priceLabel = new javax.swing.JLabel();
-        defaultImage = new javax.swing.JLabel();
         btnStaffDashboard = new javax.swing.JButton();
         btnManagerDashboard = new javax.swing.JButton();
 
@@ -278,25 +272,21 @@ public class Default extends javax.swing.JFrame {
         scrollPanel.setBackground(new java.awt.Color(255, 255, 255));
         scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-//        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
-//        productContainer.setLayout(productContainerLayout);
-//        productContainerLayout.setHorizontalGroup(
-//                productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGroup(productContainerLayout.createSequentialGroup()
-//                                .addGap(21, 21, 21)
-//                                .addContainerGap(70, Short.MAX_VALUE))
-//        );
-//        productContainerLayout.setVerticalGroup(
-//                productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGroup(productContainerLayout.createSequentialGroup()
-//                                .addGap(27, 27, 27)
-//                                .addContainerGap(401, Short.MAX_VALUE))
-//        );
+        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+        productContainer.setLayout(productContainerLayout);
+        productContainerLayout.setHorizontalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 686, Short.MAX_VALUE)
+        );
+        productContainerLayout.setVerticalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 522, Short.MAX_VALUE)
+        );
 
         scrollPanel.setViewportView(productContainer);
 
         jPanel1.add(scrollPanel);
-        scrollPanel.setBounds(320, 280, 630, 500);
+        scrollPanel.setBounds(310, 240, 630, 500);
 
         btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
         btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
@@ -367,7 +357,7 @@ public class Default extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
     private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed
-        // log out
+        //
         StaffDashboard StaffDashboardFrame = new StaffDashboard();
         StaffDashboardFrame.setVisible(true);
         StaffDashboardFrame.pack();
@@ -472,19 +462,13 @@ public class Default extends javax.swing.JFrame {
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets;
-    private javax.swing.JButton btnViewDetails;
-    private javax.swing.JLabel defaultImage;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JLabel priceLabel;
     private javax.swing.JPanel productContainer;
-    private javax.swing.JPanel productPanel;
-    private javax.swing.JSpinner quantityVal;
     private javax.swing.JScrollPane scrollPanel;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
