@@ -3,6 +3,7 @@ package project.daoimpl;
 import project.dao.*;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
+import project.model.product.enums.Gauge;
 import project.service.MysqlService;
 
 import java.math.BigDecimal;
@@ -21,13 +22,11 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void addProduct(Product product) {
-        Connection connection = null;
+    public void addProduct(Product product, Connection connection) {
+//        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
 
             // Insert common attributes into the product table
             String sqlProduct = "INSERT INTO product (product_code, brand_name, product_name, retail_price, gauge_type) VALUES (?, ?, ?, ?, ?)";
@@ -37,26 +36,21 @@ public class ProductDaoImpl implements ProductDao {
             product.setProductTableParameters(preparedStatement);
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
         } catch (SQLException e) {
-            if (connection != null) {
-                try {
-                    connection.rollback(); // Rollback transaction
-                } catch (SQLException ex) {
-                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
-                }
-            }
             LOGGER.log(Level.SEVERE, "Error adding product to the database", e);
             throw new RuntimeException("Database operation failed", e);
         } finally {
-            // Close resources
-            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
-            if (connection != null) try {
-                connection.setAutoCommit(true); // Reset to default auto-commit mode
-                connection.close();
-            } catch (SQLException e) { /* ignored */ }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    // Log the exception but do not rethrow it, as it is non-critical
+                    LOGGER.log(Level.WARNING, "Failed to close PreparedStatement", e);
+                }
+            }
         }
     }
+
 
 
     @Override
@@ -69,35 +63,38 @@ public class ProductDaoImpl implements ProductDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                String brandName = resultSet.getString("brand_name");
+                String productName = resultSet.getString("product_name");
+                BigDecimal retailPrice = resultSet.getBigDecimal("retail_price");
+                Gauge gaugeType = Gauge.valueOf(resultSet.getString("gauge_type"));
+
                 char firstChar = productCode.charAt(0);
+                System.out.println("it is "+firstChar);
                 switch (firstChar) {
                     case 'R':
                         TrackDao trackDao = new TrackDaoImpl(mysqlService);
-                        return trackDao.getTrack(productCode);
+                        System.out.println("it is a track");
+                        return new Track(productCode, brandName, productName, retailPrice, gaugeType, null);
                     case 'C':
                         ControllerDao controllerDao = new ControllerDaoImpl(mysqlService);
-                        return controllerDao.getController(productCode);
+                        System.out.println("it is a controller");
+                        return new Controller(productCode, brandName, productName, retailPrice, gaugeType, null, false);
+
                     case 'L':
                         LocomotiveDao locomotiveDao = new LocomotiveDaoImpl(mysqlService);
-                        return locomotiveDao.getLocomotive(productCode);
+                        System.out.println("it is a locomotive");
+                        return new Locomotive(productCode, brandName, productName, retailPrice, gaugeType, null, null);
                     case 'S':
-                        String productTypePrefix = productCode.length() >= 2 ? productCode.substring(0, 2) : "";
-                        switch (productTypePrefix) {
-                            case "SW":
-                                WagonDao wagonDao = new WagonDaoImpl(mysqlService);
-                                return wagonDao.getWagon(productCode);
-                            case "SC":
-                                CarriageDao carriageDao = new CarriageDaoImpl(mysqlService);
-                                return carriageDao.getCarriage(productCode);
-                            default:
-                                throw new IllegalArgumentException("Unknown rolling stock type: " + productTypePrefix);
-                        }
+                        RollingStockDao rollingStockDao = new RollingStockDaoImpl(mysqlService);
+                        return new RollingStock(productCode, brandName, productName, retailPrice, gaugeType, null, null);
                     case 'M':
                         TrainSetDao trainSetDao = new TrainSetDaoImpl(mysqlService);
-                        return trainSetDao.getTrainSet(productCode);
+                        System.out.println("it is a TrainSet");
+                        return new TrainSet(productCode, brandName, productName, retailPrice, gaugeType);
                     case 'P':
                         TrackPackDao trackPackDao = new TrackPackDaoImpl(mysqlService);
-                        return trackPackDao.getTrackPack(productCode);
+                        System.out.println("it is a TrackPack");
+                        return new TrackPack(productCode, brandName, productName, retailPrice, gaugeType,null);
                     default:
                         throw new IllegalArgumentException("Unknown product type: " + firstChar);
                 }

@@ -31,7 +31,7 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(track);
+            super.addProduct(track, connection);
 
             // Then, add the specific attributes of the Track
             String sqlTrack = "INSERT INTO track (product_code, track_type) VALUES (?, ?)";

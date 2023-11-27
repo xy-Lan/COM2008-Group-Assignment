@@ -23,7 +23,7 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
     @Override
     public void addTrainSet(TrainSet trainSet) {
         // Implement logic to add a train set to the database
-        super.addProduct(trainSet);
+//        super.addProduct(trainSet, c);
     }
 
     @Override
