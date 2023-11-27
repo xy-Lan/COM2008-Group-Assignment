@@ -438,7 +438,7 @@ public class Default extends javax.swing.JFrame {
 
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    viewProductDetails(trainSet.getProductCode(), trainSet.getRetailPrice());
+                    viewProductDetails(trainSet);
                 }
             });
 
@@ -450,9 +450,9 @@ public class Default extends javax.swing.JFrame {
         productContainer.repaint();
     }
 
-    private void viewProductDetails(String productCode, BigDecimal price){
+    private void viewProductDetails(TrainSet trainSet){
 //        new ProductDetails(productCode, price);
-        ProductDetails ProductDetailsFrame = new ProductDetails(productCode, price);
+        ProductDetails ProductDetailsFrame = new ProductDetails(trainSet);
         ProductDetailsFrame.setVisible(true);
         ProductDetailsFrame.pack();
         ProductDetailsFrame.setLocationRelativeTo(null);

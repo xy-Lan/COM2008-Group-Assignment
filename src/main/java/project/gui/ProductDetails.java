@@ -22,12 +22,10 @@ public class ProductDetails extends javax.swing.JFrame {
     /**
      * Creates new form Default
      */
-    private String productCode;
-    private BigDecimal price;
+    private TrainSet trainSet;
 
-    public ProductDetails(String productCode, BigDecimal price) {
-        this.productCode = productCode;
-        this.price = price;
+    public ProductDetails(TrainSet trainSet) {
+        this.trainSet = trainSet;
         initComponents();
     }
     
@@ -41,6 +39,9 @@ public class ProductDetails extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        // Create a SpinnerNumberModel with initial value 0, minimum 0, maximum 100, and step 1
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 1000, 1);
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -61,11 +62,13 @@ public class ProductDetails extends javax.swing.JFrame {
         btnLogOut = new javax.swing.JButton();
         btnLogOut1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        brandLabel = new javax.swing.JLabel();
+        productCodeLabel = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner();
+        quantityVal = new javax.swing.JSpinner(model);
+        priceLabel = new javax.swing.JLabel();
+        typeLabel = new javax.swing.JLabel();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -304,17 +307,17 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(270, 210, 240, 160);
 
-        jLabel3.setText("Name");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(630, 230, 35, 17);
+        nameLabel.setText("Name: " + trainSet.getProductName());
+        jPanel1.add(nameLabel);
+        nameLabel.setBounds(630, 230, 35, 17);
 
-        jLabel4.setText("Brand");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(630, 260, 41, 17);
+        brandLabel.setText("Brand: " + trainSet.getBrandName());
+        jPanel1.add(brandLabel);
+        brandLabel.setBounds(630, 260, 41, 17);
 
-        jLabel5.setText("Type");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(630, 290, 28, 17);
+        productCodeLabel.setText("ProductCode: " + trainSet.getProductCode());
+        jPanel1.add(productCodeLabel);
+        productCodeLabel.setBounds(630, 290, 28, 17);
 
         btnAddOrderLine.setBackground(new java.awt.Color(0, 102, 0));
         btnAddOrderLine.setForeground(new java.awt.Color(255, 255, 255));
@@ -328,6 +331,14 @@ public class ProductDetails extends javax.swing.JFrame {
         btnAddOrderLine.setBounds(770, 610, 140, 60);
         jPanel1.add(quantityVal);
         quantityVal.setBounds(780, 560, 110, 30);
+
+        priceLabel.setText("Price: " + trainSet.getRetailPrice());
+        jPanel1.add(priceLabel);
+        priceLabel.setBounds(630, 320, 41, 17);
+
+        typeLabel.setText("Type: " + trainSet.getGaugeType());
+        jPanel1.add(typeLabel);
+        typeLabel.setBounds(630, 350, 41, 17);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -395,7 +406,7 @@ public class ProductDetails extends javax.swing.JFrame {
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         // TODO If there is already a order, then just add a orderline
         Order order = new Order(currentUser);
-        OrderLine orderLine = new OrderLine(productCode, quantity, price, order.getOrderNumber());
+        OrderLine orderLine = new OrderLine(trainSet.getProductCode(), quantity, trainSet.getRetailPrice(), order.getOrderNumber());
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
         orderDao.addOrderLine(orderLine);
@@ -403,6 +414,7 @@ public class ProductDetails extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel brandLabel;
     private javax.swing.JButton btnAddOrderLine;
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnLocomotives;
@@ -417,15 +429,16 @@ public class ProductDetails extends javax.swing.JFrame {
     private javax.swing.JButton btnTrainSets;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JLabel priceLabel;
+    private javax.swing.JLabel productCodeLabel;
     private javax.swing.JSpinner quantityVal;
     private javax.swing.JLabel title;
+    private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables
 }
