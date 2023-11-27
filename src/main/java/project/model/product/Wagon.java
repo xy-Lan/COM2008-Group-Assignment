@@ -38,7 +38,7 @@ public class Wagon extends Part {
 
     @Override
     public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, this.getProductCode());
+        preparedStatement.setString( 1, this.getProductCode());
         preparedStatement.setString(2, this.wagonType.name());
         preparedStatement.setString(3, this.era.name());
     }

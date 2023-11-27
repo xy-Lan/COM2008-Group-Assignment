@@ -101,7 +101,6 @@ public class MyDetails extends javax.swing.JFrame {
 
         btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
         btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
-        btnMyDetails.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\user_icon_149851.png")); // NOI18N
         btnMyDetails.setText("My Details");
         btnMyDetails.setBorder(null);
         btnMyDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -112,7 +111,6 @@ public class MyDetails extends javax.swing.JFrame {
 
         btnRecentOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnRecentOrders.setForeground(new java.awt.Color(204, 204, 204));
-        btnRecentOrders.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnRecentOrders.setText("Recent Orders");
         btnRecentOrders.setBorder(null);
         btnRecentOrders.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +121,6 @@ public class MyDetails extends javax.swing.JFrame {
 
         btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
         btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogOut.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\resources\\images\\process_events_icon_149896.png")); // NOI18N
         btnLogOut.setText("Log out");
         btnLogOut.setBorder(null);
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +177,7 @@ public class MyDetails extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("My Details");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 193, 47);
+        jLabel2.setBounds(279, 56, 196, 43);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -219,7 +216,7 @@ public class MyDetails extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel4.setText(UserSessionManager.getInstance().getLoggedInUser().getEmail());
+        jLabel4.setText("User's email");
 
         jLabel5.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         jLabel5.setText("Address:");

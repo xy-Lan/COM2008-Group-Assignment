@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import project.gui.Login;
 import project.service.MysqlService;
 
+import javax.swing.*;
+
 public class Main {
 
     
@@ -16,6 +18,11 @@ public class Main {
      * @throws SQLException
      */
     public static void main(String[] args) throws SQLException {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Starting");
         MysqlService.getInstance();

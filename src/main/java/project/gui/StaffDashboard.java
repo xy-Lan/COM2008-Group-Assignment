@@ -18,6 +18,7 @@ public class StaffDashboard extends javax.swing.JFrame {
      */
     public StaffDashboard() {
         initComponents();
+        loadData();
     }
 
     /**
@@ -280,7 +281,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 16);
+        btnUser.setBounds(840, 10, 130, 17);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
@@ -292,7 +293,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 16);
+        btnManager.setBounds(840, 50, 150, 17);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,10 +330,18 @@ public class StaffDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(btnAddProduct1);
         btnAddProduct1.setBounds(460, 210, 140, 32);
- 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel());
-        loadData();
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
@@ -453,7 +462,46 @@ public class StaffDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnListCustomers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCustomers1ActionPerformed
-        // TODO add your handling code here:
+        // Code to list customers in a table
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email");
+        model.addColumn("House Number");
+        model.addColumn("Postcode");
+        model.addColumn("Role");
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role = 'CUSTOMER'");
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[7];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getString("house_number");
+                row[5] = rs.getString("postcode");
+                row[6] = rs.getString("role");
+                model.addRow(row);
+            }
+
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+        
     }//GEN-LAST:event_btnListCustomers1ActionPerformed
 
     private void btnAddProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct1ActionPerformed
@@ -462,7 +510,6 @@ public class StaffDashboard extends javax.swing.JFrame {
         StockAdjustFrame.setVisible(true);
         StockAdjustFrame.pack();
         StockAdjustFrame.setLocationRelativeTo(null);
-        this.dispose();
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
 

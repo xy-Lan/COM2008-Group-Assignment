@@ -251,7 +251,7 @@ public class ProductDetails extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Train sets");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 175, 47);
+        jLabel2.setBounds(279, 56, 186, 43);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -302,11 +302,8 @@ public class ProductDetails extends javax.swing.JFrame {
         });
         jPanel1.add(btnLogOut1);
         btnLogOut1.setBounds(840, 50, 150, 17);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("D:\\COM2008-Group-Assignment\\src\\main\\resources\\images\\tran_sets.jpg")); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(270, 210, 240, 160);
-
         nameLabel.setText("Name: " + trainSet.getProductName());
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 230, 35, 17);
@@ -314,7 +311,6 @@ public class ProductDetails extends javax.swing.JFrame {
         brandLabel.setText("Brand: " + trainSet.getBrandName());
         jPanel1.add(brandLabel);
         brandLabel.setBounds(630, 260, 41, 17);
-
         productCodeLabel.setText("ProductCode: " + trainSet.getProductCode());
         jPanel1.add(productCodeLabel);
         productCodeLabel.setBounds(630, 290, 28, 17);

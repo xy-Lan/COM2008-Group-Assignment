@@ -24,12 +24,8 @@ public class StockAdjust extends javax.swing.JFrame {
         //Code for the back button
         backbutton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                StaffDashboard StaffDashboardFrame = new StaffDashboard();
-                StaffDashboardFrame.setVisible(true);
-                StaffDashboardFrame.pack();
-                StaffDashboardFrame.setLocationRelativeTo(null);
-    
+            public void actionPerformed(ActionEvent e){                
+                dispose();
             }
         });
 

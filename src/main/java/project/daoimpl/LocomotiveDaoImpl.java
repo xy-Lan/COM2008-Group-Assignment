@@ -32,7 +32,7 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(locomotive);
+            super.addProduct(locomotive, connection);
 
             // Then, add the specific attributes of the Locomotive
             String sqlLocomotive = "INSERT INTO locomotive (product_code, dcc_type, era) VALUES (?, ?, ?)";

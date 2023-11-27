@@ -26,5 +26,12 @@ public class TrackDaoImplTest {
         Assertions.assertNotNull(tracks, "Tracks list should not be null");
         Assertions.assertFalse(tracks.isEmpty(), "Tracks list should not be empty");
 
+        boolean hasProductCodeR122 = tracks.stream()
+                .anyMatch(track -> "R122".equals(track.getProductCode()));
+        Assertions.assertTrue(hasProductCodeR122, "Tracks list should contain a track with productCode 'R122'");
+
+        boolean hasProductCodeR123 = tracks.stream()
+                .anyMatch(track -> "R123".equals(track.getProductCode()));
+        Assertions.assertTrue(hasProductCodeR123, "Tracks list should contain a track with productCode 'R123'");
     }
 }

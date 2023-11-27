@@ -1,4 +1,7 @@
 package project.model.address;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import project.model.user.*;
@@ -10,6 +13,24 @@ public class Address {
 	private String postCode;
 	private String roadName;
 	private String cityName;
+
+    public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
+        stmt.setString(1, this.houseNumber);
+        stmt.setString(2, this.postCode);
+        stmt.setString(3, this.roadName);
+        stmt.setString(4, this.cityName);
+    }
+
+    // Static method to create an Address instance from a ResultSet
+    public static Address fromResultSet(ResultSet rs) throws SQLException {
+        Address address = new Address();
+        address.setHouseNumber(rs.getString("house_number")); 
+        address.setPostCode(rs.getString("post_code"));       
+        address.setRoadName(rs.getString("road_name"));       
+        address.setCityName(rs.getString("city_name"));       
+    
+        return address;
+    }
 
 	public Collection<User> getUsers() {
         return users;
