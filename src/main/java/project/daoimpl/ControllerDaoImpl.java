@@ -1,6 +1,7 @@
 package project.daoimpl;
 
 import project.dao.ControllerDao;
+import project.dao.PartDao;
 import project.dao.ProductDao;
 import project.model.product.Controller;
 import project.model.product.abstractproduct.Product;
@@ -22,6 +23,8 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         super(mysqlService);
     }
 
+//    private PartDao partDao = new PartDaoImpl(mysqlService);
+
     @Override
     public void addController(Controller controller) {
         Connection connection = null;
@@ -32,29 +35,48 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
             connection.setAutoCommit(false); // // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(controller);
+            LOGGER.info("Attempting to add product");
+            super.addProduct(controller, connection);
+            LOGGER.info("Product added successfully");
+            PartDao partDao = new PartDaoImpl(mysqlService);
+            LOGGER.info("Attempting to add part");
+            partDao.addPart(controller, connection);
+            LOGGER.info("Part added successfully");
+            System.out.println("Add partdao successfully");
 
             // Then, add the specific attributes of the Controller
             String sqlController = "INSERT INTO controller (product_code, controller_type, is_digital) VALUES (?, ?, ?)";
+            LOGGER.info("preparation to add controller");
             preparedStatement = connection.prepareStatement(sqlController);
+            System.out.println("try");
+            try {
+                LOGGER.info("Attempting to add controller");
+                preparedStatement.setString(1, controller.getProductCode());
+                preparedStatement.setString(2, controller.getControllerType().name());
+                preparedStatement.setBoolean(3, controller.getIsDigital());
+                preparedStatement.executeUpdate();
+                LOGGER.info("Controller added successfully");
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error adding controller to the database "+ e.getMessage(), e);
+                throw e;
+            }
 
-            // Set the parameters for the preparedStatement
-            preparedStatement.setString(1, controller.getProductCode());
-            preparedStatement.setString(2, controller.getControllerType().name());
-            preparedStatement.setBoolean(3, controller.getIsDigital());
-
-            preparedStatement.executeUpdate();
-
+            LOGGER.info("Attempting to commit transaction");
             connection.commit(); // Commit transaction
+            LOGGER.info("Transaction committed successfully");
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error in transaction"+ e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback();  // Rollback transaction
+                    if (!connection.isClosed()) {
+                        connection.rollback();
+                    }
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
             }
-            LOGGER.log(Level.SEVERE, "Error adding controller to the database", e);
+            LOGGER.log(Level.SEVERE, "Error in operation: " + e.getMessage(), e);
+            e.printStackTrace();
             throw new RuntimeException("Database operation failed", e);
         } finally {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
@@ -73,6 +95,7 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
 
             // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
+            System.out.println(product.getProductCode());
             if (!(product instanceof Controller)) {
                 throw new RuntimeException("Product with code " + productCode + " is not a Controller.");
             }

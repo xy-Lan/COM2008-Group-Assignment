@@ -3,7 +3,7 @@ package project.model.product.abstractproduct;
 import java.math.BigDecimal;
 import java.util.List;
 
-import project.model.product.association.BoxedSetAssociation;
+import project.model.product.association.PartBoxedSetAssociation;
 import project.model.product.enums.Gauge;
 
 public abstract class BoxedSet extends Product {
@@ -17,6 +17,6 @@ public abstract class BoxedSet extends Product {
           super(productCode, brandName, productName, retailPrice, gaugeType);
      }
 
-     private List<BoxedSetAssociation> associations;
+     private List<PartBoxedSetAssociation> associations;
     
 }
