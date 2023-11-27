@@ -53,6 +53,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         btnAddProduct1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnAddProduct2 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -281,7 +282,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 17);
+        btnUser.setBounds(840, 10, 130, 16);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
@@ -293,7 +294,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 17);
+        btnManager.setBounds(840, 50, 150, 16);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -305,7 +306,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnPendingOrders);
-        btnPendingOrders.setBounds(640, 210, 140, 32);
+        btnPendingOrders.setBounds(760, 210, 140, 32);
 
         btnListCustomers1.setBackground(new java.awt.Color(0, 102, 0));
         btnListCustomers1.setForeground(new java.awt.Color(255, 255, 255));
@@ -317,7 +318,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnListCustomers1);
-        btnListCustomers1.setBounds(280, 210, 140, 32);
+        btnListCustomers1.setBounds(600, 210, 140, 32);
 
         btnAddProduct1.setBackground(new java.awt.Color(0, 102, 0));
         btnAddProduct1.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,7 +330,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAddProduct1);
-        btnAddProduct1.setBounds(460, 210, 140, 32);
+        btnAddProduct1.setBounds(440, 210, 140, 32);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -347,8 +348,20 @@ public class StaffDashboard extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(300, 280, 660, 500);
 
+        btnAddProduct2.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddProduct2.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddProduct2.setText("Inventory View");
+        btnAddProduct2.setBorder(null);
+        btnAddProduct2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProduct2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAddProduct2);
+        btnAddProduct2.setBounds(280, 210, 140, 32);
+
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 1000, 800);
+        jPanel1.setBounds(60, 30, 1000, 800);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -444,7 +457,39 @@ public class StaffDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnManagerActionPerformed
 
     private void btnPendingOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendingOrdersActionPerformed
-        // TODO add your handling code here:
+        // Just displays the orderline table
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        model.addColumn("Product Codes");
+        model.addColumn("Quantity");
+        model.addColumn("Linecost");
+        model.addColumn("Order Number");
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderline")
+        ){
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[4];
+                row[0] = rs.getString("product_code");
+                row[1] = rs.getInt("quantity");
+                row[2] = rs.getDouble("linecost");
+                row[3] = rs.getInt("order_number");
+                model.addRow(row);
+            }
+
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+
+
     }//GEN-LAST:event_btnPendingOrdersActionPerformed
 
     private void btnTrainSets1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSets1ActionPerformed
@@ -480,7 +525,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role = 'CUSTOMER'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role = 'customer'");
         ) {
             // Add rows to the model
             while (rs.next()) {
@@ -490,7 +535,7 @@ public class StaffDashboard extends javax.swing.JFrame {
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
                 row[4] = rs.getString("house_number");
-                row[5] = rs.getString("postcode");
+                row[5] = rs.getString("post_code");
                 row[6] = rs.getString("role");
                 model.addRow(row);
             }
@@ -512,9 +557,18 @@ public class StaffDashboard extends javax.swing.JFrame {
         StockAdjustFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
+    private void btnAddProduct2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct2ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        loadData();
+    }//GEN-LAST:event_btnAddProduct2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct1;
+    private javax.swing.JButton btnAddProduct2;
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnListCustomers1;
