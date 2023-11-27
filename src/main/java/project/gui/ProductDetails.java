@@ -150,7 +150,7 @@ public class ProductDetails extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Train sets");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(230, 50, 176, 47);
+        jLabel2.setBounds(230, 50, 176, 43);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -206,7 +206,7 @@ public class ProductDetails extends javax.swing.JFrame {
 
         nameLabel.setText("Name: " + product.getProductName());
         jPanel1.add(nameLabel);
-        nameLabel.setBounds(630, 230, 35, 17);
+        nameLabel.setBounds(630, 230, 34, 17);
 
         brandLabel.setText("Brand: " + product.getBrandName());
         jPanel1.add(brandLabel);
@@ -214,7 +214,7 @@ public class ProductDetails extends javax.swing.JFrame {
 
         productCodeLabel.setText("Product code: " + product.getProductCode());
         jPanel1.add(productCodeLabel);
-        productCodeLabel.setBounds(630, 290, 28, 17);
+        productCodeLabel.setBounds(630, 290, 29, 17);
 
         btnAddOrderLine.setBackground(new java.awt.Color(0, 102, 0));
         btnAddOrderLine.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -234,11 +234,11 @@ public class ProductDetails extends javax.swing.JFrame {
 
         priceLabel.setText("Price: " + product.getRetailPrice());
         jPanel1.add(priceLabel);
-        priceLabel.setBounds(630, 320, 41, 17);
+        priceLabel.setBounds(630, 320, 42, 17);
 
         typeLabel.setText("Type: " + product.getGaugeType());
         jPanel1.add(typeLabel);
-        typeLabel.setBounds(630, 350, 41, 17);
+        typeLabel.setBounds(630, 350, 42, 17);
 
         btnBack.setBackground(new java.awt.Color(0, 102, 0));
         btnBack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N

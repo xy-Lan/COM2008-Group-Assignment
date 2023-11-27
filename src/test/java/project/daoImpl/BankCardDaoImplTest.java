@@ -60,6 +60,8 @@ public class BankCardDaoImplTest {
         assertEquals("123", retrievedCard.getSecurityCode());
     }
 
+
+
     @AfterEach
     public void tearDown() {
         int testUserId = 123;
