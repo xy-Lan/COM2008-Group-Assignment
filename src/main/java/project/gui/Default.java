@@ -4,9 +4,13 @@
  */
 package project.gui;
 
-import project.dao.TrainSetDao;
-import project.daoimpl.TrainSetDaoImpl;
+import project.dao.*;
+import project.daoimpl.*;
+import project.model.product.Controller;
+import project.model.product.Locomotive;
+import project.model.product.TrackPack;
 import project.model.product.TrainSet;
+import project.model.product.abstractproduct.Product;
 import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
@@ -320,15 +324,126 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
         title.setText("Track Packs");
+        productContainer.removeAll();
+        //List all the tran sets
+        MysqlService mysqlService = new MysqlService();
+        TrackPackDao TrackPackDao = new TrackPackDaoImpl(mysqlService);
+        List<TrackPack> allTrackPacks = TrackPackDao.getAllTrackPacks();
+        productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
+        for (TrackPack trackPack : allTrackPacks) {
+            // Add a productPanel for every train set
+            JPanel productPanel = new JPanel();
+            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
+            productPanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.insets = new Insets(10,20,10,20);
+
+            JLabel nameLabel = new JLabel("Name: " + trackPack.getProductName());
+            JLabel priceLabel = new JLabel("Price: " + trackPack.getRetailPrice());
+            JLabel defaultImage = new JLabel();
+            JButton btnViewDetails = new JButton("View details");
+            //Set layout
+            productPanel.setBackground(new java.awt.Color(24, 150, 62));
+
+            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
+            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+            btnViewDetails.setText("View details");
+
+            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
+//            ImageIcon imageIcon = new ImageIcon(imageUrl);
+//
+//            defaultImage.setIcon(imageIcon); // NOI18N
+
+            productPanel.add(defaultImage, gbc);
+            productPanel.add(nameLabel, gbc);
+            productPanel.add(priceLabel, gbc);
+            productPanel.add(btnViewDetails, gbc);
+
+
+            btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    viewProductDetails(trackPack);
+                }
+            });
+
+            // Add the productPanel to the productContainer
+            productContainer.add(productPanel);
+        }
+        //Refresh to update the panel
+        productContainer.revalidate();
+        productContainer.repaint();
     }//GEN-LAST:event_btnTrackPacksActionPerformed
 
     private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
         title.setText("Locomotives");
+        productContainer.removeAll();
+        //List all the tran sets
+        MysqlService mysqlService = new MysqlService();
+        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl(mysqlService);
+        List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
+        productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
+        for (Locomotive locomotive : allLocomotives) {
+            // Add a productPanel for every train set
+            JPanel productPanel = new JPanel();
+            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
+            productPanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.insets = new Insets(10,20,10,20);
+
+            JLabel nameLabel = new JLabel("Name: " + locomotive.getProductName());
+            JLabel priceLabel = new JLabel("Price: " + locomotive.getRetailPrice());
+            JLabel defaultImage = new JLabel();
+            JButton btnViewDetails = new JButton("View details");
+            //Set layout
+            productPanel.setBackground(new java.awt.Color(24, 150, 62));
+
+            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
+            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+            btnViewDetails.setText("View details");
+
+            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
+
+//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
+//            ImageIcon imageIcon = new ImageIcon(imageUrl);
+//
+//            defaultImage.setIcon(imageIcon); // NOI18N
+
+            productPanel.add(defaultImage, gbc);
+            productPanel.add(nameLabel, gbc);
+            productPanel.add(priceLabel, gbc);
+            productPanel.add(btnViewDetails, gbc);
+
+
+            btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    viewProductDetails(locomotive);
+                }
+            });
+
+            // Add the productPanel to the productContainer
+            productContainer.add(productPanel);
+        }
+        //Refresh to update the panel
+        productContainer.revalidate();
+        productContainer.repaint();
     }//GEN-LAST:event_btnLocomotivesActionPerformed
 
     private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
         title.setText("Train Sets");
-        loadTrainSets();
+        MysqlService mysqlService = new MysqlService();
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        loadProductsByType(allTrainSets);
     }//GEN-LAST:event_btnTrainSetsActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
@@ -346,6 +461,10 @@ public class Default extends javax.swing.JFrame {
 
     private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
         title.setText("Controllers");
+        MysqlService mysqlService = new MysqlService();
+        ControllerDao ControllerDao = new ControllerDaoImpl(mysqlService);
+        List<Controller> allControllers = ControllerDao.getAllControllers();
+        loadProductsByType(allControllers);
     }//GEN-LAST:event_btnControllersActionPerformed
 
     private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
@@ -382,15 +501,12 @@ public class Default extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
 
-    private void loadTrainSets() {
+    private void loadProductsByType(List<? extends Product> allProducts) {
         //TODO
         productContainer.removeAll();
-        //List all the tran sets
-        MysqlService mysqlService = new MysqlService();
-        TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
-        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        //List all the products
         productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
-        for (TrainSet trainSet : allTrainSets) {
+        for (Product product : allProducts) {
             // Add a productPanel for every train set
             JPanel productPanel = new JPanel();
             productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
@@ -400,8 +516,8 @@ public class Default extends javax.swing.JFrame {
             gbc.anchor = GridBagConstraints.CENTER;
             gbc.insets = new Insets(10,20,10,20);
 
-            JLabel nameLabel = new JLabel("Name: " + trainSet.getProductName());
-            JLabel priceLabel = new JLabel("Price: " + trainSet.getRetailPrice());
+            JLabel nameLabel = new JLabel("Name: " + product.getProductName());
+            JLabel priceLabel = new JLabel("Price: " + product.getRetailPrice());
             JLabel defaultImage = new JLabel();
             JButton btnViewDetails = new JButton("View details");
             //Set layout
@@ -428,7 +544,7 @@ public class Default extends javax.swing.JFrame {
 
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    viewProductDetails(trainSet);
+                    viewProductDetails(product);
                 }
             });
 
@@ -440,9 +556,9 @@ public class Default extends javax.swing.JFrame {
         productContainer.repaint();
     }
 
-    private void viewProductDetails(TrainSet trainSet){
+    private void viewProductDetails(Product product){
 //        new ProductDetails(productCode, price);
-        ProductDetails ProductDetailsFrame = new ProductDetails(trainSet);
+        ProductDetails ProductDetailsFrame = new ProductDetails(product);
         ProductDetailsFrame.setVisible(true);
         ProductDetailsFrame.pack();
         ProductDetailsFrame.setLocationRelativeTo(null);

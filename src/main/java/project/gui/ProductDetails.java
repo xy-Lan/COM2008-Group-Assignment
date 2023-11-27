@@ -5,6 +5,7 @@ import project.daoimpl.*;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.product.*;
+import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MysqlService;
 import project.utils.UserSessionManager;
@@ -22,10 +23,10 @@ public class ProductDetails extends javax.swing.JFrame {
     /**
      * Creates new form Default
      */
-    private TrainSet trainSet;
+    private Product product;
 
-    public ProductDetails(TrainSet trainSet) {
-        this.trainSet = trainSet;
+    public ProductDetails(Product product) {
+        this.product = product;
         initComponents();
     }
     
@@ -39,6 +40,9 @@ public class ProductDetails extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        // Create a SpinnerNumberModel with initial value 0, minimum 0, maximum 100, and step 1
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 1000, 1);
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -57,7 +61,7 @@ public class ProductDetails extends javax.swing.JFrame {
         brandLabel = new javax.swing.JLabel();
         productCodeLabel = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner();
+        quantityVal = new javax.swing.JSpinner(model);
         priceLabel = new javax.swing.JLabel();
         typeLabel = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
@@ -152,7 +156,7 @@ public class ProductDetails extends javax.swing.JFrame {
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Product name");
+        title.setText(product.getProductName());
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -200,15 +204,15 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(defaultImage);
         defaultImage.setBounds(270, 210, 240, 160);
 
-        nameLabel.setText("Name");
+        nameLabel.setText("Name: " + product.getProductName());
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 230, 34, 17);
 
-        brandLabel.setText("Brand");
+        brandLabel.setText("Brand: " + product.getBrandName());
         jPanel1.add(brandLabel);
         brandLabel.setBounds(630, 260, 41, 17);
 
-        productCodeLabel.setText("Type");
+        productCodeLabel.setText("Product code: " + product.getProductCode());
         jPanel1.add(productCodeLabel);
         productCodeLabel.setBounds(630, 290, 29, 17);
 
@@ -228,11 +232,11 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(quantityVal);
         quantityVal.setBounds(780, 560, 110, 30);
 
-        priceLabel.setText("jLabel3");
+        priceLabel.setText("Price: " + product.getRetailPrice());
         jPanel1.add(priceLabel);
         priceLabel.setBounds(630, 320, 42, 17);
 
-        typeLabel.setText("jLabel3");
+        typeLabel.setText("Type: " + product.getGaugeType());
         jPanel1.add(typeLabel);
         typeLabel.setBounds(630, 350, 42, 17);
 
@@ -307,7 +311,7 @@ public class ProductDetails extends javax.swing.JFrame {
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         // TODO If there is already a order, then just add a orderline
         Order order = new Order(currentUser);
-        OrderLine orderLine = new OrderLine(trainSet.getProductCode(), quantity, trainSet.getRetailPrice(), order.getOrderNumber());
+        OrderLine orderLine = new OrderLine(product.getProductCode(), quantity, product.getRetailPrice(), order.getOrderNumber());
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
         orderDao.addOrderLine(orderLine);
