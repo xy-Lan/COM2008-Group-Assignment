@@ -18,6 +18,7 @@ public class StaffDashboard extends javax.swing.JFrame {
      */
     public StaffDashboard() {
         initComponents();
+        loadData();
     }
 
     /**
@@ -461,7 +462,46 @@ public class StaffDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnListCustomers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCustomers1ActionPerformed
-        // TODO add your handling code here:
+        // Code to list customers in a table
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email");
+        model.addColumn("House Number");
+        model.addColumn("Postcode");
+        model.addColumn("Role");
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role = 'CUSTOMER'");
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[7];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getString("house_number");
+                row[5] = rs.getString("postcode");
+                row[6] = rs.getString("role");
+                model.addRow(row);
+            }
+
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+        
     }//GEN-LAST:event_btnListCustomers1ActionPerformed
 
     private void btnAddProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct1ActionPerformed
