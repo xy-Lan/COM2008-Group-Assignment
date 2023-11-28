@@ -4,6 +4,12 @@
  */
 package project.gui;
 
+import javax.swing.table.DefaultTableModel;
+
+import project.model.user.Role;
+
+import java.sql.*;
+
 /**
  *
  * @author linyu
@@ -15,9 +21,47 @@ public class ManagerDashboard extends javax.swing.JFrame {
      */
     public ManagerDashboard() {
         initComponents();
+        loadManagerData();
     }
 
-
+    private void loadManagerData(){
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email Address");
+        model.addColumn("House Number");
+        model.addColumn("Post Code");
+        model.addColumn("Role");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users`");
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[7];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getInt("house_number");
+                row[5] = rs.getString("post_code");
+                row[6] = rs.getString("role");
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,9 +89,17 @@ public class ManagerDashboard extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         btnStaff = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        choice1 = new java.awt.Choice();
+        label1 = new java.awt.Label();
+        button1 = new java.awt.Button();
+        button2 = new java.awt.Button();
+        button3 = new java.awt.Button();
+        button4 = new java.awt.Button();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -255,40 +307,38 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel6.setBackground(new java.awt.Color(24, 150, 62));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 40, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(401, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 126, Short.MAX_VALUE))
         );
 
         jScrollPane3.setViewportView(jPanel5);
 
         jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(320, 280, 630, 500);
+        jScrollPane3.setBounds(320, 280, 630, 430);
 
         btnStaff.setBackground(new java.awt.Color(0, 102, 0));
         btnStaff.setForeground(new java.awt.Color(204, 204, 204));
@@ -300,7 +350,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnStaff);
-        btnStaff.setBounds(840, 10, 130, 17);
+        btnStaff.setBounds(840, 10, 130, 16);
 
         btnUser.setBackground(new java.awt.Color(0, 102, 0));
         btnUser.setForeground(new java.awt.Color(204, 204, 204));
@@ -312,10 +362,58 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 50, 150, 17);
+        btnUser.setBounds(840, 50, 150, 16);
+
+        jTextField1.setText("User ID");
+        jPanel1.add(jTextField1);
+        jTextField1.setBounds(530, 720, 180, 22);
+        jPanel1.add(choice1);
+        choice1.setBounds(720, 720, 60, 20);
+
+        label1.setText("Change User Role:");
+        jPanel1.add(label1);
+        label1.setBounds(420, 720, 110, 20);
+
+        button1.setActionCommand("Confirm");
+        button1.setBackground(new java.awt.Color(0, 102, 0));
+        button1.setForeground(new java.awt.Color(255, 255, 255));
+        button1.setLabel("Confirm");
+        jPanel1.add(button1);
+        button1.setBounds(790, 720, 58, 24);
+
+        button2.setActionCommand("Confirm");
+        button2.setBackground(new java.awt.Color(0, 102, 0));
+        button2.setForeground(new java.awt.Color(255, 255, 255));
+        button2.setLabel("All");
+        jPanel1.add(button2);
+        button2.setBounds(340, 250, 50, 20);
+
+        button3.setActionCommand("Confirm");
+        button3.setBackground(new java.awt.Color(0, 102, 0));
+        button3.setForeground(new java.awt.Color(255, 255, 255));
+        button3.setLabel("Staff");
+        button3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(button3);
+        button3.setBounds(410, 250, 50, 20);
+
+        button4.setActionCommand("Confirm");
+        button4.setBackground(new java.awt.Color(0, 102, 0));
+        button4.setForeground(new java.awt.Color(255, 255, 255));
+        button4.setLabel("Managers");
+        button4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(button4);
+        button4.setBounds(480, 250, 60, 20);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 1000, 800);
+        jPanel1.setBounds(-110, -70, 1000, 800);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -382,7 +480,139 @@ public class ManagerDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void button1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1
+        // Get the selected role from choice1
+        String selectedRole = choice1.getSelectedItem();
+    
+        // Get the user_id from the text area
+        String userId = jTextField1.getText();
+    
+        // Validate user_id and selectedRole
+        if (userId.isEmpty() || selectedRole == null || selectedRole.isEmpty()) {
+            // Handle the case where user_id or selectedRole is empty
+            // (show an error message, log, etc.)
+            return;
+        }
+    
+        // SQL query to update the role in the users table
+        String updateQuery = "UPDATE users SET role = ? WHERE user_id = ?";
+    
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            PreparedStatement pstmt = con.prepareStatement(updateQuery);
+        ) {
+            // Set parameters for the prepared statement
+            pstmt.setString(1, selectedRole);
+            pstmt.setString(2, userId);
+    
+            // Execute the update
+            int rowsAffected = pstmt.executeUpdate();
+    
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                // Reload manager data to update the table
+                loadManagerData();
+                System.out.println("User role updated successfully.");
+            } else {
+                System.out.println("Failed to update user role.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }//GEN-LAST:event_button1
 
+    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button4ActionPerformed
+
+    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button3ActionPerformed
+
+    private void defaultTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTable
+        loadManagerData();
+    }//GEN-LAST:event_defaultTable
+
+    private void staffTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffTable
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email Address");
+        model.addColumn("House Number");
+        model.addColumn("Post Code");
+        model.addColumn("Role");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users` WHERE `role` = 'staff'");
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[7];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getInt("house_number");
+                row[5] = rs.getString("post_code");
+                row[6] = rs.getString("role");
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }//GEN-LAST:event_staffTable
+
+    private void managerTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_managerTable
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email Address");
+        model.addColumn("House Number");
+        model.addColumn("Post Code");
+        model.addColumn("Role");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users` WHERE `role` = 'manager'");
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[7];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getInt("house_number");
+                row[5] = rs.getString("post_code");
+                row[6] = rs.getString("role");
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }//GEN-LAST:event_managerTable
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnLocomotives;
@@ -395,14 +625,22 @@ public class ManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets;
     private javax.swing.JButton btnUser;
+    private java.awt.Button button1;
+    private java.awt.Button button2;
+    private java.awt.Button button3;
+    private java.awt.Button button4;
+    private java.awt.Choice choice1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private java.awt.Label label1;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
