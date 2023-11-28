@@ -114,7 +114,7 @@ public class OrderService {
 		orderLine.setOrderNumber(orderNumber);
 
         //Set the order number on the order line
-		orderDao.addOrderLine(orderLine);
+		orderLineDao.addOrderLine(orderLine);
 
 	}
 

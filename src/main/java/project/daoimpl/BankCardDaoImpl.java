@@ -102,7 +102,7 @@ public class BankCardDaoImpl implements BankCardDao {
         bankCard.setCardNumber(rs.getString("card_number"));
         bankCard.setExpiryMonth(rs.getInt("expiry_month"));
         bankCard.setExpiryYear(rs.getInt("expiry_year"));
-        bankCard.setSecurityCode(rs.getString("security_code"));
+
 
         return bankCard;
     }

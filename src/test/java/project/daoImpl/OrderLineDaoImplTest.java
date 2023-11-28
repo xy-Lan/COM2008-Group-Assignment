@@ -34,18 +34,18 @@ public class OrderLineDaoImplTest {
 //    test has been successful
 //    @Test
 //    void testGetOrderLine() {
-//        // 定义测试用的 orderNumber 和 productCode
-//        int testOrderNumber = 123; // 这些值应该与您插入的测试数据匹配
+//
+//        int testOrderNumber = 123;
 //        String testProductCode = "testProductCode";
 //
-//        // 执行测试
+//
 //        OrderLine result = orderLineDao.getOrderLine(testOrderNumber, testProductCode);
 //
-//        // 验证结果
+//
 //        assertNotNull(result);
 //        assertEquals(testProductCode, result.getProductCode());
 //        assertEquals(testOrderNumber, result.getOrderNumber());
-//        // 还可以验证其他字段，如 quantity 和 lineCost
+//
 //    }
 //@Test
 //void testUpdateOrderLine() {
@@ -58,4 +58,14 @@ public class OrderLineDaoImplTest {
 //    assertNotNull(retrievedOrderLine, "OrderLine should not be null");
 //    assertEquals(3, retrievedOrderLine.getQuantity(), "Quantity should be updated to 2");
 //}
+
+//     test has been successful
+//    @Test
+//    void testDeleteOrderLine() {
+//        int testOrderNumber = 123;
+//        String testProductCode = "testProductCode";
+//
+//        orderLineDao.deleteOrderLine(testOrderNumber, testProductCode);
+//
+//    }
 }

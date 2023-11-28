@@ -48,6 +48,7 @@ public class BankCard {
 
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = EncryptionUtils.encrypt(cardNumber);
+		System.out.println(cardNumber);
 	}
 
 	public Integer getExpiryMonth() {
