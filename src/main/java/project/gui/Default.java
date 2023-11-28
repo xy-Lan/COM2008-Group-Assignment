@@ -372,7 +372,11 @@ public class Default extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMyDetailsActionPerformed
 
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
+        RecentOrders RecentOrdersFrame = new RecentOrders();
+        RecentOrdersFrame.setVisible(true);
+        RecentOrdersFrame.pack();
+        RecentOrdersFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed

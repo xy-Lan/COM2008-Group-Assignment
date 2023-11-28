@@ -5,12 +5,18 @@
 package project.gui;
 
 import project.dao.OrderDao;
+import project.dao.OrderLineDao;
+import project.dao.ProductDao;
 import project.daoimpl.OrderDaoImpl;
+import project.daoimpl.OrderLineDaoImpl;
+import project.daoimpl.ProductDaoImpl;
 import project.gui.Default;
 import project.model.order.Order;
 import project.model.order.OrderLine;
+import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MysqlService;
+import project.service.OrderService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -197,13 +203,16 @@ public class RecentOrders extends javax.swing.JFrame {
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
+        OrderService orderService = new OrderService(orderDao);
+        OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
         List<Order> allOrders = orderDao.getOrdersByUserId(currentUser.getUserID());
         orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
         orderContainer.add(Box.createVerticalStrut(15));
+        //Get recent orders except pending orders
         for (Order order: allOrders) {
-//            List<OrderLine> allOrderLines = order.getOrderLines();
-            JPanel orderLinePanel = new JPanel();
-            orderLinePanel.setLayout(new GridBagLayout());
+            List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+            JPanel orderPanel = new JPanel();
+            orderPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.anchor = GridBagConstraints.CENTER;
@@ -212,6 +221,7 @@ public class RecentOrders extends javax.swing.JFrame {
             JLabel lblStatus = new JLabel("Status: " + order.getOrderStatus().toString());
             JLabel lblDate = new JLabel(order.getDate().toString());
             JLabel lblOrderNum = new JLabel("Order number: " + Integer.toString(order.getOrderNumber()));
+            JLabel lblTotalCosts = new JLabel("Total: " + orderService.calculateTotal(order).toString());
 
             orderContainer.setBackground(new java.awt.Color(24, 150, 62));
 
@@ -220,15 +230,51 @@ public class RecentOrders extends javax.swing.JFrame {
             lblDate.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12));
             lblOrderNum.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12));
             lblOrderNum.setForeground(new java.awt.Color(160, 160, 160));
+            lblTotalCosts.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12));
 
-            orderLinePanel.add(lblStatus, gbc);
-            orderLinePanel.add(lblDate, gbc);
-            orderLinePanel.add(lblOrderNum, gbc);
+            orderPanel.add(lblStatus, gbc);
+            orderPanel.add(lblDate, gbc);
+            orderPanel.add(lblOrderNum, gbc);
+            orderPanel.add(lblTotalCosts, gbc);
+
+            //Display ordered products
+            for(OrderLine orderLine : allOrderLines){
+                ProductDao productDao = new ProductDaoImpl(mysqlService);
+                Product product = productDao.getProduct(orderLine.getProductCode());
+
+                //Display the order line
+                JPanel productPanel = new JPanel();
+                productPanel.setLayout(new GridBagLayout());
+
+                JLabel lblName = new JLabel(product.getProductName());
+                JLabel lblPrice = new JLabel("Price: " + product.getRetailPrice() + " £");
+                JButton btnViewDetails = new JButton("View details");
+
+                productPanel.setBackground(new java.awt.Color(104, 152, 118));
+                lblName.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
+                lblName.setForeground(new java.awt.Color(255, 255, 255));
+                lblPrice.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+                lblPrice.setForeground(new java.awt.Color(255, 255, 255));
+
+                productPanel.add(lblName,gbc);
+                productPanel.add(lblPrice,gbc);
+                productPanel.add(btnViewDetails,gbc);
+
+                btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        viewProductDetails(product);
+                    }
+                });
+            }
         }
     }
 
-    private void loadOrderLines(Order order){
-        List<OrderLine> allOrderLines = order.getOrderLines();
+    private void viewProductDetails(Product product){
+        ProductDetails ProductDetailsFrame = new ProductDetails(product);
+        ProductDetailsFrame.setVisible(true);
+        ProductDetailsFrame.pack();
+        ProductDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
     }
 
 
