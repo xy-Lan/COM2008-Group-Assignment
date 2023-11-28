@@ -99,6 +99,29 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
+    public Optional<Order> getPendingOrderByUserId(int userId) {
+        String sql = "SELECT * FROM orders WHERE user_id = ? AND status = 'PENDING'";
+        try (Connection conn = mysqlService.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(userId);
+                    Order order = Order.fromResultSet(rs,user);
+
+                    return Optional.of(order);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getPendingOrderByUserId method:Database operation failed", e);
+            throw new RuntimeException("Error accessing the database", e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id";

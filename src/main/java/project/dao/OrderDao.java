@@ -14,6 +14,8 @@ public interface OrderDao {
     // Retrieves an order by its order number from the database
     Optional<Order> getOrderById(int orderNumber);
 
+    Optional<Order> getPendingOrderByUserId(int userId);
+
     // Retrieves all orders from the database
     List<Order> getAllOrders();
 

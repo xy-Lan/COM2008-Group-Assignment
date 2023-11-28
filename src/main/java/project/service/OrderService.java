@@ -1,11 +1,18 @@
 package project.service;
 
 import project.dao.OrderDao;
+import project.dao.OrderLineDao;
+import project.dao.ProductDao;
 import project.dao.UserDao;
+import project.daoimpl.OrderDaoImpl;
+import project.daoimpl.OrderLineDaoImpl;
+import project.daoimpl.ProductDaoImpl;
+import project.daoimpl.UserDaoImpl;
 import project.exceptions.OrderCreationException;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.order.OrderStatus;
+import project.model.product.abstractproduct.Product;
 import project.model.user.Role;
 import project.model.user.User;
 
@@ -22,10 +29,11 @@ public class OrderService {
 	private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
 	private List<Order> orders; // For managing multiple orders
-
-    private OrderDao orderDao;
-	private UserDao userDao;
-
+    MysqlService mysqlService = new MysqlService();
+    private OrderDao orderDao = new OrderDaoImpl(mysqlService);
+	private UserDao userDao = new UserDaoImpl(mysqlService);
+	private ProductDao productDao = new ProductDaoImpl(mysqlService);
+	private OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
 	public OrderService(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
@@ -63,6 +71,30 @@ public class OrderService {
 		}
 	}
 
+    public Order addToBasket(int userId, String productCode, int quantity) {
+        //Retrieve or create an order
+		Optional<Order> existingOrder = orderDao.getPendingOrderByUserId(userId);
+		Order order;
+		User user = new User(userId);
+		if (existingOrder.isPresent()) {
+			order = existingOrder.get();
+		} else {
+			order = createOrder(user);
+		}
+
+        //Access to commodity information and costs
+		Product product = productDao.getProduct(productCode);
+		BigDecimal lineCost = product.getRetailPrice().multiply(new BigDecimal(quantity));
+
+		// Add products to the order
+		OrderLine orderLine = new OrderLine(productCode, quantity, lineCost, order.getOrderNumber());
+
+		// Save the OrderLine to the database
+		addOrderLine(order.getOrderNumber(), orderLine);
+
+		return order;
+	}
+
 	/**
 	 * Adds an order line to an existing order.
 	 *
@@ -82,9 +114,31 @@ public class OrderService {
 		orderLine.setOrderNumber(orderNumber);
 
         //Set the order number on the order line
-		orderDao.addOrderLine(orderLine);
+		orderLineDao.addOrderLine(orderLine);
 
 	}
+
+	public void updateOrderLineQuantity(String productCode, int newQuantity, int orderNumber) {
+		// Retrieve the unit price of the product (assuming there's a method getProductPrice returning BigDecimal)
+		BigDecimal unitPrice = orderLineDao.getProductRetailPrice(productCode);
+
+		// Calculate the new lineCost
+		BigDecimal newLineCost = unitPrice.multiply(new BigDecimal(newQuantity));
+
+		// Create an OrderLine instance with the new quantity and calculated lineCost
+		OrderLine updatedOrderLine = new OrderLine(productCode, newQuantity, newLineCost, orderNumber);
+
+		// Call the dao layer method to update the database
+		try {
+			orderLineDao.updateOrderLine(updatedOrderLine);
+
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Unexpected error updating order line: " + e.getMessage(), e);
+
+			throw e;
+		}
+	}
+
 
 	/**
 	 * Removes an order line from an existing order.

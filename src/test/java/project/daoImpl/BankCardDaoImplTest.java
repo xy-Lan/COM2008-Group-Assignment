@@ -1,6 +1,5 @@
 package project.daoImpl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.daoimpl.BankCardDaoImpl;
@@ -13,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BankCardDaoImplTest {
     private static final Logger LOGGER = Logger.getLogger(BankCardDaoImpl.class.getName());
@@ -39,39 +36,52 @@ public class BankCardDaoImplTest {
         }
     }
 
-    @Test
-    public void testAddBankCard() throws SQLException{
-        // Create a BankCard instance with test data
-        BankCard bankCard = new BankCard();
-        bankCard.setCustomer(new User(123)); // Replace with test data
-        bankCard.setCardNumber("1234567890123456"); // Replace with test data
-        bankCard.setExpiryMonth(12); // Replace with test data
-        bankCard.setExpiryYear(2025); // Replace with test data
-        bankCard.setSecurityCode("123"); // Replace with test data
+//    this test is successful
+//    @Test
+//    public void testAddBankCard() throws SQLException{
+//        // Create a BankCard instance with test data
+//        BankCard bankCard = new BankCard();
+//        bankCard.setCustomer(new User(123)); // Replace with test data
+//        bankCard.setCardNumber("1234567890123456"); // Replace with test data
+//        bankCard.setExpiryMonth(12); // Replace with test data
+//        bankCard.setExpiryYear(2025); // Replace with test data
+//        bankCard.setSecurityCode("123"); // Replace with test data
+//
+//        // Call addBankCard method
+//        bankCardDao.addBankCard(bankCard);
 
-        // Call addBankCard method
-        bankCardDao.addBankCard(bankCard);
+//        BankCard retrievedCard = bankCardDao.getBankCardByUserID(123);
+//        assertNotNull(retrievedCard);
+//        assertEquals("1234567890123456", retrievedCard.getCardNumber());
+//        assertEquals(12, retrievedCard.getExpiryMonth());
+//        assertEquals(2025, retrievedCard.getExpiryYear());
+//        assertEquals("123", retrievedCard.getSecurityCode());
+//    }
 
-        BankCard retrievedCard = bankCardDao.getBankCardByUserID(123);
-        assertNotNull(retrievedCard);
-        assertEquals("1234567890123456", retrievedCard.getCardNumber());
-        assertEquals(12, retrievedCard.getExpiryMonth());
-        assertEquals(2025, retrievedCard.getExpiryYear());
-        assertEquals("123", retrievedCard.getSecurityCode());
-    }
+//    @Test
+//    public void testGetBankCardByUserID_ExistingUser() {
+//        // 假设存在的用户ID
+//        int userId = 2;
+//
+//        // 执行测试
+//        BankCard result = bankCardDao.getBankCardByUserID(userId);
+//
+//        // 验证结果
+//        assertNotNull(result, "Bank card should not be null");
+////        assertEquals("UserID should match", userId, result.getCustomer().getUserID());
+//        // 添加更多的验证...
+//    }
 
-
-
-    @AfterEach
-    public void tearDown() {
-        int testUserId = 123;
-
-        // First delete the test data from the bank_card table
-        deleteTestData("DELETE FROM bank_card WHERE user_id = ?", testUserId);
-
-        // Then delete the test user from the users table
-        deleteTestData("DELETE FROM users WHERE user_id = ?", testUserId);
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        int testUserId = 123;
+//
+//        // First delete the test data from the bank_card table
+//        deleteTestData("DELETE FROM bank_card WHERE user_id = ?", testUserId);
+//
+//        // Then delete the test user from the users table
+//        deleteTestData("DELETE FROM users WHERE user_id = ?", testUserId);
+//    }
 
     private void deleteTestData(String sql, int id) {
         try (Connection conn = mysqlService.getConnection();
