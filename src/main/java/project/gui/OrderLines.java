@@ -2,17 +2,33 @@
 package project.gui;
 
 
+import project.dao.InventoryDao;
 import project.dao.OrderDao;
+import project.dao.OrderLineDao;
+import project.dao.ProductDao;
+import project.daoimpl.InventoryDaoImpl;
 import project.daoimpl.OrderDaoImpl;
+import project.daoimpl.OrderLineDaoImpl;
+import project.daoimpl.ProductDaoImpl;
 import project.model.order.Order;
+import project.model.order.OrderLine;
 import project.model.product.*;
+import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MysqlService;
+import project.service.OrderService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
+
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 /**
  *
@@ -129,14 +145,98 @@ public class OrderLines extends javax.swing.JFrame {
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
-//        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
-//        //List all the pending orders and set the layout of the order panel
-//        orderContainer.removeAll();
-//        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
-//        orderContainer.add(Box.createVerticalStrut(15));
-//        if (optionalOrder.isPresent()) {
-//            Order order = optionalOrder.get();
-//        }
+        OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
+        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
+        //List all the pending orders and set the layout of the order panel
+        orderContainer.removeAll();
+        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
+        orderContainer.add(Box.createVerticalStrut(15));
+        if (optionalOrder.isPresent()) {
+            //Get the pending order
+            Order order = optionalOrder.get();
+            List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+
+            //Get all the product in the basket
+            for(OrderLine orderLine : allOrderLines){
+                ProductDao productDao = new ProductDaoImpl(mysqlService);
+                Product product = productDao.getProduct(orderLine.getProductCode());
+
+                //Display the order line
+                JPanel productPanel = new JPanel();
+                productPanel.setLayout(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                gbc.anchor = GridBagConstraints.CENTER;
+                gbc.insets = new Insets(10,20,10,20);
+
+                //Init component in product panel
+                JLabel lblName = new JLabel(product.getProductName());
+                JLabel lblPrice = new JLabel("Price: " + product.getRetailPrice() + " £");
+                JLabel defaultImage = new JLabel();
+                JButton btnViewDetails = new JButton("View details");
+                JButton btnRemove = new JButton("Remove");
+                JSpinner quantityVal = new JSpinner();
+
+                quantityVal.setModel(new SpinnerNumberModel(orderLine.getQuantity().intValue(), 0, Integer.MAX_VALUE, 1));
+                //Set layout
+                productPanel.setBackground(new java.awt.Color(24, 150, 62));
+
+                lblName.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
+                lblName.setForeground(new java.awt.Color(20, 55, 196));
+
+                lblPrice.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+                lblPrice.setForeground(new java.awt.Color(255, 255, 255));
+
+//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
+//            ImageIcon imageIcon = new ImageIcon(imageUrl);
+//
+//            defaultImage.setIcon(imageIcon); // NOI18N
+
+                productPanel.add(defaultImage, gbc);
+                productPanel.add(lblName, gbc);
+                productPanel.add(lblPrice, gbc);
+                productPanel.add(btnViewDetails, gbc);
+                productPanel.add(quantityVal, gbc);
+                productPanel.add(btnRemove, gbc);
+
+
+                btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        viewProductDetails(product);
+                    }
+                });
+
+                quantityVal.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        //Once the quantity is changed, update the order line
+                        orderLine.setQuantity((Integer)quantityVal.getValue());
+                        orderLineDao.updateOrderLine(orderLine);
+                        System.out.println("Quantity changed");
+                        System.out.println("Updated the order line");
+                    }
+                });
+
+                btnRemove.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        orderLineDao.deleteOrderLine(orderLine.getOrderNumber(), orderLine.getProductCode());
+                    }
+                });
+
+                orderContainer.add(productPanel);
+                orderContainer.add(Box.createVerticalStrut(20));
+            }
+        }
+    }
+
+    private void viewProductDetails(Product product){
+//        new ProductDetails(productCode, price);
+        ProductDetails ProductDetailsFrame = new ProductDetails(product);
+        ProductDetailsFrame.setVisible(true);
+        ProductDetailsFrame.pack();
+        ProductDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
     }
 
 
