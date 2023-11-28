@@ -274,6 +274,17 @@ public class Default extends javax.swing.JFrame {
         scrollPanel.setBackground(new java.awt.Color(255, 255, 255));
         scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+        productContainer.setLayout(productContainerLayout);
+        productContainerLayout.setHorizontalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 686, Short.MAX_VALUE)
+        );
+        productContainerLayout.setVerticalGroup(
+            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 515, Short.MAX_VALUE)
+        );
+
         scrollPanel.setViewportView(productContainer);
 
         jPanel1.add(scrollPanel);
@@ -429,7 +440,7 @@ public class Default extends javax.swing.JFrame {
             gbc.insets = new Insets(10,20,10,20);
 
             JLabel nameLabel = new JLabel(product.getProductName());
-            JLabel priceLabel = new JLabel("Price: " + product.getRetailPrice());
+            JLabel priceLabel = new JLabel("Price: " + product.getRetailPrice() + " £");
             JLabel defaultImage = new JLabel();
             JButton btnViewDetails = new JButton("View details");
             JButton btnAddOrderLine = new JButton("Add to basket");

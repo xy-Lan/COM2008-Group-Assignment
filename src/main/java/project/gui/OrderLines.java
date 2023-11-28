@@ -2,11 +2,17 @@
 package project.gui;
 
 
+import project.dao.OrderDao;
+import project.daoimpl.OrderDaoImpl;
+import project.model.order.Order;
 import project.model.product.*;
+import project.model.user.User;
+import project.service.MysqlService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -19,6 +25,7 @@ public class OrderLines extends javax.swing.JFrame {
      */
     public OrderLines() {
         initComponents();
+        loadPendingOrders();
     }
     
     
@@ -36,7 +43,7 @@ public class OrderLines extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel5 = new javax.swing.JPanel();
+        orderContainer = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         btnCheckOut = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
@@ -58,18 +65,18 @@ public class OrderLines extends javax.swing.JFrame {
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout orderContainerLayout = new javax.swing.GroupLayout(orderContainer);
+        orderContainer.setLayout(orderContainerLayout);
+        orderContainerLayout.setHorizontalGroup(
+            orderContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 668, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        orderContainerLayout.setVerticalGroup(
+            orderContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 538, Short.MAX_VALUE)
         );
 
-        jScrollPane3.setViewportView(jPanel5);
+        jScrollPane3.setViewportView(orderContainer);
 
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(30, 90, 370, 430);
@@ -118,15 +125,29 @@ public class OrderLines extends javax.swing.JFrame {
         CheckOutFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
+    private void loadPendingOrders(){
+        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+        MysqlService mysqlService = new MysqlService();
+        OrderDao orderDao = new OrderDaoImpl(mysqlService);
+//        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
+//        //List all the pending orders and set the layout of the order panel
+//        orderContainer.removeAll();
+//        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
+//        orderContainer.add(Box.createVerticalStrut(15));
+//        if (optionalOrder.isPresent()) {
+//            Order order = optionalOrder.get();
+//        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCheckOut;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel orderContainer;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
