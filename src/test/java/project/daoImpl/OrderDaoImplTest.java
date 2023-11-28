@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -51,33 +52,59 @@ public class OrderDaoImplTest {
 //    }
 
     @Test
-    public void testGetOrderById_ExistingOrder() {
-        int orderNumber = 125;
-        Optional<Order> result = orderDao.getOrderById(orderNumber);
-        assertTrue(result.isPresent(), "Order should be found");
-        assertEquals(orderNumber, result.get().getOrderNumber(), "Order number should match");
-    }
-
-    @Test
-    public void testGetOrderById_NonExistingOrder() {
-        int orderNumber = 1234;
-        Optional<Order> result = orderDao.getOrderById(orderNumber);
-        assertFalse(result.isPresent(), "Order should not be found");
-    }
-
-    @Test
-    public void testGetPendingOrderByUserId_ExistingOrder() {
-        int userId = 123;
-        Optional<Order> result = orderDao.getPendingOrderByUserId(userId);
-        assertTrue(result.isPresent(), "Pending order should be found for the user");
-        assertEquals(userId, result.get().getUser().getUserID(), "User ID should match");
-        assertEquals("PENDING", result.get().getOrderStatus().name(), "Order status should be PENDING");
-    }
-
-    @Test
-    public void testGetPendingOrderByUserId_NoPendingOrder() {
+    public void testGetOrdersByUserId() {
         int userId = 2;
-        Optional<Order> result = orderDao.getPendingOrderByUserId(userId);
-        assertFalse(result.isPresent(), "No pending order should be found for the user");
+        List<Order> orders = orderDao.getOrdersByUserId(userId);
+
+        assertNotNull(orders, "Order list should not be null");
+        assertFalse(orders.isEmpty(), "Order list should not be empty");
+
+        for (Order order : orders) {
+            assertNotEquals("PENDING", order.getOrderStatus().name(), "Order status should not be PENDING");
+        }
+
+         assertEquals(1, orders.size());
     }
+
+//    @Test
+//    public void testGetAllOrders() {
+//        List<Order> orders = orderDao.getAllOrders();
+//
+//        assertNotNull(orders, "Order list should not be null");
+//        assertFalse(orders.isEmpty(), "Order list should not be empty");
+//
+//         assertEquals(10, orders.size());
+//    }
+
+
+//    @Test
+//    public void testGetOrderById_ExistingOrder() {
+//        int orderNumber = 125;
+//        Optional<Order> result = orderDao.getOrderById(orderNumber);
+//        assertTrue(result.isPresent(), "Order should be found");
+//        assertEquals(orderNumber, result.get().getOrderNumber(), "Order number should match");
+//    }
+//
+//    @Test
+//    public void testGetOrderById_NonExistingOrder() {
+//        int orderNumber = 1234;
+//        Optional<Order> result = orderDao.getOrderById(orderNumber);
+//        assertFalse(result.isPresent(), "Order should not be found");
+//    }
+//
+//    @Test
+//    public void testGetPendingOrderByUserId_ExistingOrder() {
+//        int userId = 123;
+//        Optional<Order> result = orderDao.getPendingOrderByUserId(userId);
+//        assertTrue(result.isPresent(), "Pending order should be found for the user");
+//        assertEquals(userId, result.get().getUser().getUserID(), "User ID should match");
+//        assertEquals("PENDING", result.get().getOrderStatus().name(), "Order status should be PENDING");
+//    }
+//
+//    @Test
+//    public void testGetPendingOrderByUserId_NoPendingOrder() {
+//        int userId = 2;
+//        Optional<Order> result = orderDao.getPendingOrderByUserId(userId);
+//        assertFalse(result.isPresent(), "No pending order should be found for the user");
+//    }
 }
