@@ -78,15 +78,15 @@ public class OrderDaoImpl implements OrderDao{
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-//                t("order_number");int orderNumber = resultSet.getIn
+
                 int userID = resultSet.getInt("user_id");
                 // Get user from userDao
                 Optional<User> user = userDao.getUserById(userID);
                 
                 /*Create a new Order object containing the User object obtained from userDao (if it exists), otherwise
                  an IllegalArgumentException will be thrown*/
-                Order order = new Order(user.orElseThrow(() -> new IllegalArgumentException("User email is required"))); 
-                order.setOrderNumber(orderNumber);
+                Order order = Order.fromResultSet(resultSet, user.orElseThrow(() -> new IllegalArgumentException("User not found")));
+
                 return Optional.of(order);
             }
         } catch (SQLException e) {
@@ -148,7 +148,7 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public void updateOrderStatus(Order order) {
-        String sql = "UPDATE orders SET status = ? WHERE order_number = ?";
+        String sql = "UPDATE orders SET order_status = ? WHERE order_number = ?";
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -192,6 +192,7 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
+    // Excluding orders with a status of PENDING
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ? AND o.order_status <> 'PENDING'";
