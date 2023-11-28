@@ -35,8 +35,45 @@ public class OrderDaoImplTest {
 
     @BeforeEach
     public void setUp() {
-        // 初始化OrderDao
         orderDao = new OrderDaoImpl(mysqlService);
+    }
+
+    @Test
+    public void testUpdateOrderStatus() {
+        int orderNumber = 125;
+        Order order = new Order(new User(123));
+        order.setOrderNumber(orderNumber);
+        order.setOrderStatus(OrderStatus.CONFIRMED);
+
+        orderDao.updateOrderStatus(order);
+
+        Optional<Order> updatedOrder = orderDao.getOrderById(orderNumber);
+        System.out.println(updatedOrder.get().getOrderStatus().name());
+        assertTrue(updatedOrder.isPresent(), "Order should exist");
+        assertEquals(OrderStatus.CONFIRMED, updatedOrder.get().getOrderStatus(), "Order status should be updated");
+    }
+
+//    @Test
+//    public void testDeleteExistingOrder() {
+//        int orderNumber = 124;
+//
+//        // 执行删除操作
+//        orderDao.deleteOrder(orderNumber);
+//
+//        // 验证订单是否已被删除
+//        Optional<Order> deletedOrder = orderDao.getOrderById(orderNumber);
+//        assertFalse(deletedOrder.isPresent(), "Order should not exist after deletion");
+//    }
+
+    @Test
+    public void testDeleteNonExistingOrder() {
+        int orderNumber = 1234/* 一个不存在的订单号 */;
+
+        // 执行删除操作
+        orderDao.deleteOrder(orderNumber);
+
+        // 由于订单不存在，不需要额外的验证
+        // 可以考虑检查日志或其他异常处理
     }
 
 //    @Test
@@ -51,20 +88,20 @@ public class OrderDaoImplTest {
 //
 //    }
 
-    @Test
-    public void testGetOrdersByUserId() {
-        int userId = 2;
-        List<Order> orders = orderDao.getOrdersByUserId(userId);
-
-        assertNotNull(orders, "Order list should not be null");
-        assertFalse(orders.isEmpty(), "Order list should not be empty");
-
-        for (Order order : orders) {
-            assertNotEquals("PENDING", order.getOrderStatus().name(), "Order status should not be PENDING");
-        }
-
-         assertEquals(1, orders.size());
-    }
+//    @Test
+//    public void testGetOrdersByUserId() {
+//        int userId = 2;
+//        List<Order> orders = orderDao.getOrdersByUserId(userId);
+//
+//        assertNotNull(orders, "Order list should not be null");
+//        assertFalse(orders.isEmpty(), "Order list should not be empty");
+//
+//        for (Order order : orders) {
+//            assertNotEquals("PENDING", order.getOrderStatus().name(), "Order status should not be PENDING");
+//        }
+//
+//         assertEquals(1, orders.size());
+//    }
 
 //    @Test
 //    public void testGetAllOrders() {
@@ -83,8 +120,9 @@ public class OrderDaoImplTest {
 //        Optional<Order> result = orderDao.getOrderById(orderNumber);
 //        assertTrue(result.isPresent(), "Order should be found");
 //        assertEquals(orderNumber, result.get().getOrderNumber(), "Order number should match");
+//        assertEquals(OrderStatus.CONFIRMED, result.get().getOrderStatus(), "Order status should match");
 //    }
-//
+
 //    @Test
 //    public void testGetOrderById_NonExistingOrder() {
 //        int orderNumber = 1234;

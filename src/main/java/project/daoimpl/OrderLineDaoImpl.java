@@ -1,11 +1,13 @@
 package project.daoimpl;
 
 import project.dao.OrderLineDao;
+import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.service.MysqlService;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,11 +67,33 @@ public class OrderLineDaoImpl implements OrderLineDao {
         return null;
     }
 
-
     @Override
-    public List<OrderLine> getAllOrderLines() {
-        // Implement logic to retrieve all order lines from the database
-        return null;
+    public List<OrderLine> getAllOrderLines(int orderNumber) {
+        List<OrderLine> orderLines = new ArrayList<>();
+        String query = "SELECT * FROM orderline WHERE order_number = ?";
+
+        try (Connection connection = mysqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, orderNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    String productCode = resultSet.getString("product_code");
+                    int quantity = resultSet.getInt("quantity");
+                    BigDecimal linecost = resultSet.getBigDecimal("linecost");
+
+                    OrderLine orderLine = new OrderLine(productCode, quantity, linecost, orderNumber);
+                    orderLines.add(orderLine);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving order lines for order number: " + orderNumber, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return orderLines;
     }
 
     @Override
