@@ -21,35 +21,35 @@ public class UserService {
 	}
 
 	// Register a new user
-    public User signUp(String email, String password) {
-		// Hash the plaintext password
-		String hashedPassword = PasswordEncryption.hashPassword(password);
-
-		try {
-			// Create a new User object
-			User newUser = new User(email);
-			newUser.setPasswordHash(hashedPassword);
-			// Set additional user attributes as needed
-
-			// Add user to the database and get generated user ID
-			int userId = userDao.addUser(newUser);
-			if (userId == 0) {
-				throw new SQLException("Failed to create user.");
-			}
-
-			// Add hashed password associated with the user
-			userDao.addUserPasswordHash(userId, hashedPassword);
-
-			// Set the user ID of the newUser object
-			newUser.setUserID(userId);
-
-			return newUser;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			// Handle or log the exception as appropriate
-			return null;
-		}
-    }
+//    public User signUp(String email, String password) {
+//		// Hash the plaintext password
+//		String hashedPassword = PasswordEncryption.hashPassword(password);
+//
+//		try {
+//			// Create a new User object
+//			User newUser = new User(email);
+//			newUser.setPasswordHash(hashedPassword);
+//			// Set additional user attributes as needed
+//
+//			// Add user to the database and get generated user ID
+//			int userId = userDao.addUser(newUser);
+//			if (userId == 0) {
+//				throw new SQLException("Failed to create user.");
+//			}
+//
+//			// Add hashed password associated with the user
+//			userDao.addUserPasswordHash(userId, hashedPassword);
+//
+//			// Set the user ID of the newUser object
+//			newUser.setUserID(userId);
+//
+//			return newUser;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			// Handle or log the exception as appropriate
+//			return null;
+//		}
+//    }
 
     // User login
     public boolean loginUser(String email, String password) {

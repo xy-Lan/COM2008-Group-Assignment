@@ -26,7 +26,6 @@ import project.service.MysqlService;
 @ExtendWith(MockitoExtension.class)
 public class OrderDaoImplTest {
 
-
     private MysqlService mysqlService = new MysqlService();
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;

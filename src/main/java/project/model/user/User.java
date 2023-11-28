@@ -18,6 +18,10 @@ public class User {
 	private String email;
 	private String passwordHash;
 	private int userID;
+	private String forename;
+	private String surname;
+	private String houseNumber;
+	private String postCode;
 	// Used only when the user is Staff
 	private List<Inventory> inventories = new ArrayList<>();
 	// Used only when the user is Customer
@@ -46,6 +50,15 @@ public class User {
 		return user;
 	}
 
+	public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+		preparedStatement.setString(1, this.getEmail());
+		preparedStatement.setString(2, this.getForename());
+		preparedStatement.setString(3, this.getSurname());
+		preparedStatement.setString(4, this.getHouseNumber());
+		preparedStatement.setString(5, this.getPostCode());
+
+	}
+
 	public void setUserID(int id) {
 		userID = id;
 	}
@@ -66,8 +79,45 @@ public class User {
 		return passwordHash;
 	}
 
-	
+	// Getter and Setter for forename
+	public String getForename() {
+		return forename;
+	}
 
+	public void setForename(String forename) {
+		this.forename = forename;
+	}
+
+	// Getter and Setter for surname
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	// Getter and Setter for houseNumber
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	// Getter and Setter for postCode
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
