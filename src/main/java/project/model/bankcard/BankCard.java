@@ -6,8 +6,11 @@ import java.sql.SQLException;
 
 import project.model.user.*;
 import project.utils.EncryptionUtils;
+import java.util.logging.Logger;
+
 
 public class BankCard {
+	private static final Logger LOGGER = Logger.getLogger(BankCard.class.getName());
 
 	private User customer;
 	private String cardNumber;
@@ -17,10 +20,10 @@ public class BankCard {
 
 	public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
         stmt.setInt(1, this.getCustomer().getUserID()); 
-        stmt.setString(2, this.getCardNumber());       
+        stmt.setString(2, this.getEncryptedCardNumber());
         stmt.setInt(3, this.getExpiryMonth());         
         stmt.setInt(4, this.getExpiryYear());
-		stmt.setString(5, this.getSecurityCode());
+		stmt.setString(5, this.getEncryptedSecurityCode());
     }
 
 	 public static BankCard fromResultSet(ResultSet rs) throws SQLException {
@@ -48,8 +51,17 @@ public class BankCard {
 
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = EncryptionUtils.encrypt(cardNumber);
-		System.out.println(cardNumber);
+		System.out.println(this.cardNumber);
 	}
+
+	public String getEncryptedCardNumber() {
+		return this.cardNumber;
+	}
+
+	public String getEncryptedSecurityCode() {
+		return this.securityCode;
+	}
+
 
 	public Integer getExpiryMonth() {
 		return expiryMonth;
@@ -69,10 +81,13 @@ public class BankCard {
 
 	public void setSecurityCode(String securityCode) {
 		this.securityCode = EncryptionUtils.encrypt(securityCode);
+		System.out.println("Security code is "+EncryptionUtils.encrypt(securityCode));
 	}
 
 	public String getSecurityCode() {
+		LOGGER.info("Encrypted security code is " + this.securityCode);
 		String decryptedCode = EncryptionUtils.decrypt(this.securityCode);
+		LOGGER.info("Decrypted security code is " + decryptedCode);
         return decryptedCode;
 	}
 

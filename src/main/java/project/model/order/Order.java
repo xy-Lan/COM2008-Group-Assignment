@@ -27,7 +27,7 @@ public class Order {
     public static Order fromResultSet(ResultSet resultSet, User user) throws SQLException {
         int orderNumber = resultSet.getInt("order_number");
         Date date = resultSet.getDate("date");
-        OrderStatus orderStatus = OrderStatus.valueOf(resultSet.getString("status"));
+        OrderStatus orderStatus = OrderStatus.valueOf(resultSet.getString("order_status"));
 
         Order order = new Order(user);
         order.setOrderNumber(orderNumber);

@@ -2,5 +2,6 @@ package project.model.order;
 public enum OrderStatus {
 	PENDING,
     CONFIRMED,
-    FULFILLED
+    FULFILLED,
+    REFUSED
 }

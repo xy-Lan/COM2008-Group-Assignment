@@ -100,7 +100,7 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public Optional<Order> getPendingOrderByUserId(int userId) {
-        String sql = "SELECT * FROM orders WHERE user_id = ? AND status = 'PENDING'";
+        String sql = "SELECT * FROM orders WHERE user_id = ? AND order_status = 'PENDING'";
         try (Connection conn = mysqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -194,7 +194,7 @@ public class OrderDaoImpl implements OrderDao{
     @Override
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ?";
+        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ? AND o.order_status <> 'PENDING'";
 
         try (Connection connection = mysqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
