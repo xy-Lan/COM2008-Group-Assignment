@@ -53,7 +53,11 @@ public class StaffDashboard extends javax.swing.JFrame {
         btnAddProduct1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        btnAddProduct2 = new javax.swing.JButton();
+        btnAddProduct3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jSpinner1 = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -306,7 +310,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnPendingOrders);
-        btnPendingOrders.setBounds(760, 210, 140, 32);
+        btnPendingOrders.setBounds(760, 200, 140, 32);
 
         btnListCustomers1.setBackground(new java.awt.Color(0, 102, 0));
         btnListCustomers1.setForeground(new java.awt.Color(255, 255, 255));
@@ -318,11 +322,12 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnListCustomers1);
-        btnListCustomers1.setBounds(600, 210, 140, 32);
+        btnListCustomers1.setBounds(600, 200, 140, 32);
 
         btnAddProduct1.setBackground(new java.awt.Color(0, 102, 0));
         btnAddProduct1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddProduct1.setText("Add products");
+        btnAddProduct1.setText("Add Products");
+        btnAddProduct1.setActionCommand("bruh");
         btnAddProduct1.setBorder(null);
         btnAddProduct1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,7 +335,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAddProduct1);
-        btnAddProduct1.setBounds(440, 210, 140, 32);
+        btnAddProduct1.setBounds(440, 200, 140, 32);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -348,26 +353,54 @@ public class StaffDashboard extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(300, 280, 660, 500);
 
-        btnAddProduct2.setBackground(new java.awt.Color(0, 102, 0));
-        btnAddProduct2.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddProduct2.setText("Inventory View");
-        btnAddProduct2.setBorder(null);
-        btnAddProduct2.addActionListener(new java.awt.event.ActionListener() {
+        btnAddProduct3.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddProduct3.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddProduct3.setText("Inventory View");
+        btnAddProduct3.setBorder(null);
+        btnAddProduct3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddProduct2ActionPerformed(evt);
+                btnAddProduct3ActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddProduct2);
-        btnAddProduct2.setBounds(280, 210, 140, 32);
+        jPanel1.add(btnAddProduct3);
+        btnAddProduct3.setBounds(280, 200, 140, 32);
+
+        jLabel1.setText("Change Price:");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(300, 250, 80, 16);
+
+        jTextField1.setText("Product ID");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1);
+        jTextField1.setBounds(380, 250, 100, 22);
+        jPanel1.add(jSpinner1);
+        jSpinner1.setBounds(490, 250, 64, 22);
+
+        jButton1.setText("Confirm");
+        jPanel1.add(jButton1);
+        jButton1.setBounds(570, 250, 110, 23);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(60, 30, 1000, 800);
+        jPanel1.setBounds(0, 0, 1000, 800);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadData() {
-        DefaultTableModel model = new DefaultTableModel();
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
     
         // Add column headers
         model.addColumn("Product Code");
@@ -470,7 +503,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM orderline")
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderline WHERE linecost = 'CONFIRMED'")
         ){
             // Add rows to the model
             while (rs.next()) {
@@ -557,18 +590,56 @@ public class StaffDashboard extends javax.swing.JFrame {
         StockAdjustFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAddProduct1ActionPerformed
 
-    private void btnAddProduct2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct2ActionPerformed
+    private void btnAddProduct3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProduct3ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-        model.setColumnCount(0);
         loadData();
-    }//GEN-LAST:event_btnAddProduct2ActionPerformed
+    }//GEN-LAST:event_btnAddProduct3ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        // TODO add your handling code here:
+        String productID = jTextField1.getText();
+        int price = (int) jSpinner1.getValue();
+
+            // Check if the productID is not empty
+        if (productID.isEmpty()) {
+            return;
+        }
+
+        String updateQuery = "UPDATE product SET retail_price = ? WHERE product_code = ?";
+        
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");    
+        ) {
+
+            try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+                // Set parameters for the prepared statement
+                pstmt.setInt(1, price);  // Assuming quantity is a multiplier for the price
+                pstmt.setString(2, productID);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                // Check if the update was successful
+                if (rowsAffected > 0) {
+                    System.out.println("Price updated successfully.");
+                    loadData();
+                } else {
+                    System.out.println("Product not found or no rows affected.");
+                }
+            }
+        } catch (SQLException e) {
+            // Handle database-related exceptions (show an error message, log, etc.)
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_confirmButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct1;
-    private javax.swing.JButton btnAddProduct2;
+    private javax.swing.JButton btnAddProduct3;
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnListCustomers1;
@@ -583,13 +654,17 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets1;
     private javax.swing.JButton btnUser;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
