@@ -387,6 +387,11 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button2.setLabel("All");
         jPanel1.add(button2);
         button2.setBounds(340, 250, 50, 20);
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultTable(evt);
+            }
+        });
 
         button3.setActionCommand("Confirm");
         button3.setBackground(new java.awt.Color(0, 102, 0));
@@ -394,7 +399,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button3.setLabel("Staff");
         button3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button3ActionPerformed(evt);
+                staffTable(evt);
             }
         });
         jPanel1.add(button3);
@@ -406,14 +411,14 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button4.setLabel("Managers");
         button4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button4ActionPerformed(evt);
+                managerTable(evt);
             }
         });
         jPanel1.add(button4);
         button4.setBounds(480, 250, 60, 20);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(-110, -70, 1000, 800);
+        jPanel1.setBounds(0, 0, 1000, 800);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -521,14 +526,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
             // Handle the exception (log or show an error message)
         }
     }//GEN-LAST:event_button1
-
-    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button4ActionPerformed
-
-    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button3ActionPerformed
 
     private void defaultTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTable
         loadManagerData();
