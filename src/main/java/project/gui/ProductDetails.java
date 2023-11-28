@@ -8,6 +8,7 @@ import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MysqlService;
+import project.service.OrderService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -48,7 +49,6 @@ public class ProductDetails extends javax.swing.JFrame {
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         btnStaffInterface = new javax.swing.JButton();
@@ -59,7 +59,6 @@ public class ProductDetails extends javax.swing.JFrame {
         productCodeLabel = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
         quantityVal = new javax.swing.JSpinner();
-        priceLabel = new javax.swing.JLabel();
         typeLabel = new javax.swing.JLabel();
         btnBasket = new javax.swing.JButton();
         btnBack1 = new javax.swing.JButton();
@@ -144,17 +143,11 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 200, 800);
 
-        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel2.setText("Train sets");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(230, 50, 176, 47);
-
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Product name");
+        title.setText(product.getProductName());
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -162,8 +155,8 @@ public class ProductDetails extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(title)
-                .addContainerGap(603, Short.MAX_VALUE))
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(469, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +196,8 @@ public class ProductDetails extends javax.swing.JFrame {
         defaultImage.setBounds(270, 210, 240, 160);
 
         nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
-        nameLabel.setText(product.getProductName());
+        nameLabel.setForeground(new java.awt.Color(0, 102, 0));
+        nameLabel.setText("Price: "+product.getRetailPrice()+"£");
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 207, 320, 40);
 
@@ -212,7 +206,6 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(brandLabel);
         brandLabel.setBounds(630, 257, 330, 20);
 
-        productCodeLabel.setForeground(new java.awt.Color(204, 204, 204));
         productCodeLabel.setText("Type: " + product.getGaugeType());
         jPanel1.add(productCodeLabel);
         productCodeLabel.setBounds(630, 290, 310, 17);
@@ -234,17 +227,12 @@ public class ProductDetails extends javax.swing.JFrame {
 
         quantityVal.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         jPanel1.add(quantityVal);
-        quantityVal.setBounds(630, 420, 150, 40);
+        quantityVal.setBounds(770, 550, 150, 40);
 
-        priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
-        priceLabel.setForeground(new java.awt.Color(0, 102, 0));
-        priceLabel.setText("Price: " + product.getRetailPrice());
-        jPanel1.add(priceLabel);
-        priceLabel.setBounds(630, 320, 340, 19);
-
-        typeLabel.setText("Type: " + product.getGaugeType());
+        typeLabel.setForeground(new java.awt.Color(102, 102, 102));
+        typeLabel.setText("Product code: " + product.getProductCode());
         jPanel1.add(typeLabel);
-        typeLabel.setBounds(630, 350, 360, 17);
+        typeLabel.setBounds(630, 320, 360, 17);
 
         btnBasket.setBackground(new java.awt.Color(0, 102, 0));
         btnBasket.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -295,7 +283,11 @@ public class ProductDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMyDetailsActionPerformed
 
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
+        RecentOrders RecentOrdersFrame = new RecentOrders();
+        RecentOrdersFrame.setVisible(true);
+        RecentOrdersFrame.pack();
+        RecentOrdersFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void btnStaffInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffInterfaceActionPerformed
@@ -324,15 +316,13 @@ public class ProductDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnAddOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderLineActionPerformed
-        //Add a product to orderline
+        //Add a product to basket
         int quantity = (Integer) quantityVal.getValue();
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        // TODO If there is already a order, then just add a orderline
-        Order order = new Order(currentUser);
-        OrderLine orderLine = new OrderLine(product.getProductCode(), quantity, product.getRetailPrice(), order.getOrderNumber());
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
-        orderDao.addOrderLine(orderLine);
+        OrderService OrderService = new OrderService(orderDao);
+        OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
     private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
@@ -355,14 +345,12 @@ public class ProductDetails extends javax.swing.JFrame {
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnStaffInterface;
     private javax.swing.JLabel defaultImage;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JLabel nameLabel;
-    private javax.swing.JLabel priceLabel;
     private javax.swing.JLabel productCodeLabel;
     private javax.swing.JSpinner quantityVal;
     private javax.swing.JLabel title;

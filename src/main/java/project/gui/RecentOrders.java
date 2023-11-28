@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package gui;
+package project.gui;
 
 import project.gui.Default;
+import project.model.user.User;
+import project.utils.UserSessionManager;
 
 /**
  *
@@ -17,6 +19,7 @@ public class RecentOrders extends javax.swing.JFrame {
      */
     public RecentOrders() {
         initComponents();
+        loadRecentOrders();
     }
     
     
@@ -200,6 +203,10 @@ public class RecentOrders extends javax.swing.JFrame {
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
+
+    private void loadRecentOrders(){
+        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
