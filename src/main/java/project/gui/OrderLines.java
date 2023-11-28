@@ -136,6 +136,12 @@ public class OrderLines extends javax.swing.JFrame {
         orderContainer.add(Box.createVerticalStrut(15));
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
+
+            JLabel lblProductName = new JLabel();
+            JLabel lblPrice = new JLabel();
+            JSpinner quantityVal = new JSpinner();
+            JButton btnRemove = new JButton();
+            JButton btnViewDetails = new JButton();
         }
     }
 

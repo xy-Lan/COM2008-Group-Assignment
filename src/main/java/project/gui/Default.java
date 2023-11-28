@@ -8,7 +8,9 @@ import project.dao.*;
 import project.daoimpl.*;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
+import project.model.user.User;
 import project.service.MysqlService;
+import project.service.OrderService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -16,6 +18,8 @@ import java.awt.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
+
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 /**
  *
@@ -478,6 +482,20 @@ public class Default extends javax.swing.JFrame {
 
             btnAddOrderLine.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    int quantity = (Integer) quantityVal.getValue();
+                    User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+                    MysqlService mysqlService = new MysqlService();
+                    OrderDao orderDao = new OrderDaoImpl(mysqlService);
+                    OrderService OrderService = new OrderService(orderDao);
+                    InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
+                    int stock = inventoryDao.getStock(product.getProductCode());
+
+                    if ( quantity > stock) {
+                        JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
+                                "Out of stock", WARNING_MESSAGE);
+                    } else {
+                        OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+                    }
                 }
             });
 
