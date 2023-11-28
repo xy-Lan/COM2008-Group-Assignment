@@ -4,9 +4,18 @@
  */
 package project.gui;
 
+import project.dao.OrderDao;
+import project.daoimpl.OrderDaoImpl;
 import project.gui.Default;
+import project.model.order.Order;
+import project.model.order.OrderLine;
 import project.model.user.User;
+import project.service.MysqlService;
 import project.utils.UserSessionManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  *
@@ -40,9 +49,8 @@ public class RecentOrders extends javax.swing.JFrame {
         btnRecentOrders = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel5 = new javax.swing.JPanel();
+        orderContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Category");
@@ -103,7 +111,7 @@ public class RecentOrders extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(btnRecentOrders))
                             .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 123, Short.MAX_VALUE)))
+                        .addGap(0, 33, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -119,7 +127,7 @@ public class RecentOrders extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 250, 800);
+        jPanel2.setBounds(0, 0, 160, 800);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -134,7 +142,7 @@ public class RecentOrders extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addContainerGap(551, Short.MAX_VALUE))
+                .addContainerGap(641, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,42 +153,23 @@ public class RecentOrders extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(250, 120, 750, 70);
+        jPanel3.setBounds(160, 0, 840, 70);
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 651, Short.MAX_VALUE)
+        javax.swing.GroupLayout orderContainerLayout = new javax.swing.GroupLayout(orderContainer);
+        orderContainer.setLayout(orderContainerLayout);
+        orderContainerLayout.setHorizontalGroup(
+            orderContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 838, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 503, Short.MAX_VALUE)
+        orderContainerLayout.setVerticalGroup(
+            orderContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 728, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel5);
+        jScrollPane1.setViewportView(orderContainer);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel4);
-        jPanel4.setBounds(250, 190, 750, 610);
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(160, 70, 840, 730);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -206,6 +195,40 @@ public class RecentOrders extends javax.swing.JFrame {
 
     private void loadRecentOrders(){
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+        MysqlService mysqlService = new MysqlService();
+        OrderDao orderDao = new OrderDaoImpl(mysqlService);
+        List<Order> allOrders = orderDao.getOrdersByUserId(currentUser.getUserID());
+        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
+        orderContainer.add(Box.createVerticalStrut(15));
+        for (Order order: allOrders) {
+//            List<OrderLine> allOrderLines = order.getOrderLines();
+            JPanel orderLinePanel = new JPanel();
+            orderLinePanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.insets = new Insets(10,20,10,20);
+
+            JLabel lblStatus = new JLabel("Status: " + order.getOrderStatus().toString());
+            JLabel lblDate = new JLabel(order.getDate().toString());
+            JLabel lblOrderNum = new JLabel("Order number: " + Integer.toString(order.getOrderNumber()));
+
+            orderContainer.setBackground(new java.awt.Color(24, 150, 62));
+
+            lblStatus.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14));
+            lblStatus.setForeground(new java.awt.Color(20, 55, 196));
+            lblDate.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12));
+            lblOrderNum.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12));
+            lblOrderNum.setForeground(new java.awt.Color(160, 160, 160));
+
+            orderLinePanel.add(lblStatus, gbc);
+            orderLinePanel.add(lblDate, gbc);
+            orderLinePanel.add(lblOrderNum, gbc);
+        }
+    }
+
+    private void loadOrderLines(Order order){
+        List<OrderLine> allOrderLines = order.getOrderLines();
     }
 
 
@@ -216,9 +239,8 @@ public class RecentOrders extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel orderContainer;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

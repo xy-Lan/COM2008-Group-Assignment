@@ -439,8 +439,8 @@ public class Default extends javax.swing.JFrame {
             gbc.anchor = GridBagConstraints.CENTER;
             gbc.insets = new Insets(10,20,10,20);
 
-            JLabel nameLabel = new JLabel(product.getProductName());
-            JLabel priceLabel = new JLabel("Price: " + product.getRetailPrice() + " £");
+            JLabel lblName = new JLabel(product.getProductName());
+            JLabel lblPrice = new JLabel("Price: " + product.getRetailPrice() + " £");
             JLabel defaultImage = new JLabel();
             JButton btnViewDetails = new JButton("View details");
             JButton btnAddOrderLine = new JButton("Add to basket");
@@ -449,13 +449,13 @@ public class Default extends javax.swing.JFrame {
             //Set layout
             productPanel.setBackground(new java.awt.Color(24, 150, 62));
 
-            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
-            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+            lblName.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
+            lblName.setForeground(new java.awt.Color(255, 255, 255));
 
             btnViewDetails.setText("View details");
 
-            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
-            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
+            lblPrice.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
+            lblPrice.setForeground(new java.awt.Color(255, 255, 255));
 
 //            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
 //            ImageIcon imageIcon = new ImageIcon(imageUrl);
@@ -463,8 +463,8 @@ public class Default extends javax.swing.JFrame {
 //            defaultImage.setIcon(imageIcon); // NOI18N
 
             productPanel.add(defaultImage, gbc);
-            productPanel.add(nameLabel, gbc);
-            productPanel.add(priceLabel, gbc);
+            productPanel.add(lblName, gbc);
+            productPanel.add(lblPrice, gbc);
             productPanel.add(btnViewDetails, gbc);
             productPanel.add(quantityVal, gbc);
             productPanel.add(btnAddOrderLine, gbc);

@@ -129,14 +129,14 @@ public class OrderLines extends javax.swing.JFrame {
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
-//        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
-//        //List all the pending orders and set the layout of the order panel
-//        orderContainer.removeAll();
-//        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
-//        orderContainer.add(Box.createVerticalStrut(15));
-//        if (optionalOrder.isPresent()) {
-//            Order order = optionalOrder.get();
-//        }
+        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
+        //List all the pending orders and set the layout of the order panel
+        orderContainer.removeAll();
+        orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
+        orderContainer.add(Box.createVerticalStrut(15));
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+        }
     }
 
 
