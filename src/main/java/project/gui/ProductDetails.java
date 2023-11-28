@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static javax.swing.JOptionPane.*;
+
 /**
  *
  * @author linyu
@@ -322,7 +324,15 @@ public class ProductDetails extends javax.swing.JFrame {
         MysqlService mysqlService = new MysqlService();
         OrderDao orderDao = new OrderDaoImpl(mysqlService);
         OrderService OrderService = new OrderService(orderDao);
-        OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+        InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
+        int stock = inventoryDao.getStock(product.getProductCode());
+
+        if ( quantity > stock) {
+            JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
+                    "Out of stock", WARNING_MESSAGE);
+        } else {
+            OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+        }
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
     private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed

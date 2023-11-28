@@ -13,4 +13,5 @@ public interface InventoryDao {
 
     // Method to check the current stock of all products
     List<Inventory> checkStock();
+    public Integer getStock (String productCode);
 }
