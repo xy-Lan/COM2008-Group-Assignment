@@ -35,7 +35,7 @@ public class BankCardService {
         bankCardDao.deleteBankCard(userId);
     }
 
-    public void processPaymnet(BankCard bankCard, Order order) {
+    public void processPayment(BankCard bankCard, Order order) {
         if (!isValidBankCard(bankCard)) {
             throw new IllegalArgumentException("Invalid bank card details");
         }

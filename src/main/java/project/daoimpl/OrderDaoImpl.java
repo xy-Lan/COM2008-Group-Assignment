@@ -100,7 +100,7 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public Optional<Order> getPendingOrderByUserId(int userId) {
-        String sql = "SELECT * FROM orders WHERE user_id = ? AND status = 'PENDING'";
+        String sql = "SELECT * FROM orders WHERE user_id = ? AND order_status = 'PENDING'";
         try (Connection conn = mysqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

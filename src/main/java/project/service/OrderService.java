@@ -1,13 +1,7 @@
 package project.service;
 
-import project.dao.OrderDao;
-import project.dao.OrderLineDao;
-import project.dao.ProductDao;
-import project.dao.UserDao;
-import project.daoimpl.OrderDaoImpl;
-import project.daoimpl.OrderLineDaoImpl;
-import project.daoimpl.ProductDaoImpl;
-import project.daoimpl.UserDaoImpl;
+import project.dao.*;
+import project.daoimpl.*;
 import project.exceptions.OrderCreationException;
 import project.model.order.Order;
 import project.model.order.OrderLine;
@@ -34,6 +28,7 @@ public class OrderService {
 	private UserDao userDao = new UserDaoImpl(mysqlService);
 	private ProductDao productDao = new ProductDaoImpl(mysqlService);
 	private OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
+	private InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
 	public OrderService(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
