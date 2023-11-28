@@ -6,10 +6,7 @@ package project.gui;
 
 import project.dao.*;
 import project.daoimpl.*;
-import project.model.product.Controller;
-import project.model.product.Locomotive;
-import project.model.product.TrackPack;
-import project.model.product.TrainSet;
+import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.service.MysqlService;
 import project.utils.UserSessionManager;
@@ -63,6 +60,7 @@ public class Default extends javax.swing.JFrame {
         productContainer = new javax.swing.JPanel();
         btnStaffDashboard = new javax.swing.JButton();
         btnManagerDashboard = new javax.swing.JButton();
+        btnBasket = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -276,21 +274,10 @@ public class Default extends javax.swing.JFrame {
         scrollPanel.setBackground(new java.awt.Color(255, 255, 255));
         scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
-        productContainer.setLayout(productContainerLayout);
-        productContainerLayout.setHorizontalGroup(
-            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 686, Short.MAX_VALUE)
-        );
-        productContainerLayout.setVerticalGroup(
-            productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
-        );
-
         scrollPanel.setViewportView(productContainer);
 
         jPanel1.add(scrollPanel);
-        scrollPanel.setBounds(310, 240, 630, 500);
+        scrollPanel.setBounds(300, 220, 660, 450);
 
         btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
         btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
@@ -316,6 +303,19 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(btnManagerDashboard);
         btnManagerDashboard.setBounds(840, 50, 150, 17);
 
+        btnBasket.setBackground(new java.awt.Color(0, 102, 0));
+        btnBasket.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnBasket.setForeground(new java.awt.Color(255, 255, 255));
+        btnBasket.setText("Go to basket");
+        btnBasket.setBorder(null);
+        btnBasket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBasketActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBasket);
+        btnBasket.setBounds(790, 680, 170, 40);
+
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
 
@@ -324,118 +324,19 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
         title.setText("Track Packs");
-        productContainer.removeAll();
-        //List all the tran sets
         MysqlService mysqlService = new MysqlService();
         TrackPackDao TrackPackDao = new TrackPackDaoImpl(mysqlService);
         List<TrackPack> allTrackPacks = TrackPackDao.getAllTrackPacks();
-        productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
-        for (TrackPack trackPack : allTrackPacks) {
-            // Add a productPanel for every train set
-            JPanel productPanel = new JPanel();
-            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
-            productPanel.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridwidth = GridBagConstraints.REMAINDER;
-            gbc.anchor = GridBagConstraints.CENTER;
-            gbc.insets = new Insets(10,20,10,20);
-
-            JLabel nameLabel = new JLabel("Name: " + trackPack.getProductName());
-            JLabel priceLabel = new JLabel("Price: " + trackPack.getRetailPrice());
-            JLabel defaultImage = new JLabel();
-            JButton btnViewDetails = new JButton("View details");
-            //Set layout
-            productPanel.setBackground(new java.awt.Color(24, 150, 62));
-
-            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
-            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-            btnViewDetails.setText("View details");
-
-            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
-            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
-//            ImageIcon imageIcon = new ImageIcon(imageUrl);
-//
-//            defaultImage.setIcon(imageIcon); // NOI18N
-
-            productPanel.add(defaultImage, gbc);
-            productPanel.add(nameLabel, gbc);
-            productPanel.add(priceLabel, gbc);
-            productPanel.add(btnViewDetails, gbc);
-
-
-            btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    viewProductDetails(trackPack);
-                }
-            });
-
-            // Add the productPanel to the productContainer
-            productContainer.add(productPanel);
-        }
-        //Refresh to update the panel
-        productContainer.revalidate();
-        productContainer.repaint();
+        loadProductsByType(allTrackPacks);
     }//GEN-LAST:event_btnTrackPacksActionPerformed
 
     private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
         title.setText("Locomotives");
-        productContainer.removeAll();
-        //List all the tran sets
         MysqlService mysqlService = new MysqlService();
         LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl(mysqlService);
         List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
-        productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
-        for (Locomotive locomotive : allLocomotives) {
-            // Add a productPanel for every train set
-            JPanel productPanel = new JPanel();
-            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
-            productPanel.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridwidth = GridBagConstraints.REMAINDER;
-            gbc.anchor = GridBagConstraints.CENTER;
-            gbc.insets = new Insets(10,20,10,20);
+        loadProductsByType(allLocomotives);
 
-            JLabel nameLabel = new JLabel("Name: " + locomotive.getProductName());
-            JLabel priceLabel = new JLabel("Price: " + locomotive.getRetailPrice());
-            JLabel defaultImage = new JLabel();
-            JButton btnViewDetails = new JButton("View details");
-            //Set layout
-            productPanel.setBackground(new java.awt.Color(24, 150, 62));
-
-            nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
-            nameLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-            btnViewDetails.setText("View details");
-
-            priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
-            priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-
-//            URL imageUrl = Thread.currentThread().getContextClassLoader().getResource("/images/train_sets.jpg");
-//            ImageIcon imageIcon = new ImageIcon(imageUrl);
-//
-//            defaultImage.setIcon(imageIcon); // NOI18N
-
-            productPanel.add(defaultImage, gbc);
-            productPanel.add(nameLabel, gbc);
-            productPanel.add(priceLabel, gbc);
-            productPanel.add(btnViewDetails, gbc);
-
-
-            btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    viewProductDetails(locomotive);
-                }
-            });
-
-            // Add the productPanel to the productContainer
-            productContainer.add(productPanel);
-        }
-        //Refresh to update the panel
-        productContainer.revalidate();
-        productContainer.repaint();
     }//GEN-LAST:event_btnLocomotivesActionPerformed
 
     private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
@@ -469,6 +370,10 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
         title.setText("Track");
+        MysqlService mysqlService = new MysqlService();
+        TrackDao TrackDao = new TrackDaoImpl(mysqlService);
+        List<Track> allTracks = TrackDao.getAllTracks();
+        loadProductsByType(allTracks);
     }//GEN-LAST:event_btnTrackActionPerformed
 
     private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
@@ -500,26 +405,36 @@ public class Default extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void btnBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasketActionPerformed
+        OrderLines OrderLinesFrame = new OrderLines();
+        OrderLinesFrame.setVisible(true);
+        OrderLinesFrame.pack();
+        OrderLinesFrame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnBasketActionPerformed
+
 
     private void loadProductsByType(List<? extends Product> allProducts) {
         //TODO
         productContainer.removeAll();
         //List all the products
         productContainer.setLayout(new BoxLayout(productContainer, BoxLayout.Y_AXIS));
+        productContainer.add(Box.createVerticalStrut(15));
         for (Product product : allProducts) {
             // Add a productPanel for every train set
             JPanel productPanel = new JPanel();
-            productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
             productPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.anchor = GridBagConstraints.CENTER;
             gbc.insets = new Insets(10,20,10,20);
 
-            JLabel nameLabel = new JLabel("Name: " + product.getProductName());
+            JLabel nameLabel = new JLabel(product.getProductName());
             JLabel priceLabel = new JLabel("Price: " + product.getRetailPrice());
             JLabel defaultImage = new JLabel();
             JButton btnViewDetails = new JButton("View details");
+            JButton btnAddOrderLine = new JButton("Add to basket");
+            JSpinner quantityVal = new JSpinner();
+            quantityVal.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
             //Set layout
             productPanel.setBackground(new java.awt.Color(24, 150, 62));
 
@@ -540,6 +455,8 @@ public class Default extends javax.swing.JFrame {
             productPanel.add(nameLabel, gbc);
             productPanel.add(priceLabel, gbc);
             productPanel.add(btnViewDetails, gbc);
+            productPanel.add(quantityVal, gbc);
+            productPanel.add(btnAddOrderLine, gbc);
 
 
             btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -548,8 +465,29 @@ public class Default extends javax.swing.JFrame {
                 }
             });
 
+            btnAddOrderLine.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                }
+            });
+
             // Add the productPanel to the productContainer
+//            javax.swing.GroupLayout productContainerLayout = new javax.swing.GroupLayout(productContainer);
+//            productContainerLayout.setHorizontalGroup(
+//                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                            .addGroup(productContainerLayout.createSequentialGroup()
+//                                    .addGap(21, 21, 21)
+//                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                    .addContainerGap(70, Short.MAX_VALUE))
+//            );
+//            productContainerLayout.setVerticalGroup(
+//                    productContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                            .addGroup(productContainerLayout.createSequentialGroup()
+//                                    .addGap(27, 27, 27)
+//                                    .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                    .addContainerGap(401, Short.MAX_VALUE))
+//            );
             productContainer.add(productPanel);
+            productContainer.add(Box.createVerticalStrut(20));
         }
         //Refresh to update the panel
         productContainer.revalidate();
@@ -567,6 +505,7 @@ public class Default extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBasket;
     private javax.swing.JButton btnControllers;
     private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;

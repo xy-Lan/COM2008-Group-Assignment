@@ -48,11 +48,11 @@ public class OrderLines extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Category");
-        setPreferredSize(new java.awt.Dimension(1000, 800));
+        setPreferredSize(new java.awt.Dimension(440, 640));
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 400));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 300));
         jPanel1.setLayout(null);
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
@@ -72,7 +72,7 @@ public class OrderLines extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jPanel5);
 
         jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(40, 110, 530, 540);
+        jScrollPane3.setBounds(30, 90, 370, 430);
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
@@ -82,19 +82,41 @@ public class OrderLines extends javax.swing.JFrame {
 
         btnCheckOut.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         btnCheckOut.setText("Check out");
+        btnCheckOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckOutActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCheckOut);
-        btnCheckOut.setBounds(330, 680, 130, 50);
+        btnCheckOut.setBounds(230, 550, 130, 50);
 
         btnBack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnBack);
-        btnBack.setBounds(170, 680, 90, 50);
+        btnBack.setBounds(70, 550, 90, 50);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 600, 800);
+        jPanel1.setBounds(0, 0, 440, 640);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+
+        this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
+        CheckOut CheckOutFrame = new CheckOut();
+        CheckOutFrame.setVisible(true);
+        CheckOutFrame.pack();
+        CheckOutFrame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnCheckOutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

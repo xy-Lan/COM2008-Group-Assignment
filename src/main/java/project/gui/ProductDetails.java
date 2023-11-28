@@ -41,9 +41,6 @@ public class ProductDetails extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        // Create a SpinnerNumberModel with initial value 0, minimum 0, maximum 100, and step 1
-        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 1000, 1);
-
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
@@ -61,10 +58,11 @@ public class ProductDetails extends javax.swing.JFrame {
         brandLabel = new javax.swing.JLabel();
         productCodeLabel = new javax.swing.JLabel();
         btnAddOrderLine = new javax.swing.JButton();
-        quantityVal = new javax.swing.JSpinner(model);
+        quantityVal = new javax.swing.JSpinner();
         priceLabel = new javax.swing.JLabel();
         typeLabel = new javax.swing.JLabel();
-        btnBack = new javax.swing.JButton();
+        btnBasket = new javax.swing.JButton();
+        btnBack1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -150,13 +148,13 @@ public class ProductDetails extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Train sets");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(230, 50, 176, 43);
+        jLabel2.setBounds(230, 50, 176, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
         title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText(product.getProductName());
+        title.setText("Product name");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -204,22 +202,26 @@ public class ProductDetails extends javax.swing.JFrame {
         jPanel1.add(defaultImage);
         defaultImage.setBounds(270, 210, 240, 160);
 
-        nameLabel.setText("Name: " + product.getProductName());
+        nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
+        nameLabel.setText(product.getProductName());
         jPanel1.add(nameLabel);
-        nameLabel.setBounds(630, 230, 34, 17);
+        nameLabel.setBounds(630, 207, 320, 40);
 
+        brandLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
         brandLabel.setText("Brand: " + product.getBrandName());
         jPanel1.add(brandLabel);
-        brandLabel.setBounds(630, 260, 41, 17);
+        brandLabel.setBounds(630, 257, 330, 20);
 
-        productCodeLabel.setText("Product code: " + product.getProductCode());
+        productCodeLabel.setForeground(new java.awt.Color(204, 204, 204));
+        productCodeLabel.setText("Type: " + product.getGaugeType());
         jPanel1.add(productCodeLabel);
-        productCodeLabel.setBounds(630, 290, 29, 17);
+        productCodeLabel.setBounds(630, 290, 310, 17);
 
         btnAddOrderLine.setBackground(new java.awt.Color(0, 102, 0));
         btnAddOrderLine.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         btnAddOrderLine.setForeground(new java.awt.Color(255, 255, 255));
         btnAddOrderLine.setText("Add to basket");
+        btnAddOrderLine.setBorder(null);
         btnAddOrderLine.setMaximumSize(new java.awt.Dimension(151, 24));
         btnAddOrderLine.setMinimumSize(new java.awt.Dimension(151, 24));
         btnAddOrderLine.addActionListener(new java.awt.event.ActionListener() {
@@ -229,29 +231,46 @@ public class ProductDetails extends javax.swing.JFrame {
         });
         jPanel1.add(btnAddOrderLine);
         btnAddOrderLine.setBounds(770, 610, 160, 60);
-        jPanel1.add(quantityVal);
-        quantityVal.setBounds(780, 560, 110, 30);
 
+        quantityVal.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        jPanel1.add(quantityVal);
+        quantityVal.setBounds(630, 420, 150, 40);
+
+        priceLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        priceLabel.setForeground(new java.awt.Color(0, 102, 0));
         priceLabel.setText("Price: " + product.getRetailPrice());
         jPanel1.add(priceLabel);
-        priceLabel.setBounds(630, 320, 42, 17);
+        priceLabel.setBounds(630, 320, 340, 19);
 
         typeLabel.setText("Type: " + product.getGaugeType());
         jPanel1.add(typeLabel);
-        typeLabel.setBounds(630, 350, 42, 17);
+        typeLabel.setBounds(630, 350, 360, 17);
 
-        btnBack.setBackground(new java.awt.Color(0, 102, 0));
-        btnBack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnBack.setForeground(new java.awt.Color(255, 255, 255));
-        btnBack.setText("Back ");
-        btnBack.setBorder(null);
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
+        btnBasket.setBackground(new java.awt.Color(0, 102, 0));
+        btnBasket.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnBasket.setForeground(new java.awt.Color(255, 255, 255));
+        btnBasket.setText("Go to basket");
+        btnBasket.setBorder(null);
+        btnBasket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
+                btnBasketActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBack);
-        btnBack.setBounds(630, 613, 120, 60);
+        jPanel1.add(btnBasket);
+        btnBasket.setBounds(620, 610, 140, 60);
+
+        btnBack1.setBackground(new java.awt.Color(0, 102, 0));
+        btnBack1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnBack1.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack1.setText("Back ");
+        btnBack1.setBorder(null);
+        btnBack1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBack1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBack1);
+        btnBack1.setBounds(480, 610, 120, 60);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -259,13 +278,12 @@ public class ProductDetails extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        Default DefaultFrame = new Default();
-        DefaultFrame.setVisible(true);
-        DefaultFrame.pack();
-        DefaultFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
+    private void btnBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasketActionPerformed
+        OrderLines OrderLinesFrame = new OrderLines();
+        OrderLinesFrame.setVisible(true);
+        OrderLinesFrame.pack();
+        OrderLinesFrame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnBasketActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
         // Jump to My Details page:
@@ -317,11 +335,20 @@ public class ProductDetails extends javax.swing.JFrame {
         orderDao.addOrderLine(orderLine);
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
+    private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
+        Default DefaultFrame = new Default();
+        DefaultFrame.setVisible(true);
+        DefaultFrame.pack();
+        DefaultFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnBack1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel brandLabel;
     private javax.swing.JButton btnAddOrderLine;
-    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnBack1;
+    private javax.swing.JButton btnBasket;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnManagerInterface;
     private javax.swing.JButton btnMyDetails;
