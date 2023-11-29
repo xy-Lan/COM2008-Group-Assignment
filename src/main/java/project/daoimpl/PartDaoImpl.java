@@ -51,7 +51,20 @@ public class PartDaoImpl implements PartDao {
     }
 
     @Override
-    public void deletePart(String productCode) throws SQLException {
+    public void deletePart(String productCode, Connection connection) {
+        String sql = "DELETE FROM part WHERE product_code = ?";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, productCode);
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.info("No parts were deleted for productCode: " + productCode);
+            } else {
+                LOGGER.info("Part deleted successfully for productCode: " + productCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error deleting part from the database for productCode: " + productCode, e);
+            throw new RuntimeException("Failed to delete part from the database for productCode: " + productCode, e);
+        }
     }
 }

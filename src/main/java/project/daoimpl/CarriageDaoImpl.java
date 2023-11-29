@@ -27,7 +27,7 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
             connection.setAutoCommit(false); // Start transaction
 
             // First, the super class method is called to handle the generic Product property
-            super.addProduct(carriage);
+            super.addProduct(carriage, connection);
 
             // Then, add Carriage-specific properties
             String sqlCarriage = "INSERT INTO carriage (product_code, carriage_type, era) VALUES (?, ?, ?)";

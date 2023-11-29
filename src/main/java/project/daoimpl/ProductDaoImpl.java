@@ -16,8 +16,8 @@ public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
     @Override
-    public void addProduct(Product product) {
-        Connection connection = MySqlService.getConnection();
+    public void addProduct(Product product, Connection connection) {
+
         PreparedStatement preparedStatement = null;
 
         try {
@@ -185,10 +185,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void deleteProduct(String productCode) {
+    public void deleteProduct(String productCode, Connection connection) {
 
         String sql = "DELETE FROM product WHERE product_code = ?";
-        try (Connection connection = MySqlService.getConnection();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Setting the productCode parameter in a PreparedStatement

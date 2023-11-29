@@ -28,7 +28,7 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
 
             // First, call the superclass method to handle the common Product attributes
             LOGGER.info("Attempting to add product");
-            super.addProduct(controller);
+            super.addProduct(controller, connection);
             LOGGER.info("Product added successfully");
             PartDao partDao = new PartDaoImpl();
             LOGGER.info("Attempting to add part");
@@ -70,9 +70,6 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
             LOGGER.log(Level.SEVERE, "Error in operation: " + e.getMessage(), e);
             e.printStackTrace();
             throw new RuntimeException("Database operation failed", e);
-        } finally {
-            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
-            if (connection != null) try { connection.setAutoCommit(true); connection.close(); } catch (SQLException e) { /* ignored */ }
         }
     }
 
@@ -184,8 +181,45 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
     }
 
     @Override
-    public void deleteController(String id) {
-        // Implement logic to delete a controller from the database
+    public void deleteController(String productCode) {
+        Connection connection = null;
+
+        try {
+            connection = MySqlService.getConnection();
+            connection.setAutoCommit(false); // Start transaction
+
+            // Delete from controller table
+            String sqlController = "DELETE FROM controller WHERE product_code = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlController)) {
+                preparedStatement.setString(1, productCode);
+                preparedStatement.executeUpdate();
+            }
+
+            // Delete from part table if necessary
+            // Assuming you have a method to delete part
+            PartDao partDao = new PartDaoImpl();
+            partDao.deletePart(productCode, connection);
+
+            // Delete from product table
+            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
+                preparedStatement.setString(1, productCode);
+                preparedStatement.executeUpdate();
+            }
+
+            connection.commit(); // Commit transaction
+            LOGGER.info("Controller deleted successfully");
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error deleting controller: " + e.getMessage(), e);
+            if (connection != null) {
+                try {
+                    connection.rollback(); // Rollback transaction in case of error
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     // Other necessary methods...

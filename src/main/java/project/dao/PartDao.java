@@ -11,5 +11,5 @@ public interface PartDao {
     Part getPartByProductCode(String productCode) throws SQLException;
     List<Part> getAllParts() throws SQLException;
     void updatePart(Part part) throws SQLException;
-    void deletePart(String productCode) throws SQLException;
+    void deletePart(String productCode, Connection connection) throws SQLException;
 }

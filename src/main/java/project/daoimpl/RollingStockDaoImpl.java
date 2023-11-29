@@ -24,7 +24,7 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
             connection.setAutoCommit(false); // Start transaction
 
             // First, add the generic product attributes
-            super.addProduct(rollingStock);
+            super.addProduct(rollingStock, connection);
             PartDao partDao = new PartDaoImpl();
             partDao.addPart(rollingStock, connection);
 
