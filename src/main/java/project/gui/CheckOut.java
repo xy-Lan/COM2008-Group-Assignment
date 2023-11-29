@@ -4,6 +4,13 @@
  */
 package project.gui;
 
+import project.dao.BankCardDao;
+import project.daoimpl.BankCardDaoImpl;
+import project.model.bankcard.BankCard;
+import project.model.user.User;
+import project.service.MysqlService;
+import project.utils.UserSessionManager;
+
 /**
  *
  * @author linyu
@@ -37,14 +44,14 @@ public class CheckOut extends javax.swing.JFrame {
         txtExpiryYear = new javax.swing.JTextField();
         txtExpiryMonth = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtSecurityCode = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtSecurityCode1 = new javax.swing.JTextField();
-        txtSecurityCode2 = new javax.swing.JTextField();
-        txtSecurityCode3 = new javax.swing.JTextField();
+        txtBankCardName = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
 
         jTextField1.setText("jTextField1");
 
@@ -83,7 +90,7 @@ public class CheckOut extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Security Code:");
 
-        txtSecurityCode.setText("Last name");
+        txtLastName.setText("Last name");
 
         btnConfirm.setText("Confirm");
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
@@ -105,12 +112,12 @@ public class CheckOut extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Card Holder:");
 
-        txtSecurityCode2.setText("e.g. Visa");
+        txtBankCardName.setText("e.g. Visa");
 
-        txtSecurityCode3.setText("First name");
-        txtSecurityCode3.addActionListener(new java.awt.event.ActionListener() {
+        txtFirstName.setText("First name");
+        txtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSecurityCode3ActionPerformed(evt);
+                txtFirstNameActionPerformed(evt);
             }
         });
 
@@ -131,15 +138,15 @@ public class CheckOut extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4)
                                 .addComponent(txtExpiryMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtSecurityCode2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtBankCardName, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(25, 25, 25)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(txtSecurityCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(36, 36, 36)
-                                            .addComponent(txtSecurityCode, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -184,9 +191,9 @@ public class CheckOut extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSecurityCode, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSecurityCode2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSecurityCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBankCardName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -222,15 +229,28 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         // TODO add your handling code here:
+        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+        String cardNumber = txtCardNumber.getText();
+        Integer expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
+        Integer expiryYear = Integer.parseInt(txtExpiryYear.getText());
+        String securityCode = txtSecurityCode1.getText();
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String cardName = txtBankCardName.getText();
+        MysqlService mysqlService = new MysqlService();
+        BankCardDao bankCardDao = new BankCardDaoImpl(mysqlService);
+        BankCard bankCard = new BankCard(currentUser, cardNumber, expiryMonth, expiryYear, securityCode,
+                            firstName, lastName,cardName);
+        bankCardDao.addBankCard(bankCard);
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void txtCardNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCardNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCardNumberActionPerformed
 
-    private void txtSecurityCode3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSecurityCode3ActionPerformed
+    private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSecurityCode3ActionPerformed
+    }//GEN-LAST:event_txtFirstNameActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -246,12 +266,12 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtBankCardName;
     private javax.swing.JTextField txtCardNumber;
     private javax.swing.JTextField txtExpiryMonth;
     private javax.swing.JTextField txtExpiryYear;
-    private javax.swing.JTextField txtSecurityCode;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtSecurityCode1;
-    private javax.swing.JTextField txtSecurityCode2;
-    private javax.swing.JTextField txtSecurityCode3;
     // End of variables declaration//GEN-END:variables
 }

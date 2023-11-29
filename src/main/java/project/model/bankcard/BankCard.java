@@ -18,6 +18,25 @@ public class BankCard {
 	private Integer expiryYear;
 	private String securityCode;
 
+	private String firstName;
+
+	private String lastName;
+
+	private String cardName;
+
+	public BankCard(){}
+
+	public BankCard(User customer, String cardNumber, Integer expiryMonth, Integer expiryYear, String securityCode,
+					String firstName, String lastName, String cardName) {
+		this.customer = customer;
+		this.cardNumber = cardNumber;
+		this.expiryMonth = expiryMonth;
+		this.expiryYear = expiryYear;
+		this.securityCode = securityCode;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.cardName = cardName;
+	}
 	public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
         stmt.setInt(1, this.getCustomer().getUserID()); 
         stmt.setString(2, this.getEncryptedCardNumber());
