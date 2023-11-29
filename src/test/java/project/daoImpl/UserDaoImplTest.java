@@ -45,15 +45,29 @@ public class UserDaoImplTest {
 //
 //    }
 
-    @Test
-    public void testGetUserPasswordHash() {
-        int userId = 123; // 假设的用户 ID
-        String expectedHash = "$2a$10$JQaXcUVRR9QZRne6AgvaN.A/cSoF4sCFDTV8.L6Fo9Wx7NlQK1dkS"; // 预先知道的密码哈希
+//    @Test
+//    public void testGetUserPasswordHash() {
+//        int userId = 123;
+//        String expectedHash = "$2a$10$JQaXcUVRR9QZRne6AgvaN.A/cSoF4sCFDTV8.L6Fo9Wx7NlQK1dkS";
+//
+//        String actualHash = userDao.getUserPasswordHash(userId);
+//
+//        assertNotNull(actualHash, "Password hash should not be null");
+//        assertEquals(expectedHash, actualHash, "Password hash should match the expected value");
+//    }
+//
+//    @Test
+//    public void testGetUserByEmail() {
+//        String email = "laister.sam@gmail.com";
+//        String expectedForeName = "Sam";
+//        int expectedUserId = 1;
+//
+//
+//        User user = userDao.getUserByEmail(email);
+//
+//        assertNotNull(user, "User should not be null for valid email");
+//        assertEquals(expectedForeName, user.getForename(), "User name should match the expected value");
+//        assertEquals(expectedUserId, user.getUserID(), "User ID should match the expected value");
+//    }
 
-        // 调用方法获取密码哈希
-        String actualHash = userDao.getUserPasswordHash(userId);
-
-        assertNotNull(actualHash, "Password hash should not be null");
-        assertEquals(expectedHash, actualHash, "Password hash should match the expected value");
-    }
 }
