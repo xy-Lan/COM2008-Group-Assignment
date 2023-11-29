@@ -199,7 +199,7 @@ public class ProductDetails extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(0, 102, 0));
-        nameLabel.setText("Price: "+product.getRetailPrice()+"£");
+        nameLabel.setText("Price: "+"£"+product.getRetailPrice());
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 207, 320, 40);
 
