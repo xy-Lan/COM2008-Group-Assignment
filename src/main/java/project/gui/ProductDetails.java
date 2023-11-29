@@ -325,12 +325,13 @@ public class ProductDetails extends javax.swing.JFrame {
         OrderService OrderService = new OrderService(orderDao);
         InventoryDao inventoryDao = new InventoryDaoImpl();
         int stock = inventoryDao.getStock(product.getProductCode());
-
         if ( quantity > stock) {
             JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
                     "Out of stock", WARNING_MESSAGE);
         } else {
             OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+            JOptionPane.showMessageDialog(null, "Product successfully added! Please check your basket!",
+                    "Product Added", INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 

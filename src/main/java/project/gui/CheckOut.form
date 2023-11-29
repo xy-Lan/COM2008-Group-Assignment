@@ -84,16 +84,16 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtExpiryMonth" min="-2" pref="93" max="-2" attributes="0"/>
-                                  <Component id="txtSecurityCode2" min="-2" pref="127" max="-2" attributes="0"/>
+                                  <Component id="txtBankCardName" min="-2" pref="127" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="txtSecurityCode3" min="-2" pref="86" max="-2" attributes="0"/>
+                                              <Component id="txtFirstName" min="-2" pref="86" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                              <Component id="txtSecurityCode" min="-2" pref="86" max="-2" attributes="0"/>
+                                              <Component id="txtLastName" min="-2" pref="86" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="jLabel7" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                                       </Group>
@@ -155,9 +155,9 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtSecurityCode" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtSecurityCode2" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtSecurityCode3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtLastName" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtBankCardName" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtFirstName" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -222,7 +222,7 @@
             <Property name="text" type="java.lang.String" value="Security Code:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSecurityCode">
+        <Component class="javax.swing.JTextField" name="txtLastName">
           <Properties>
             <Property name="text" type="java.lang.String" value="Last name"/>
           </Properties>
@@ -261,17 +261,17 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtSecurityCode1">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSecurityCode2">
+        <Component class="javax.swing.JTextField" name="txtBankCardName">
           <Properties>
             <Property name="text" type="java.lang.String" value="e.g. Visa"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSecurityCode3">
+        <Component class="javax.swing.JTextField" name="txtFirstName">
           <Properties>
             <Property name="text" type="java.lang.String" value="First name"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSecurityCode3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFirstNameActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
