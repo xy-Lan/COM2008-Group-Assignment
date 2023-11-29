@@ -78,6 +78,8 @@ public class UserDaoImpl implements UserDao {
         return null;
     }
 
+
+
     @Override
     public Optional<User> getUserById(int userId) {
         String query = "SELECT * FROM users WHERE user_id = ?";

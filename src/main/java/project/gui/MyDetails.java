@@ -4,9 +4,15 @@
  */
 package project.gui;
 
+import com.google.protobuf.Empty;
 import project.dao.AddressDao;
+import project.dao.BankCardDao;
+import project.dao.UserDao;
 import project.daoimpl.AddressDaoImpl;
+import project.daoimpl.BankCardDaoImpl;
+import project.daoimpl.UserDaoImpl;
 import project.model.address.Address;
+import project.model.bankcard.BankCard;
 import project.model.user.User;
 import project.utils.UserSessionManager;
 
@@ -18,13 +24,23 @@ import javax.swing.*;
  */
 public class MyDetails extends javax.swing.JFrame {
 
+    private User user;
+
+    private Address address;
+
+    private BankCard bankCard;
+
+    private String newPassword;
+
     /**
      * Creates new form Default
      */
     public MyDetails() {
-        User user = UserSessionManager.getInstance().getLoggedInUser();
+        user = UserSessionManager.getInstance().getLoggedInUser();
         AddressDao addressDao = new AddressDaoImpl();
-        Address address = addressDao.getAddress(user.getAddressId());
+        address = addressDao.getAddress(user.getAddressId());
+        BankCardDao bankCardDao = new BankCardDaoImpl();
+        bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
         initComponents();
     }
 
@@ -52,15 +68,15 @@ public class MyDetails extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JFormattedTextField();
-        txtAddressLine2 = new javax.swing.JFormattedTextField();
-        txtAddressLine3 = new javax.swing.JFormattedTextField();
+        txtRoadName = new javax.swing.JFormattedTextField();
+        txtCityName = new javax.swing.JFormattedTextField();
         txtPostcode = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         btnChangePassword = new javax.swing.JButton();
-        btnSave1 = new javax.swing.JButton();
-        txtAddressLine4 = new javax.swing.JFormattedTextField();
+        btnSavePersonalDetails = new javax.swing.JButton();
+        txtHouseNum = new javax.swing.JFormattedTextField();
         bankCardPanel = new javax.swing.JPanel();
-        btnSave = new javax.swing.JButton();
+        btnDeleteBankCard = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtSecurityCode1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -75,7 +91,7 @@ public class MyDetails extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtCardNumber = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        btnBack1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -218,13 +234,13 @@ public class MyDetails extends javax.swing.JFrame {
         txtEmail.setText(user.getEmail());
         txtEmail.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
 
-        txtAddressLine2.setForeground(new java.awt.Color(0, 102, 0));
-        txtAddressLine2.setText(address.getRoadName());
-        txtAddressLine2.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
+        txtRoadName.setForeground(new java.awt.Color(0, 102, 0));
+        txtRoadName.setText(address.getRoadName());
+        txtRoadName.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
 
-        txtAddressLine3.setForeground(new java.awt.Color(0, 102, 0));
-        txtAddressLine3.setText(address.getCityName());
-        txtAddressLine3.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
+        txtCityName.setForeground(new java.awt.Color(0, 102, 0));
+        txtCityName.setText(address.getCityName());
+        txtCityName.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
 
         txtPostcode.setForeground(new java.awt.Color(0, 102, 0));
         txtPostcode.setText(address.getPostCode());
@@ -240,18 +256,18 @@ public class MyDetails extends javax.swing.JFrame {
             }
         });
 
-        btnSave1.setBackground(new java.awt.Color(255, 102, 102));
-        btnSave1.setForeground(new java.awt.Color(255, 255, 255));
-        btnSave1.setText("Save");
-        btnSave1.addActionListener(new java.awt.event.ActionListener() {
+        btnSavePersonalDetails.setBackground(new java.awt.Color(255, 102, 102));
+        btnSavePersonalDetails.setForeground(new java.awt.Color(255, 255, 255));
+        btnSavePersonalDetails.setText("Save");
+        btnSavePersonalDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSave1ActionPerformed(evt);
+                btnSavePersonalDetailsActionPerformed(evt);
             }
         });
 
-        txtAddressLine4.setForeground(new java.awt.Color(0, 102, 0));
-        txtAddressLine4.setText(address.getHouseNumber());
-        txtAddressLine4.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
+        txtHouseNum.setForeground(new java.awt.Color(0, 102, 0));
+        txtHouseNum.setText(address.getHouseNumber());
+        txtHouseNum.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout personalDetailPanelLayout = new javax.swing.GroupLayout(personalDetailPanel);
         personalDetailPanel.setLayout(personalDetailPanelLayout);
@@ -262,7 +278,7 @@ public class MyDetails extends javax.swing.JFrame {
                     .addGroup(personalDetailPanelLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
                         .addGroup(personalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSave1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSavePersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(personalDetailPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -281,9 +297,9 @@ public class MyDetails extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(personalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAddressLine2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAddressLine4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAddressLine3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(txtRoadName, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtHouseNum, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
         personalDetailPanelLayout.setVerticalGroup(
@@ -298,11 +314,11 @@ public class MyDetails extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(personalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddressLine4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtHouseNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtAddressLine2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtRoadName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAddressLine3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addGroup(personalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -310,7 +326,7 @@ public class MyDetails extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(btnChangePassword)
                 .addGap(18, 18, 18)
-                .addComponent(btnSave1)
+                .addComponent(btnSavePersonalDetails)
                 .addContainerGap(71, Short.MAX_VALUE))
         );
 
@@ -319,12 +335,12 @@ public class MyDetails extends javax.swing.JFrame {
 
         bankCardPanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        btnSave.setBackground(new java.awt.Color(255, 102, 102));
-        btnSave.setForeground(new java.awt.Color(255, 255, 255));
-        btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteBankCard.setBackground(new java.awt.Color(255, 102, 102));
+        btnDeleteBankCard.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteBankCard.setText("Delete");
+        btnDeleteBankCard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                btnDeleteBankCardActionPerformed(evt);
             }
         });
 
@@ -345,9 +361,9 @@ public class MyDetails extends javax.swing.JFrame {
             }
         });
 
-        txtExpiryYear.setText(bankCard.getExpiryYear());
+        txtExpiryYear.setText(bankCard.getExpiryYear().toString());
 
-        txtExpiryMonth.setText(bankCard.getExpiryMonth());
+        txtExpiryMonth.setText(bankCard.getExpiryMonth().toString());
 
         jLabel9.setText("Security Code:");
 
@@ -413,8 +429,8 @@ public class MyDetails extends javax.swing.JFrame {
                                 .addGap(0, 3, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(bankCardPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(btnDeleteBankCard, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bankCardPanelLayout.setVerticalGroup(
@@ -445,28 +461,28 @@ public class MyDetails extends javax.swing.JFrame {
                     .addComponent(txtBankCardName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(btnSave)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnDeleteBankCard)
+                .addContainerGap(118, Short.MAX_VALUE))
         );
 
         jPanel1.add(bankCardPanel);
         bankCardPanel.setBounds(630, 230, 360, 440);
 
-        btnBack1.setBackground(new java.awt.Color(0, 102, 0));
-        btnBack1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnBack1.setForeground(new java.awt.Color(255, 255, 255));
-        btnBack1.setText("Back");
-        btnBack1.setBorder(null);
-        btnBack1.setBorderPainted(false);
-        btnBack1.setFocusPainted(false);
-        btnBack1.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setBackground(new java.awt.Color(0, 102, 0));
+        btnBack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("Back");
+        btnBack.setBorder(null);
+        btnBack.setBorderPainted(false);
+        btnBack.setFocusPainted(false);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBack1ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBack1);
-        btnBack1.setBounds(470, 700, 304, 43);
+        jPanel1.add(btnBack);
+        btnBack.setBounds(470, 700, 304, 43);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -495,21 +511,30 @@ public class MyDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
-        JOptionPane.showInputDialog(null, "New password",
+        newPassword = JOptionPane.showInputDialog(null, "New password",
                 "Reset Password", JOptionPane.QUESTION_MESSAGE);
     }//GEN-LAST:event_btnChangePasswordActionPerformed
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+    private void btnDeleteBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBankCardActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSaveActionPerformed
+    }//GEN-LAST:event_btnDeleteBankCardActionPerformed
 
-    private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBack1ActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
 
-    private void btnSave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSave1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSave1ActionPerformed
+    private void btnSavePersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePersonalDetailsActionPerformed
+        user.setEmail(txtEmail.getText());
+        UserDao userDao = new UserDaoImpl();
+        if (newPassword == null){
+            userDao.updateUser(user);
+        } else {
+        }
+        address.setHouseNumber(txtHouseNum.getText());
+        address.setRoadName(txtRoadName.getText());
+        address.setCityName(txtCityName.getText());
+        address.setPostCode(txtPostcode.getText());
+    }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
         // TODO add your handling code here:
@@ -522,14 +547,14 @@ public class MyDetails extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bankCardPanel;
-    private javax.swing.JButton btnBack1;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnChangePassword;
+    private javax.swing.JButton btnDeleteBankCard;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnProfile;
     private javax.swing.JButton btnRecentOrders;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnSave1;
+    private javax.swing.JButton btnSavePersonalDetails;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -548,17 +573,17 @@ public class MyDetails extends javax.swing.JFrame {
     private javax.swing.JLabel lblUserName;
     private javax.swing.JPanel personalDetailPanel;
     private javax.swing.JLabel title;
-    private javax.swing.JFormattedTextField txtAddressLine2;
-    private javax.swing.JFormattedTextField txtAddressLine3;
-    private javax.swing.JFormattedTextField txtAddressLine4;
     private javax.swing.JTextField txtBankCardName;
     private javax.swing.JTextField txtCardNumber;
+    private javax.swing.JFormattedTextField txtCityName;
     private javax.swing.JFormattedTextField txtEmail;
     private javax.swing.JTextField txtExpiryMonth;
     private javax.swing.JTextField txtExpiryYear;
     private javax.swing.JTextField txtFirstName;
+    private javax.swing.JFormattedTextField txtHouseNum;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JFormattedTextField txtPostcode;
+    private javax.swing.JFormattedTextField txtRoadName;
     private javax.swing.JTextField txtSecurityCode1;
     // End of variables declaration//GEN-END:variables
 }
