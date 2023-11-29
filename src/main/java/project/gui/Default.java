@@ -247,7 +247,7 @@ public class Default extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Categories");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
+        jLabel2.setBounds(279, 56, 194, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -304,7 +304,7 @@ public class Default extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(840, 10, 130, 17);
+        btnStaffDashboard.setBounds(840, 10, 130, 16);
 
         btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
         btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
@@ -316,7 +316,7 @@ public class Default extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManagerDashboard);
-        btnManagerDashboard.setBounds(840, 50, 150, 17);
+        btnManagerDashboard.setBounds(840, 50, 150, 16);
 
         btnBasket.setBackground(new java.awt.Color(0, 102, 0));
         btnBasket.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -443,7 +443,7 @@ public class Default extends javax.swing.JFrame {
             gbc.insets = new Insets(10,20,10,20);
 
             JLabel lblName = new JLabel(product.getProductName());
-            JLabel lblPrice = new JLabel("Price: " + product.getRetailPrice() + " £");
+            JLabel lblPrice = new JLabel("Price: " + " £" + product.getRetailPrice() );
             JLabel defaultImage = new JLabel();
             JButton btnViewDetails = new JButton("View details");
             JButton btnAddOrderLine = new JButton("Add to basket");
