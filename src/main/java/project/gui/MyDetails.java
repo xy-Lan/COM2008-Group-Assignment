@@ -4,6 +4,9 @@
  */
 package project.gui;
 
+import project.dao.AddressDao;
+import project.daoimpl.AddressDaoImpl;
+import project.model.address.Address;
 import project.model.user.User;
 import project.utils.UserSessionManager;
 
@@ -20,6 +23,8 @@ public class MyDetails extends javax.swing.JFrame {
      */
     public MyDetails() {
         User user = UserSessionManager.getInstance().getLoggedInUser();
+        AddressDao addressDao = new AddressDaoImpl();
+        Address address = addressDao.getAddress(user.getAddressId());
         initComponents();
     }
 
