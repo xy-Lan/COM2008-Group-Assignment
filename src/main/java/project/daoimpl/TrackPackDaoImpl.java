@@ -26,7 +26,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(trackPack);
+            super.addProduct(trackPack, connection);
 
             // Then, add the specific attributes of the TrackPack
             String sqlTrackPack = "INSERT INTO track_pack (product_code, pack_type) VALUES (?, ?)";

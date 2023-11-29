@@ -27,7 +27,7 @@ public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(wagon);
+            super.addProduct(wagon,connection);
 
             // Then, add the specific attributes of the Wagon
             String sqlWagon = "INSERT INTO wagon (product_code, wagon_type, era) VALUES (?, ?, ?)";

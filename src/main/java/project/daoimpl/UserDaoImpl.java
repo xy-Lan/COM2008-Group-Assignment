@@ -55,6 +55,30 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public Boolean updateUserPasswordHash(int userId, String newPassword) {
+        String newPasswordHash = PasswordUtils.hashPassword(newPassword);
+        String sql = "UPDATE hashed_passwords SET password_hash = ? WHERE user_id = ?";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, newPasswordHash);
+            preparedStatement.setInt(2, userId);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.info("Password hash not updated: no user found with ID " + userId);
+                 return false;
+            } else {
+                LOGGER.info("Password hash updated successfully for user ID: " + userId);
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating password hash for user ID: " + userId, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+    }
 
 
     @Override
@@ -77,6 +101,10 @@ public class UserDaoImpl implements UserDao {
 
         return null;
     }
+
+
+
+
 
     @Override
     public Optional<User> getUserById(int userId) {
