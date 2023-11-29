@@ -149,7 +149,6 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         return controllers;
     }
 
-
     @Override
     public void updateController(Controller controller) {
         // Implement logic to update a controller's information in the database

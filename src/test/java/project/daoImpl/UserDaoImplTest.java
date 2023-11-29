@@ -3,15 +3,12 @@ package project.daoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.dao.UserDao;
-import project.daoimpl.OrderDaoImpl;
 import project.daoimpl.UserDaoImpl;
-import project.model.user.User;
+import project.model.user.Role;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDaoImplTest {
     private UserDao userDao = new UserDaoImpl();
@@ -20,6 +17,32 @@ public class UserDaoImplTest {
     public void setUp() {
         userDao = new UserDaoImpl();
     }
+
+//    @Test
+//    public void testAddUserRole() {
+//        int userId = 2;
+//        Role testRole = Role.MANAGER;
+//
+//        userDao.addUserRole(userId, testRole);
+//
+//        List<Role> roles = userDao.getUserRoles(userId);
+//        assertTrue(roles.contains(testRole), "User should have the assigned role");
+//    }
+
+//    @Test
+//    public void testRemoveUserRole() {
+//        int userId = 2; // 插入一个测试用户并为其分配角色
+//        Role testRole = Role.CUSTOMER; // 假设的角色
+//
+//        // 验证用户初始是否拥有该角色
+//        assertTrue(userDao.getUserRoles(userId).contains(testRole), "User should initially have the role");
+//
+//        // 执行移除用户角色操作
+//        userDao.removeUserRole(userId, testRole);
+//
+//        // 验证用户角色是否已被移除
+//        assertFalse(userDao.getUserRoles(userId).contains(testRole), "User should no longer have the role after removal");
+//    }
 
     //    @Test
 //    public void testAddUser() {
@@ -69,5 +92,66 @@ public class UserDaoImplTest {
 //        assertEquals(expectedForeName, user.getForename(), "User name should match the expected value");
 //        assertEquals(expectedUserId, user.getUserID(), "User ID should match the expected value");
 //    }
+//@Test
+//public void testGetAllUsers() {
+//    List<User> users = userDao.getAllUsers();
+//
+//    assertNotNull(users, "User list should not be null");
+//    assertFalse(users.isEmpty(), "User list should not be empty");
+//
+//    int i =0;
+//    for (User user : users) {
+//        i++;
+//        assertNotNull(user.getEmail(), "User email should not be null");
+//        assertNotNull(user.getEmail(), "User email should not be null");
+//    }
+//    System.out.println(i);
+//}
 
+//    @Test
+//    public void testUpdateUser() {
+//        int userId = 2; // 已知的用户 ID
+//        User user = new User(2);
+//        user.setUserID(userId);
+//        user.setEmail("updated@example.com");
+//        user.setForename("UpdatedForename2");
+//        user.setSurname("UpdatedSurname");
+//        user.setAddressId(1); // 假设的新地址 ID
+//
+//        // 执行更新操作
+//        userDao.updateUser(user);
+//
+//        // 重新从数据库获取更新后的用户信息
+//        User updatedUser = userDao.getUserById(userId).get();
+//        System.out.println("Forename is "+updatedUser.getForename());
+//        assertNotNull(updatedUser, "User should not be null after update");
+//        assertEquals("updated@example.com", updatedUser.getEmail(), "Email should be updated");
+//        assertEquals("UpdatedForename2", updatedUser.getForename(), "Forename should be updated");
+//        assertEquals("UpdatedSurname", updatedUser.getSurname(), "Surname should be updated");
+//
+//    }
+//@Test
+//public void testDeleteUser() {
+//    int userId = 3;
+//
+//    userDao.deleteUser(userId);
+//
+//    Optional<User> user = userDao.getUserById(userId);
+//    assertFalse(user.isPresent(), "User should not be present after deletion");
+//}
+//@Test
+//public void testGetUserRoles() {
+//    int userId = 2; // 插入一个测试用户并设置其角色，返回用户 ID
+//
+//    // 调用方法获取用户角色列表
+//    List<Role> roles = userDao.getUserRoles(userId);
+//
+//    assertNotNull(roles, "Roles list should not be null");
+//    assertFalse(roles.isEmpty(), "Roles list should not be empty");
+//
+//    // 验证返回的角色列表是否包含预期的角色
+//    assertTrue(roles.contains(Role.CUSTOMER), "User should have CUSTOMER role");
+//    assertTrue(roles.contains(Role.STAFF), "User should have STAFF role");
+//    // 验证其他预期的角色...
+//}
 }

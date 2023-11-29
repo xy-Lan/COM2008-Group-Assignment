@@ -42,6 +42,8 @@ public class User {
 		return user;
 	}
 
+
+
 	public User(String email) {
 		this.email= email;
 	}
@@ -49,7 +51,7 @@ public class User {
 	public User(int userID) {
 		this.userID = userID;
 	}
-    
+
 
 
 	public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
@@ -57,7 +59,7 @@ public class User {
 		preparedStatement.setString(2, this.getForename());
 		preparedStatement.setString(3, this.getSurname());
 		preparedStatement.setInt(4, this.getAddressId());
-
+		preparedStatement.setInt(5, this.getUserID());
 	}
 
 	public void setUserID(int id) {
