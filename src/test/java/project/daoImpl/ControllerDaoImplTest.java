@@ -40,13 +40,13 @@ public class ControllerDaoImplTest {
 
     @Test
     void testGetController() {
-        String testProductCode = "C122";// 使用实际的测试代码
+        String testProductCode = "C122";
 //        Controller testController = new Controller("testCode2", "testBrand", "testName", new BigDecimal("99.99");
         Controller controller = controllerDao.getController(testProductCode);
 
         assertNotNull(controller);
         assertEquals(testProductCode, controller.getProductCode());
-        // 进行更多的断言来验证其他属性
+
     }
 
     @Test

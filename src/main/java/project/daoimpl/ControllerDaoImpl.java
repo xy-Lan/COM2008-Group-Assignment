@@ -83,7 +83,7 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         ResultSet resultSet = null;
 
         try {
-            connection = MySqlService.getConnection();
+
 
             // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
@@ -93,9 +93,18 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
             }
             Controller controller = (Controller) product;
 
+            connection = MySqlService.getConnection();
+            if (connection == null) {
+                System.out.println("the connection is null");
+            }
+
             // Then get the unique properties from the controller table
             String sqlController = "SELECT controller_type, is_digital FROM controller WHERE product_code = ?";
-            preparedStatement = connection.prepareStatement(sqlController);
+            try {
+                preparedStatement = connection.prepareStatement(sqlController);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             preparedStatement.setString(1, productCode);
             resultSet = preparedStatement.executeQuery();
 
