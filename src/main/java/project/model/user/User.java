@@ -20,14 +20,15 @@ public class User {
 	private int userID;
 	private String forename;
 	private String surname;
-	private String houseNumber;
-	private String postCode;
-	// Used only when the user is Staff
-	private List<Inventory> inventories = new ArrayList<>();
-	// Used only when the user is Customer
-	private List<Payment> payments = new ArrayList<>();
-	private List<Order> orders = new ArrayList<>();
-	private Address residesAt;
+	private int addressId;
+//	private String houseNumber;
+//	private String postCode;
+//	// Used only when the user is Staff
+//	private List<Inventory> inventories = new ArrayList<>();
+//	// Used only when the user is Customer
+//	private List<Payment> payments = new ArrayList<>();
+//	private List<Order> orders = new ArrayList<>();
+//	private Address residesAt;
 
 	public User(String email) {
 		this.email= email;
@@ -54,8 +55,7 @@ public class User {
 		preparedStatement.setString(1, this.getEmail());
 		preparedStatement.setString(2, this.getForename());
 		preparedStatement.setString(3, this.getSurname());
-		preparedStatement.setString(4, this.getHouseNumber());
-		preparedStatement.setString(5, this.getPostCode());
+		preparedStatement.setInt(4, this.getAddressId());
 
 	}
 
@@ -92,28 +92,33 @@ public class User {
 	public String getSurname() {
 		return surname;
 	}
-
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+	public void setAddressId(int addressId) { this.addressId = addressId; }
 
-	// Getter and Setter for houseNumber
-	public String getHouseNumber() {
-		return houseNumber;
-	}
+	public int getAddressId() { return addressId; }
+//	public void setSurname(String surname) {
+//		this.surname = surname;
+//	}
+//
+//	// Getter and Setter for houseNumber
+//	public String getHouseNumber() {
+//		return houseNumber;
+//	}
+//
+//	public void setHouseNumber(String houseNumber) {
+//		this.houseNumber = houseNumber;
+//	}
+//
+//	// Getter and Setter for postCode
+//	public String getPostCode() {
+//		return postCode;
+//	}
 
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-	// Getter and Setter for postCode
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
+//	public void setPostCode(String postCode) {
+//		this.postCode = postCode;
+//	}
 
 	public List<Role> getRoles() {
 		return roles;
@@ -123,8 +128,8 @@ public class User {
 		this.passwordHash = passwordHash;
 	}
 
-	public void setOrders (List<Order> orders){ this.orders = orders; }
-	public List<Order> getOrders(){ return orders; }
+//	public void setOrders (List<Order> orders){ this.orders = orders; }
+//	public List<Order> getOrders(){ return orders; }
 
 	public void updateDetails() {
 		// TODO - implement User.updateDetails

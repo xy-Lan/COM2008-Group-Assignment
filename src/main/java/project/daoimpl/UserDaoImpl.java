@@ -7,6 +7,7 @@ import project.model.payment.*;
 import project.model.order.*;
 import project.model.address.*;
 import project.dao.UserDao;
+import project.utils.PasswordUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
 public class UserDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
     @Override
     public void addUser(User user) {
-        String sql = "INSERT INTO users (email,  forename, surname, house_number, post_code) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (email,  forename, surname, address_id) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -35,22 +38,51 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addUserPasswordHash(int userId, String passwordHash) {
-        // Using MySqlService to add a user's password hash to the database
+    public void addUserPasswordHash(int userId, String password) {
+        String passwordHash = PasswordUtils.hashPassword(password);
+        String sql = "INSERT INTO hashed_passwords (user_id, password_hash) VALUES (?, ?)";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, passwordHash);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error adding password hash for user ID: " + userId, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
+
+
     @Override
-    public String getUserPasswordHash(String email) {
-        // Using MySqlService to get a user's password hash
-        return null; //Returns the user's password hash or null if not found
+    public String getUserPasswordHash(int userId) {
+        String sql = "SELECT * FROM hashed_passwords WHERE user_id = ?";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("password_hash");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error getting password hash for userId: " + userId, e);
+        }
+
+        return null;
     }
 
     @Override
     public Optional<User> getUserById(int userId) {
-        // Implement JDBC code to retrieve a User by userId from the database
         String query = "SELECT * FROM users WHERE user_id = ?";
-        try (Connection connection = MySqlService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        MySqlService mySqlService = new MySqlService();
+        try (Connection connection = mySqlService.getInstanceConnection();      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,7 +103,29 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByEmail(String email) {
-        // Implement JDBC code to retrieve a User by email from the database
+//        String sql = "SELECT * FROM users WHERE email = ?";
+//
+//        try (Connection connection = MySqlService.getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//
+//            preparedStatement.setString(1, email);
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+//                    int userId = resultSet.getInt("user_id");
+//                    String userName = resultSet.getString("name");
+//                    // 其他用户属性...
+//
+//                    User user = new User();
+//                    user.setUserId(userId);
+//                    user.setName(userName);
+//                    // 设置其他属性...
+//
+//                    return user;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            LOGGER.log(Level.SEVERE, "Error getting user by email: " + email, e);
+//        }
         return null; // Replace with actual user retrieved from the database
     }
 

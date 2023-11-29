@@ -58,6 +58,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jSpinner1 = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -286,7 +287,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 17);
+        btnUser.setBounds(840, 10, 130, 16);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
@@ -298,7 +299,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 17);
+        btnManager.setBounds(840, 50, 150, 16);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -367,7 +368,7 @@ public class StaffDashboard extends javax.swing.JFrame {
 
         jLabel1.setText("Change Price:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(300, 250, 80, 17);
+        jLabel1.setBounds(300, 250, 80, 16);
 
         jTextField1.setText("Product ID");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -376,13 +377,18 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextField1);
-        jTextField1.setBounds(380, 250, 100, 23);
+        jTextField1.setBounds(380, 250, 100, 26);
         jPanel1.add(jSpinner1);
-        jSpinner1.setBounds(490, 250, 64, 23);
+        jSpinner1.setBounds(490, 250, 68, 26);
 
         jButton1.setText("Confirm");
         jPanel1.add(jButton1);
-        jButton1.setBounds(570, 250, 110, 23);
+        jButton1.setBounds(570, 250, 110, 27);
+
+        jButton2.setBackground(new java.awt.Color(0, 102, 0));
+        jButton2.setText("New Product");
+        jPanel1.add(jButton2);
+        jButton2.setBounds(760, 247, 140, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -594,6 +600,14 @@ public class StaffDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+//    private void newProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProduct
+//        // TODO add your handling code here:
+//        NewProduct NewProductFrame = new NewProduct();
+//        NewProductFrame.setVisible(true);
+//        NewProductFrame.pack();
+//        NewProductFrame.setLocationRelativeTo(null);
+//    }//GEN-LAST:event_newProduct
+
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         // TODO add your handling code here:
         String productID = jTextField1.getText();
@@ -629,7 +643,10 @@ public class StaffDashboard extends javax.swing.JFrame {
             // Handle database-related exceptions (show an error message, log, etc.)
             e.printStackTrace();
         }
+
     }//GEN-LAST:event_confirmButtonActionPerformed
+
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -650,6 +667,7 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnTrainSets1;
     private javax.swing.JButton btnUser;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
