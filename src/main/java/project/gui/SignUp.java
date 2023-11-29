@@ -1,6 +1,11 @@
 
 package project.gui;
 
+import project.dao.AddressDao;
+import project.dao.UserDao;
+import project.daoimpl.AddressDaoImpl;
+import project.daoimpl.UserDaoImpl;
+import project.model.address.Address;
 import project.model.user.User;
 import project.service.MySqlService;
 
@@ -280,23 +285,20 @@ public class SignUp extends javax.swing.JFrame {
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:ystem.out.println("Creating user");
-        System.out.println(txtPassword.getPassword());
-        System.out.println(txtConfirmPassword.getPassword());
-        System.out.println(txtPassword.getPassword() != txtConfirmPassword.getPassword());
-        // if (jPasswordField1.getPassword() != jPasswordField2.getPassword()) return;
-
-        User newUser = new User(txtEmail.getText());
-        System.out.println(newUser.toMap());
-
-        /*
-         * house_number` varchar(255) DEFAULT NULL,
-  `post_code` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`user_address_id`),
-  KEY `user_id` (`user_id`),
-  KEY `house_number` (`house_number`,`post_code`),
-         */
-
-        newUser = MySqlService.getInstance().signUp(newUser, String.valueOf(txtPassword.getPassword()));
+        Address address = new Address();
+        address.setHouseNumber(txtHouseNum.getText().trim());
+        address.setRoadName(txtRoadName.getText().trim());
+        address.setCityName(txtCityName.getText().trim());
+        address.setPostCode(txtPostCode.getText().trim());
+        User user = new User();
+        user.setEmail(txtEmail.getText().trim());
+        user.setForename(txtForename.getText().trim());
+        user.setSurname(txtSurname.getText().trim());
+        user.setAddressId(address.getAddressId());
+        UserDao userDao = new UserDaoImpl();
+        AddressDao addressDao = new AddressDaoImpl();
+        addressDao.addAddress(address);
+        userDao.addUser(user);
     }//GEN-LAST:event_btnSignUpActionPerformed
 
 

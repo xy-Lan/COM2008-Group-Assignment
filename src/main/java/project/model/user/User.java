@@ -42,7 +42,7 @@ public class User {
 		return user;
 	}
 
-
+	public User() {}
 
 	public User(String email) {
 		this.email= email;
