@@ -76,16 +76,22 @@ public class OrderService {
 			order = createOrder(user);
 		}
 
-        //Access to commodity information and costs
-		Product product = productDao.getProduct(productCode);
-		BigDecimal lineCost = product.getRetailPrice().multiply(new BigDecimal(quantity));
+		OrderLineDao orderLineDao = new OrderLineDaoImpl();
+		OrderLine exitingOrderLine = orderLineDao.getOrderLine(order.getOrderNumber(), productCode);
+		if (exitingOrderLine == null) {
+			//Access to commodity information and costs
+			Product product = productDao.getProduct(productCode);
+			BigDecimal lineCost = product.getRetailPrice().multiply(new BigDecimal(quantity));
 
-		// Add products to the order
-		OrderLine orderLine = new OrderLine(productCode, quantity, lineCost, order.getOrderNumber());
-
-		// Save the OrderLine to the database
-		addOrderLine(order.getOrderNumber(), orderLine);
-
+			// Add products to the order
+			OrderLine orderLine = new OrderLine(productCode, quantity, lineCost, order.getOrderNumber());
+			// Save the OrderLine to the database
+			addOrderLine(order.getOrderNumber(), orderLine);
+		} else {
+			//If the product is already added to the basket, update its quantity
+			exitingOrderLine.setQuantity(quantity);
+			orderLineDao.updateOrderLine(exitingOrderLine);
+		}
 		return order;
 	}
 

@@ -8,7 +8,7 @@ import project.dao.BankCardDao;
 import project.daoimpl.BankCardDaoImpl;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.utils.UserSessionManager;
 
 /**
@@ -237,8 +237,7 @@ public class CheckOut extends javax.swing.JFrame {
         String firstName = txtFirstName.getText();
         String lastName = txtLastName.getText();
         String cardName = txtBankCardName.getText();
-        MysqlService mysqlService = new MysqlService();
-        BankCardDao bankCardDao = new BankCardDaoImpl(mysqlService);
+        BankCardDao bankCardDao = new BankCardDaoImpl();
         BankCard bankCard = new BankCard(currentUser, cardNumber, expiryMonth, expiryYear, securityCode,
                             firstName, lastName,cardName);
         bankCardDao.addBankCard(bankCard);
