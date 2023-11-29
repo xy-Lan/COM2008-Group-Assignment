@@ -84,7 +84,6 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
 
         try {
 
-
             // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
             System.out.println(product.getProductCode());

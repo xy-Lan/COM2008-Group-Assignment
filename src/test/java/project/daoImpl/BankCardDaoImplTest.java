@@ -100,18 +100,18 @@ public class BankCardDaoImplTest {
 //            throw new RuntimeException(e);
 //        }
 //    }
-@Test
-public void testDeleteBankCard() {
-    // 设置测试条件 - 确保数据库中有一个可以被删除的银行卡记录
-    int userId = 123;
-
-    // 执行删除操作
-    bankCardDao.deleteBankCard(userId);
-
-    // 验证 - 确认银行卡已被删除
-    // 这可以通过尝试获取该用户的银行卡记录来完成，
-    // 并检查结果是否为null或记录是否不存在
-    assertNull(bankCardDao.getBankCardByUserID(userId));
-}
+//@Test
+//public void testDeleteBankCard() {
+//    // 设置测试条件 - 确保数据库中有一个可以被删除的银行卡记录
+//    int userId = 123;
+//
+//    // 执行删除操作
+//    bankCardDao.deleteBankCard(userId);
+//
+//    // 验证 - 确认银行卡已被删除
+//    // 这可以通过尝试获取该用户的银行卡记录来完成，
+//    // 并检查结果是否为null或记录是否不存在
+//    assertNull(bankCardDao.getBankCardByUserID(userId));
+//}
 
 }

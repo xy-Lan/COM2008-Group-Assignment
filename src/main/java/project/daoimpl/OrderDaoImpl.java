@@ -64,9 +64,7 @@ public class OrderDaoImpl implements OrderDao{
     @Override
     public Optional<Order> getOrderById(int orderNumber) {
         String query = "SELECT * FROM orders WHERE order_number = ?"; // Suppose the field name is order_number
-
-        try (Connection connection = MySqlService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+;        try (Connection connection = MySqlService.getConnection() ;          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, orderNumber); //Set orderId to the query parameter
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -74,6 +72,7 @@ public class OrderDaoImpl implements OrderDao{
             if (resultSet.next()) {
 
                 int userID = resultSet.getInt("user_id");
+
                 // Get user from userDao
                 Optional<User> user = userDao.getUserById(userID);
                 

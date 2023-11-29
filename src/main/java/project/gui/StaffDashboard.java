@@ -600,13 +600,13 @@ public class StaffDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void newProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProduct
-        // TODO add your handling code here:
-        NewProduct NewProductFrame = new NewProduct();
-        NewProductFrame.setVisible(true);
-        NewProductFrame.pack();
-        NewProductFrame.setLocationRelativeTo(null);
-    }//GEN-LAST:event_newProduct
+//    private void newProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProduct
+//        // TODO add your handling code here:
+//        NewProduct NewProductFrame = new NewProduct();
+//        NewProductFrame.setVisible(true);
+//        NewProductFrame.pack();
+//        NewProductFrame.setLocationRelativeTo(null);
+//    }//GEN-LAST:event_newProduct
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         // TODO add your handling code here:

@@ -58,6 +58,19 @@ public class MySqlService {
         return connection;
     }
 
+    public Connection getInstanceConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connect();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to check the connection status.");
+        }
+
+        return connection;
+    }
+
     private static void connect() {
         try {
             System.out.println("Connecting...");

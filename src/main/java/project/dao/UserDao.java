@@ -20,7 +20,7 @@ public interface UserDao {
 
     void addUserPasswordHash(int userId, String passwordHash);
 
-    String getUserPasswordHash(String email);
+    String getUserPasswordHash(int userId);
 
     // Methods for handling user roles
     List<Role> getUserRoles(int userId);

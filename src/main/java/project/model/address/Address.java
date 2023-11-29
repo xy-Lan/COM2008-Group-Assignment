@@ -8,11 +8,12 @@ import project.model.user.*;
 
 public class Address {
 
-	Collection<User> users = new ArrayList<>();
+//	Collection<User> users = new ArrayList<>();
 	private String houseNumber;
 	private String postCode;
 	private String roadName;
 	private String cityName;
+    private int addressId;
 
     public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
         stmt.setString(1, this.houseNumber);
@@ -32,13 +33,13 @@ public class Address {
         return address;
     }
 
-	public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
-    }
+//	public Collection<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Collection<User> users) {
+//        this.users = users;
+//    }
 
     public String getHouseNumber() {
         return houseNumber;
