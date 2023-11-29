@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.dao.OrderLineDao;
 import project.daoimpl.OrderLineDaoImpl;
 import project.model.order.OrderLine;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,13 +13,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderLineDaoImplTest {
-    private MysqlService mysqlService;
     private OrderLineDao orderLineDao;
 
     @BeforeEach
     void setUp() {
-        mysqlService = new MysqlService();
-        orderLineDao = new OrderLineDaoImpl(mysqlService);
+        orderLineDao = new OrderLineDaoImpl();
     }
 
 //    @Test

@@ -6,7 +6,7 @@ import project.model.product.Carriage;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.CarriageType;
 import project.model.product.enums.Era;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,6 @@ import java.util.logging.Logger;
 
 public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
     private static final Logger LOGGER = Logger.getLogger(CarriageDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public CarriageDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
 
     @Override
     public void addCarriage(Carriage carriage) {
@@ -28,11 +23,11 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, the super class method is called to handle the generic Product property
-            super.addProduct(carriage, connection);
+            super.addProduct(carriage);
 
             // Then, add Carriage-specific properties
             String sqlCarriage = "INSERT INTO carriage (product_code, carriage_type, era) VALUES (?, ?, ?)";
@@ -70,7 +65,7 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // Get generic Product property
             Product product = super.getProduct(productCode);
@@ -108,7 +103,7 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
     public List<Carriage> getAllCarriages() {
         List<Carriage> carriages = new ArrayList<>();
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, c.carriage_type, c.era FROM product p JOIN carriage c ON p.product_code = c.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

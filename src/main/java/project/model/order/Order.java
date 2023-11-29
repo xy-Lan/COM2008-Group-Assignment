@@ -11,7 +11,7 @@ import project.model.user.*;
 public class Order {
 
 	private int orderNumber;
-	private Date date;
+	private Date date = new Date();
 	private OrderStatus orderStatus = OrderStatus.PENDING;
 	private User user;
     private List<OrderLine> orderLines;
@@ -21,6 +21,10 @@ public class Order {
             throw new IllegalArgumentException("User cannot be null.");
         }
         this.user = user;
+    }
+
+    public void printDate() {
+        System.out.println("Order date: " + date.toString());
     }
     
     // Static method to create Order object from ResultSet

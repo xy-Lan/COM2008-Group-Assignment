@@ -5,33 +5,28 @@ import project.dao.TrackDao;
 import project.model.product.Track;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.TrackType;
-import project.service.MysqlService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import project.service.MySqlService;
 
 public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
     private static final Logger LOGGER = Logger.getLogger(TrackDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public TrackDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
-
+    
     @Override
     public void addTrack(Track track) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(track, connection);
+            super.addProduct(track);
 
             // Then, add the specific attributes of the Track
             String sqlTrack = "INSERT INTO track (product_code, track_type) VALUES (?, ?)";
@@ -67,7 +62,7 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // Retrieve common Product attributes
             Product product = super.getProduct(productCode);
@@ -104,7 +99,7 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
     public List<Track> getAllTracks() {
         List<Track> tracks = new ArrayList<>();
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, t.track_type FROM product p JOIN track t ON p.product_code = t.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

@@ -6,7 +6,7 @@ import project.dao.ProductDao;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.DCCType;
 import project.model.product.enums.Era;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,6 @@ import java.util.logging.Logger;
 
 public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  {
     private static final Logger LOGGER = Logger.getLogger(LocomotiveDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public LocomotiveDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
 
     @Override
     public void addLocomotive(Locomotive locomotive) {
@@ -28,11 +23,11 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(locomotive, connection);
+            super.addProduct(locomotive);
 
             // Then, add the specific attributes of the Locomotive
             String sqlLocomotive = "INSERT INTO locomotive (product_code, dcc_type, era) VALUES (?, ?, ?)";
@@ -70,7 +65,7 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // Retrieve common Product attributes
             Product product = super.getProduct(productCode);
@@ -109,7 +104,7 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
     public List<Locomotive> getAllLocomotives() {
         List<Locomotive> locomotives = new ArrayList<>();
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, l.dcc_type, l.era FROM product p JOIN locomotive l ON p.product_code = l.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

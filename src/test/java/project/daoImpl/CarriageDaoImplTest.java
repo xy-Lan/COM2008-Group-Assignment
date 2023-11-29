@@ -6,17 +6,16 @@ import org.junit.jupiter.api.Test;
 import project.dao.CarriageDao;
 import project.daoimpl.CarriageDaoImpl;
 import project.model.product.Carriage;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.List;
 
 public class CarriageDaoImplTest {
     private CarriageDao carriageDao;
-    private MysqlService mysqlService = new MysqlService();
 
     @BeforeEach
     public void setUp() {
-        carriageDao = new CarriageDaoImpl(mysqlService);
+        carriageDao = new CarriageDaoImpl();
     }
 
     @Test

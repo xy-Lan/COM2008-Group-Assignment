@@ -15,7 +15,7 @@ import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
 
@@ -143,9 +143,8 @@ public class OrderLines extends javax.swing.JFrame {
 
     private void loadPendingOrders(){
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        MysqlService mysqlService = new MysqlService();
-        OrderDao orderDao = new OrderDaoImpl(mysqlService);
-        OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
+        OrderDao orderDao = new OrderDaoImpl();
+        OrderLineDao orderLineDao = new OrderLineDaoImpl();
         Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
         //List all the pending orders and set the layout of the order panel
         orderContainer.removeAll();
@@ -158,7 +157,7 @@ public class OrderLines extends javax.swing.JFrame {
 
             //Get all the product in the basket
             for(OrderLine orderLine : allOrderLines){
-                ProductDao productDao = new ProductDaoImpl(mysqlService);
+                ProductDao productDao = new ProductDaoImpl();
                 Product product = productDao.getProduct(orderLine.getProductCode());
 
                 //Display the order line

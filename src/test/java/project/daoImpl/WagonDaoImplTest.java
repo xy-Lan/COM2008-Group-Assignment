@@ -6,19 +6,18 @@ import org.junit.jupiter.api.Test;
 import project.dao.WagonDao;
 import project.daoimpl.WagonDaoImpl;
 import project.model.product.Wagon;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.List;
 
 public class WagonDaoImplTest {
 
         private WagonDao wagonDao;
-        private MysqlService mysqlService = new MysqlService();
 
         @BeforeEach
         public void setUp() {
             // 初始化 WagonDao
-            wagonDao = new WagonDaoImpl(mysqlService); // 假设实现类名为 WagonDaoImpl
+            wagonDao = new WagonDaoImpl(); // 假设实现类名为 WagonDaoImpl
         }
 
         @Test

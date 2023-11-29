@@ -3,7 +3,7 @@ package project.daoimpl;
 import project.dao.PartDao;
 import project.dao.RollingStockDao;
 import project.model.product.RollingStock;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,12 +13,6 @@ import java.util.logging.Logger;
 
 public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockDao {
     private static final Logger LOGGER = Logger.getLogger(RollingStockDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public RollingStockDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
-
 
     @Override
     public void addRollingStock(RollingStock rollingStock) throws SQLException {
@@ -26,12 +20,12 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, add the generic product attributes
-            super.addProduct(rollingStock, connection);
-            PartDao partDao = new PartDaoImpl(mysqlService);
+            super.addProduct(rollingStock);
+            PartDao partDao = new PartDaoImpl();
             partDao.addPart(rollingStock, connection);
 
             // Then, add the specific attributes of the RollingStock

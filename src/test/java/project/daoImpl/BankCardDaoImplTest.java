@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import project.daoimpl.BankCardDaoImpl;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,14 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BankCardDaoImplTest {
     private static final Logger LOGGER = Logger.getLogger(BankCardDaoImpl.class.getName());
-    private MysqlService mysqlService;
     private BankCardDaoImpl bankCardDao;
     private final int testUserId = 123;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        mysqlService = new MysqlService();
-        bankCardDao = new BankCardDaoImpl(mysqlService);
+        bankCardDao = new BankCardDaoImpl();
 
 //        addTestUserToUsersTable();
     }

@@ -7,7 +7,7 @@ import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
 
@@ -321,10 +321,9 @@ public class ProductDetails extends javax.swing.JFrame {
         //Add a product to basket
         int quantity = (Integer) quantityVal.getValue();
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        MysqlService mysqlService = new MysqlService();
-        OrderDao orderDao = new OrderDaoImpl(mysqlService);
+        OrderDao orderDao = new OrderDaoImpl();
         OrderService OrderService = new OrderService(orderDao);
-        InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
+        InventoryDao inventoryDao = new InventoryDaoImpl();
         int stock = inventoryDao.getStock(product.getProductCode());
         if ( quantity > stock) {
             JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",

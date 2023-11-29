@@ -3,7 +3,7 @@ package project.daoimpl;
 import project.dao.OrderLineDao;
 import project.model.order.Order;
 import project.model.order.OrderLine;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -14,16 +14,12 @@ import java.util.logging.Logger;
 
 public class OrderLineDaoImpl implements OrderLineDao {
     private static final Logger LOGGER = Logger.getLogger(OrderLineDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-    public OrderLineDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
 
     @Override
     public void addOrderLine(OrderLine orderLine) {
         String sql = "INSERT INTO orderline (product_code, quantity, linecost, order_number) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, orderLine.getProductCode());
@@ -47,7 +43,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
     public OrderLine getOrderLine(int orderNumber, String productCode) {
         String sql = "SELECT * FROM orderline WHERE order_number = ? AND product_code = ?";
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, orderNumber);
@@ -72,7 +68,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
         List<OrderLine> orderLines = new ArrayList<>();
         String query = "SELECT * FROM orderline WHERE order_number = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, orderNumber);
@@ -104,7 +100,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
 
         BigDecimal newLineCost = unitPrice.multiply(new BigDecimal(orderLine.getQuantity()));
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, orderLine.getQuantity());
@@ -128,7 +124,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
     public BigDecimal getProductRetailPrice(String productCode) {
         String sql = "SELECT retail_price FROM product WHERE product_code = ?";
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, productCode);
@@ -149,7 +145,7 @@ public class OrderLineDaoImpl implements OrderLineDao {
     public void deleteOrderLine(int orderNumber, String productCode) {
         String sql = "DELETE FROM orderline WHERE order_number = ? AND product_code = ?";
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, orderNumber);

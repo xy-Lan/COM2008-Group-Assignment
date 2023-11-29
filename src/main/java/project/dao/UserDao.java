@@ -11,7 +11,7 @@ import project.model.user.*;
 
 public interface UserDao {
     // Basic CRUD operations
-    int addUser(User user);
+    void addUser(User user);
     Optional<User> getUserById(int userId);
     User getUserByEmail(String email);
     List<User> getAllUsers();

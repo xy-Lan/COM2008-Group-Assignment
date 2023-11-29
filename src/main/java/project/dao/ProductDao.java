@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.List;
 
 public interface ProductDao {
-    void addProduct(Product product, Connection conn);
+    void addProduct(Product product);
     Product getProduct(String productCode);
     List<Product> getAllProducts();
     void updateProduct(Product product);

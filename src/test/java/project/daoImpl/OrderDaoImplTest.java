@@ -21,21 +21,18 @@ import project.daoimpl.OrderDaoImpl;
 import project.model.order.Order;
 import project.model.order.OrderStatus;
 import project.model.user.User;
-import project.service.MysqlService;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderDaoImplTest {
 
-
-    private MysqlService mysqlService = new MysqlService();
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-    private OrderDaoImpl orderDao =new OrderDaoImpl(mysqlService);
+    private OrderDaoImpl orderDao =new OrderDaoImpl();
 
     @BeforeEach
     public void setUp() {
-        orderDao = new OrderDaoImpl(mysqlService);
+        orderDao = new OrderDaoImpl();
     }
 
     @Test

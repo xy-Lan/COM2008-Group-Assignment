@@ -6,7 +6,7 @@ import project.dao.ProductDao;
 import project.model.product.Controller;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.ControllerType;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,28 +17,20 @@ import java.util.logging.Logger;
 public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
     private static final Logger LOGGER = Logger.getLogger(ControllerDaoImpl.class.getName());
 
-    private MysqlService mysqlService = new MysqlService();
-
-    public ControllerDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
-
-//    private PartDao partDao = new PartDaoImpl(mysqlService);
-
     @Override
     public void addController(Controller controller) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
             LOGGER.info("Attempting to add product");
-            super.addProduct(controller, connection);
+            super.addProduct(controller);
             LOGGER.info("Product added successfully");
-            PartDao partDao = new PartDaoImpl(mysqlService);
+            PartDao partDao = new PartDaoImpl();
             LOGGER.info("Attempting to add part");
             partDao.addPart(controller, connection);
             LOGGER.info("Part added successfully");
@@ -91,7 +83,7 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
@@ -133,7 +125,7 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         // The SQL query should fetch all relevant properties of the Controller.
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, c.controller_type," +
                 " c.is_digital FROM product p JOIN controller c ON p.product_code = c.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

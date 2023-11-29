@@ -9,7 +9,7 @@ import project.daoimpl.*;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
 
@@ -339,16 +339,14 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
         title.setText("Track Packs");
-        MysqlService mysqlService = new MysqlService();
-        TrackPackDao TrackPackDao = new TrackPackDaoImpl(mysqlService);
+        TrackPackDao TrackPackDao = new TrackPackDaoImpl();
         List<TrackPack> allTrackPacks = TrackPackDao.getAllTrackPacks();
         loadProductsByType(allTrackPacks);
     }//GEN-LAST:event_btnTrackPacksActionPerformed
 
     private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
         title.setText("Locomotives");
-        MysqlService mysqlService = new MysqlService();
-        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl(mysqlService);
+        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl();
         List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
         loadProductsByType(allLocomotives);
 
@@ -356,8 +354,7 @@ public class Default extends javax.swing.JFrame {
 
     private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
         title.setText("Train Sets");
-        MysqlService mysqlService = new MysqlService();
-        TrainSetDao TrainSetDao = new TrainSetDaoImpl(mysqlService);
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
         List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
         loadProductsByType(allTrainSets);
     }//GEN-LAST:event_btnTrainSetsActionPerformed
@@ -381,16 +378,14 @@ public class Default extends javax.swing.JFrame {
 
     private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
         title.setText("Controllers");
-        MysqlService mysqlService = new MysqlService();
-        ControllerDao ControllerDao = new ControllerDaoImpl(mysqlService);
+        ControllerDao ControllerDao = new ControllerDaoImpl();
         List<Controller> allControllers = ControllerDao.getAllControllers();
         loadProductsByType(allControllers);
     }//GEN-LAST:event_btnControllersActionPerformed
 
     private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
         title.setText("Track");
-        MysqlService mysqlService = new MysqlService();
-        TrackDao TrackDao = new TrackDaoImpl(mysqlService);
+        TrackDao TrackDao = new TrackDaoImpl();
         List<Track> allTracks = TrackDao.getAllTracks();
         loadProductsByType(allTracks);
     }//GEN-LAST:event_btnTrackActionPerformed
@@ -488,10 +483,9 @@ public class Default extends javax.swing.JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     int quantity = (Integer) quantityVal.getValue();
                     User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-                    MysqlService mysqlService = new MysqlService();
-                    OrderDao orderDao = new OrderDaoImpl(mysqlService);
+                    OrderDao orderDao = new OrderDaoImpl();
                     OrderService OrderService = new OrderService(orderDao);
-                    InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
+                    InventoryDao inventoryDao = new InventoryDaoImpl();
                     int stock = inventoryDao.getStock(product.getProductCode());
 
                     if ( quantity > stock) {

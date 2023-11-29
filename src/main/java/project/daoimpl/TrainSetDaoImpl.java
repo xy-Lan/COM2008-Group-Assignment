@@ -3,7 +3,7 @@ package project.daoimpl;
 import project.dao.ProductDao;
 import project.dao.TrainSetDao;
 import project.model.product.TrainSet;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,7 @@ import java.sql.*;
 
 public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
-    private MysqlService mysqlService = new MysqlService();
-
     private static final Logger LOGGER = Logger.getLogger(TrainSetDaoImpl.class.getName());
-
-    public TrainSetDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
 
     @Override
     public void addTrainSet(TrainSet trainSet) {
@@ -62,7 +56,7 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
         List<TrainSet> trainSets = new ArrayList<>();
         String sql = "SELECT ts.product_code, p.product_name, p.brand_name, p.retail_price, p.gauge_type " +
                 "FROM train_set ts JOIN product p ON ts.product_code = p.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
 
