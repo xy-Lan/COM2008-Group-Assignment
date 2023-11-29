@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 /**
@@ -493,6 +494,8 @@ public class Default extends javax.swing.JFrame {
                                 "Out of stock", WARNING_MESSAGE);
                     } else {
                         OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+                        JOptionPane.showMessageDialog(null, "Product successfully added! Please check your basket!",
+                                "Product Added", INFORMATION_MESSAGE);
                     }
                 }
             });

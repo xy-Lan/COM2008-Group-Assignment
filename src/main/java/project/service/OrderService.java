@@ -89,7 +89,8 @@ public class OrderService {
 			addOrderLine(order.getOrderNumber(), orderLine);
 		} else {
 			//If the product is already added to the basket, update its quantity
-			exitingOrderLine.setQuantity(quantity);
+			int previousQuantity = exitingOrderLine.getQuantity();
+			exitingOrderLine.setQuantity(quantity + previousQuantity);
 			orderLineDao.updateOrderLine(exitingOrderLine);
 		}
 		return order;

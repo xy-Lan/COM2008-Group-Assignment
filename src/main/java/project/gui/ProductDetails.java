@@ -330,6 +330,8 @@ public class ProductDetails extends javax.swing.JFrame {
                     "Out of stock", WARNING_MESSAGE);
         } else {
             OrderService.addToBasket(currentUser.getUserID(), product.getProductCode(), quantity);
+            JOptionPane.showMessageDialog(null, "Product successfully added! Please check your basket!",
+                    "Product Added", INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAddOrderLineActionPerformed
 
