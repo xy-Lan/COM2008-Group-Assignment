@@ -2,7 +2,8 @@ package project.model.order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,9 @@ import project.model.user.*;
 public class Order {
 
 	private int orderNumber;
-	private Date date = new Date();
+
+    private LocalDate localDate = LocalDate.now();
+	private Date date = Date.valueOf(localDate);
 	private OrderStatus orderStatus = OrderStatus.PENDING;
 	private User user;
     private List<OrderLine> orderLines;
@@ -21,6 +24,7 @@ public class Order {
             throw new IllegalArgumentException("User cannot be null.");
         }
         this.user = user;
+//        System.out.println("Initialise: Create a new order, user id : "+ user.getUserID() + "date" + date);
     }
 
     public void printDate() {

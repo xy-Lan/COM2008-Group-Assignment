@@ -28,14 +28,16 @@ public class OrderDaoImpl implements OrderDao{
 
     @Override
     public void addOrder(Order order) {
-        String query = "INSERT INTO orders (user_id, order_status) VALUES (?, ?);";
+        String query = "INSERT INTO orders (user_id, date, order_status) VALUES (?, ?, ?);";
 
         try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setInt(1, order.getUser().getUserID()); 
             System.out.println("userId: " + order.getUser().getUserID());// Assuming the user ID is an integer.
-            preparedStatement.setString(2, order.getOrderStatus().toString());
+            preparedStatement.setDate(2, order.getDate());
+            System.out.println("date: " + order.getDate());
+            preparedStatement.setString(3, order.getOrderStatus().toString());
             System.out.println("orderStatus: " + order.getOrderStatus().toString());
 
             int affectedRows = preparedStatement.executeUpdate();

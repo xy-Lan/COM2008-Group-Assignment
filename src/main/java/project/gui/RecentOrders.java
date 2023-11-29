@@ -222,7 +222,7 @@ public class RecentOrders extends javax.swing.JFrame {
             JLabel lblOrderNum = new JLabel("Order number: " + Integer.toString(order.getOrderNumber()));
             JLabel lblTotalCosts = new JLabel("Total: " + orderService.calculateTotal(order).toString());
 
-            orderContainer.setBackground(new java.awt.Color(24, 150, 62));
+            orderPanel.setBackground(new java.awt.Color(24, 150, 62));
 
             lblStatus.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14));
             lblStatus.setForeground(new java.awt.Color(20, 55, 196));
@@ -264,7 +264,9 @@ public class RecentOrders extends javax.swing.JFrame {
                         viewProductDetails(product);
                     }
                 });
+                orderPanel.add(productPanel,gbc);
             }
+            orderContainer.add(orderPanel);
         }
     }
 
