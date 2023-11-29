@@ -51,6 +51,7 @@ public class OrderService {
 		try {
 			// Create a new order instance
 			Order order = new Order(user);
+			System.out.println("Insert to database: Create a new order, user id : "+ user.getUserID() + "date" + order.getDate());
 			order.setOrderStatus(OrderStatus.PENDING);
 			order.setOrderLines(new ArrayList<>()); // Initialize with an empty list of order lines
 
@@ -72,6 +73,7 @@ public class OrderService {
 		User user = new User(userId);
 		if (existingOrder.isPresent()) {
 			order = existingOrder.get();
+//			System.out.println("Insert to database: Create a new order, user id : "+ user.getUserID() + "date" + order.getDate());
 		} else {
 			order = createOrder(user);
 		}
@@ -173,7 +175,8 @@ public class OrderService {
 			throw new IllegalArgumentException("Order cannot be null.");
 		}
 
-		List<OrderLine> orderLines = order.getOrderLines();
+		OrderLineDao orderLineDao = new OrderLineDaoImpl();
+		List<OrderLine> orderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
 		BigDecimal total = BigDecimal.ZERO;
 
 		for (OrderLine line : orderLines) {
