@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.dao.UserDao;
 import project.daoimpl.UserDaoImpl;
 import project.model.user.Role;
+import project.utils.PasswordUtils;
 
 import java.util.List;
 
@@ -16,6 +17,18 @@ public class UserDaoImplTest {
     @BeforeEach
     public void setUp() {
         userDao = new UserDaoImpl();
+    }
+
+    @Test
+    public void testUpdateUserPasswordHash() {
+        int userId = 123;
+        String newPassword = "newPassword123";
+
+        Boolean updateResult = userDao.updateUserPasswordHash(userId, newPassword);
+        assertTrue(updateResult, "Password hash should be updated successfully");
+
+        String storedHash = userDao.getUserPasswordHash(userId);
+         assertEquals(PasswordUtils.hashPassword(newPassword), storedHash);
     }
 
 //    @Test

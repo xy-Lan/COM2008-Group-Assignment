@@ -529,6 +529,7 @@ public class MyDetails extends javax.swing.JFrame {
         if (newPassword == null){
             userDao.updateUser(user);
         } else {
+            //TODO reset password
         }
         address.setHouseNumber(txtHouseNum.getText());
         address.setRoadName(txtRoadName.getText());

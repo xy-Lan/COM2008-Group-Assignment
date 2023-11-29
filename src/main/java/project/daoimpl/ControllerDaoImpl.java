@@ -83,6 +83,10 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
 
             // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
+            if (product == null) {
+                LOGGER.info("No product found with productCode: " + productCode);
+                return null;
+            }
             System.out.println(product.getProductCode());
             if (!(product instanceof Controller)) {
                 throw new RuntimeException("Product with code " + productCode + " is not a Controller.");

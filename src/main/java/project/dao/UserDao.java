@@ -20,6 +20,8 @@ public interface UserDao {
 
     void addUserPasswordHash(int userId, String passwordHash);
 
+    Boolean updateUserPasswordHash(int userId, String newPassword);
+
     String getUserPasswordHash(int userId);
 
     // Methods for handling user roles

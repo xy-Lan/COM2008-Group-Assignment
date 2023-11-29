@@ -1,6 +1,7 @@
 package project.daoimpl;
 
 import project.dao.LocomotiveDao;
+import project.dao.PartDao;
 import project.model.product.Locomotive;
 import project.dao.ProductDao;
 import project.model.product.abstractproduct.Product;
@@ -27,33 +28,38 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
+            LOGGER.info("Attempting to add product");
             super.addProduct(locomotive, connection);
+            LOGGER.info("Product added successfully");
+
+            // Assuming you have additional parts related to the locomotive
+            PartDao partDao = new PartDaoImpl();
+            LOGGER.info("Attempting to add part");
+            partDao.addPart(locomotive, connection);
+            LOGGER.info("Part added successfully");
 
             // Then, add the specific attributes of the Locomotive
             String sqlLocomotive = "INSERT INTO locomotive (product_code, dcc_type, era) VALUES (?, ?, ?)";
+            LOGGER.info("Preparing to add locomotive");
             preparedStatement = connection.prepareStatement(sqlLocomotive);
 
-            // Set the parameters for the preparedStatement
-            preparedStatement.setString(1, locomotive.getProductCode());
-            preparedStatement.setString(2, locomotive.getDccType().name());
-            preparedStatement.setString(3, locomotive.getEra().name());
-
+            locomotive.setSubclassTableParameters(preparedStatement);
             preparedStatement.executeUpdate();
+            LOGGER.info("Locomotive added successfully");
 
+            LOGGER.info("Attempting to commit transaction");
             connection.commit(); // Commit transaction
+            LOGGER.info("Transaction committed successfully");
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error in transaction: " + e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
             }
-            LOGGER.log(Level.SEVERE, "Error adding locomotive to the database", e);
             throw new RuntimeException("Database operation failed", e);
-        } finally {
-            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
-            if (connection != null) try { connection.close(); } catch (SQLException e) { /* ignored */ }
         }
     }
 
