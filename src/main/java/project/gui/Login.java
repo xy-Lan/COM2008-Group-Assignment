@@ -1,5 +1,10 @@
 package project.gui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+
 import project.service.MySqlService;
 
 public class Login extends javax.swing.JFrame {
@@ -194,6 +199,21 @@ public class Login extends javax.swing.JFrame {
             DefaultFrame.setVisible(true);
             DefaultFrame.pack();
             DefaultFrame.setLocationRelativeTo(null);
+            
+            DefaultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            DefaultFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    MySqlService.closeConnection();
+                    System.out.println("Window is closing");
+                }
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    MySqlService.closeConnection();
+                    System.out.println("WIndow closed");
+                }
+            });
             this.dispose();
         }
 
