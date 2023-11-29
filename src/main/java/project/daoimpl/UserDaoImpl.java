@@ -265,12 +265,10 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
     @Override
     public List<Inventory> getUserInventories(int userId) {
         return null;
     }
-
 
     @Override
     public void addInventoryToUser(int userId, Inventory inventory) {

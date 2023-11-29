@@ -38,35 +38,28 @@ public class AddressDaoImpl implements AddressDao{
             }
             LOGGER.log(Level.SEVERE, "Error adding address to the database", e);
             throw new RuntimeException("Database operation failed", e);
-        } finally {
-            if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* ignored */ }
-            if (conn != null) try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { /* ignored */ }
         }
     }
 
 
 
     @Override
-    public Address getAddress(String houseNumber, String postCode) {
+    public Address getAddress(int addressId) {
         Address address = null;
-        String sql = "SELECT * FROM address WHERE house_number = ? AND post_code = ?";
-        // SQL query to retrieve an address from the database
+        String sql = "SELECT * FROM address WHERE address_id = ?";
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, houseNumber);
-            stmt.setString(2, postCode);
+            stmt.setInt(1, addressId);
 
-            // Executing the query and processing the result set
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    address = Address.fromResultSet(rs); // Creating an Address Instance with fromResultSet
+                    address = Address.fromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving address from the database", e);
-            // Handle exceptions and possibly throw a runtime exception
             throw new RuntimeException("Database operation failed", e);
         }
         return address;
@@ -123,7 +116,6 @@ public class AddressDaoImpl implements AddressDao{
             throw new RuntimeException("Database operation failed", e);
         }
     }
-
 
     @Override
     public void deleteAddress(String houseNumber, String postCode) {

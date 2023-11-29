@@ -9,6 +9,6 @@ public interface ProductDao {
     void addProduct(Product product);
     Product getProduct(String productCode);
     List<Product> getAllProducts();
-    void updateProduct(Product product);
+    void updateProduct(Product product, Connection connection);
     void deleteProduct(String productCode);
 }

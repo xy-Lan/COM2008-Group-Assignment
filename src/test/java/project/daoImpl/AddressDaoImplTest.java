@@ -44,27 +44,57 @@ public class AddressDaoImplTest {
         }
     }
 
+//    @Test
+//    public void testGetAddress() throws SQLException {
+//        // First try to clean up any test data that may already exist
+//        try (Connection conn = MySqlService.getConnection();
+//             Statement stmt = conn.createStatement()) {
+//            stmt.execute("DELETE FROM address WHERE house_number = '100' AND post_code = '12345'");
+//        }
+//
+//        String insertSql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('100', '12345', 'Test Road', 'Test City')";
+//        try (Connection conn = MySqlService.getConnection();
+//             Statement stmt = conn.createStatement()) {
+//            stmt.execute(insertSql);
+//        }
+//
+//        Address address = addressDao.getAddress("100", "12345");
+//
+//        assertNotNull(address);
+//        assertEquals("100", address.getHouseNumber());
+//        assertEquals("12345", address.getPostCode());
+//        assertEquals("Test Road", address.getRoadName());
+//        assertEquals("Test City", address.getCityName());
+//    }
+
     @Test
-    public void testGetAddress() throws SQLException {
-        // First try to clean up any test data that may already exist
-        try (Connection conn = MySqlService.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute("DELETE FROM address WHERE house_number = '100' AND post_code = '12345'");
-        }
+    public void testGetAddressById() throws SQLException {
+        int addressId = insertTestAddress();
 
-        String insertSql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('100', '12345', 'Test Road', 'Test City')";
-        try (Connection conn = MySqlService.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(insertSql);
-        }
-
-        Address address = addressDao.getAddress("100", "12345");
+        Address address = addressDao.getAddress(addressId);
 
         assertNotNull(address);
         assertEquals("100", address.getHouseNumber());
         assertEquals("12345", address.getPostCode());
         assertEquals("Test Road", address.getRoadName());
         assertEquals("Test City", address.getCityName());
+    }
+
+    private int insertTestAddress() throws SQLException {
+        String insertSql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('100', '12345', 'Test Road', 'Test City')";
+        int addressId = 0;
+
+        try (Connection conn = MySqlService.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(insertSql, Statement.RETURN_GENERATED_KEYS);
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    addressId = generatedKeys.getInt(1);
+                }
+            }
+        }
+        return addressId;
     }
 
     @Test
