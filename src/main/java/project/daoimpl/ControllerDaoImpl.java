@@ -149,10 +149,38 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         return controllers;
     }
 
-
     @Override
     public void updateController(Controller controller) {
-        // Implement logic to update a controller's information in the database
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+             // Start transaction
+            connection = MySqlService.getConnection();
+            connection.setAutoCommit(false);
+            // Update common Product attributes
+            super.updateProduct(controller, connection);
+
+            // Update specific Controller attributes
+            String sqlController = "UPDATE controller SET controller_type = ?, is_digital = ? WHERE product_code = ?";
+            preparedStatement = connection.prepareStatement(sqlController);
+
+            preparedStatement.setString(1, controller.getControllerType().name());
+            preparedStatement.setBoolean(2, controller.getIsDigital());
+            preparedStatement.setString(3, controller.getProductCode());
+            preparedStatement.executeUpdate();
+
+            connection.commit(); // Commit transaction
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback(); // Rollback transaction in case of error
+                } catch (SQLException ex) {
+                    // Log error during rollback
+                }
+            }
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override

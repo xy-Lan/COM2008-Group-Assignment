@@ -16,7 +16,6 @@ public class User {
 
 	private List<Role> roles = new ArrayList<>();
 	private String email;
-	private String passwordHash;
 	private int userID;
 	private String forename;
 	private String surname;
@@ -30,6 +29,21 @@ public class User {
 //	private List<Order> orders = new ArrayList<>();
 //	private Address residesAt;
 
+	public static User fromResultSet(ResultSet resultSet) throws SQLException {
+		int userId = resultSet.getInt("user_id");
+		User user = new User(userId);
+
+		user.setEmail(resultSet.getString("email"));
+		user.setUserID(resultSet.getInt("user_id"));
+		user.setForename(resultSet.getString("forename"));
+		user.setSurname(resultSet.getString("surname"));
+		user.setAddressId(resultSet.getInt("address_id"));
+
+		return user;
+	}
+
+
+
 	public User(String email) {
 		this.email= email;
 	}
@@ -37,26 +51,15 @@ public class User {
 	public User(int userID) {
 		this.userID = userID;
 	}
-    
-	// Static method to create Order object from ResultSet
-	public static User fromResultSet(ResultSet resultSet) throws SQLException {
-        //Extract basic properties
-		int userId = resultSet.getInt("user_id");
-		String email = resultSet.getString("email");
 
-		// Create the User object. I've chosen to use the userID as the constructor parameter.
-		User user = new User(userId);
-		user.setEmail(email);
 
-		return user;
-	}
 
 	public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
 		preparedStatement.setString(1, this.getEmail());
 		preparedStatement.setString(2, this.getForename());
 		preparedStatement.setString(3, this.getSurname());
 		preparedStatement.setInt(4, this.getAddressId());
-
+		preparedStatement.setInt(5, this.getUserID());
 	}
 
 	public void setUserID(int id) {
@@ -75,9 +78,7 @@ public class User {
 		return email;
 	}
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+
 
 	// Getter and Setter for forename
 	public String getForename() {
@@ -124,9 +125,6 @@ public class User {
 		return roles;
 	}
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
 
 //	public void setOrders (List<Order> orders){ this.orders = orders; }
 //	public List<Order> getOrders(){ return orders; }

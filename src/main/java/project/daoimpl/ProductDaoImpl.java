@@ -159,9 +159,9 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product, Connection connection) {
         String sql = "UPDATE product SET brand_name = ?, product_name = ?, retail_price = ?, gauge_type = ? WHERE product_code = ?";
-        try (Connection connection = MySqlService.getConnection();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Setting Parameters in Update Statements
@@ -186,6 +186,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void deleteProduct(String productCode) {
+
         String sql = "DELETE FROM product WHERE product_code = ?";
         try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

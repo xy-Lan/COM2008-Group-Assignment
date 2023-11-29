@@ -7,7 +7,7 @@ import project.model.address.Address;
 public interface AddressDao {
     void addAddress(Address address);
 
-    Address getAddress(String houseNumber, String postCode);
+    Address getAddress(int addressId);
 
     List<Address> getAllAddresses();
 

@@ -28,7 +28,8 @@ public class Address {
         address.setHouseNumber(rs.getString("house_number")); 
         address.setPostCode(rs.getString("post_code"));       
         address.setRoadName(rs.getString("road_name"));       
-        address.setCityName(rs.getString("city_name"));       
+        address.setCityName(rs.getString("city_name"));
+        address.setAddressId(rs.getInt("address_id"));
     
         return address;
     }
@@ -71,6 +72,14 @@ public class Address {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 	
 }
