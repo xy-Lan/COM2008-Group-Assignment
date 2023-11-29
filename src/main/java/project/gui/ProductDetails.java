@@ -326,7 +326,6 @@ public class ProductDetails extends javax.swing.JFrame {
         OrderService OrderService = new OrderService(orderDao);
         InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
         int stock = inventoryDao.getStock(product.getProductCode());
-
         if ( quantity > stock) {
             JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
                     "Out of stock", WARNING_MESSAGE);
