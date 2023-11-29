@@ -2,7 +2,7 @@ package project.daoimpl;
 
 import project.dao.PartDao;
 import project.model.product.abstractproduct.Part;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +13,6 @@ import java.util.logging.Logger;
 
 public class PartDaoImpl implements PartDao {
     private static final Logger LOGGER = Logger.getLogger(PartDaoImpl.class.getName());
-
-    private MysqlService mysqlService = new MysqlService();
-
-    public PartDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
 
     @Override
     public void addPart(Part part, Connection conn) throws SQLException {

@@ -6,17 +6,16 @@ import org.junit.jupiter.api.Test;
 import project.dao.TrackPackDao;
 import project.daoimpl.TrackPackDaoImpl;
 import project.model.product.TrackPack;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.List;
 
 public class TrackPackDaoImplTest {
     private TrackPackDao trackPackDao;
-    private MysqlService mysqlService = new MysqlService();
 
     @BeforeEach
     public void setUp() {
-        trackPackDao = new TrackPackDaoImpl(mysqlService);
+        trackPackDao = new TrackPackDaoImpl();
     }
 
     @Test

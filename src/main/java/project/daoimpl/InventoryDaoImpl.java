@@ -8,15 +8,10 @@ import java.util.logging.Level;
 
 import project.dao.InventoryDao;
 import project.model.inventory.Inventory;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 public class InventoryDaoImpl implements InventoryDao {
 
-    private MysqlService mysqlService = new MysqlService();
-
-    public InventoryDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
     @Override
     public void increaseStock(String productCode, int newShipmentQuantity) {
         // Implementation for increasing stock
@@ -39,10 +34,11 @@ public class InventoryDaoImpl implements InventoryDao {
     public Integer getStock (String productCode) {
         String sql = "SELECT quantity FROM inventory WHERE product_code = ?";
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, productCode);
+            System.out.println(pstmt);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("quantity");

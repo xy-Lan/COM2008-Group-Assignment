@@ -8,17 +8,11 @@ import java.util.logging.Logger;
 
 import project.dao.AddressDao;
 import project.model.address.Address;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 public class AddressDaoImpl implements AddressDao{
 
     private static final Logger LOGGER = Logger.getLogger(AddressDaoImpl.class.getName());
-
-    private MysqlService mysqlService = new MysqlService();
-
-    public AddressDaoImpl (MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
 
     @Override
     public void addAddress(Address address) {
@@ -26,7 +20,7 @@ public class AddressDaoImpl implements AddressDao{
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = mysqlService.getConnection();
+            conn = MySqlService.getConnection();
             conn.setAutoCommit(false); // Disable auto-commit
 
             stmt = conn.prepareStatement(sql);
@@ -58,7 +52,7 @@ public class AddressDaoImpl implements AddressDao{
         String sql = "SELECT * FROM address WHERE house_number = ? AND post_code = ?";
         // SQL query to retrieve an address from the database
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, houseNumber);
@@ -85,7 +79,7 @@ public class AddressDaoImpl implements AddressDao{
         String sql = "SELECT * FROM address";
         // SQL query to retrieve all addresses from the database
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -108,7 +102,7 @@ public class AddressDaoImpl implements AddressDao{
         String sql = "UPDATE address SET road_name = ?, city_name = ? WHERE house_number = ? AND post_code = ?";
         // SQL query to update an existing address in the database
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Setting parameters for the PreparedStatement

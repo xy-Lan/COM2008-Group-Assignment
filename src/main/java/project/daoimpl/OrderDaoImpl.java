@@ -8,7 +8,7 @@ import project.dao.UserDao;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import javax.swing.text.html.Option;
 import java.sql.*;
@@ -24,19 +24,13 @@ public class OrderDaoImpl implements OrderDao{
      */
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private MysqlService mysqlService = new MysqlService();
-
-    private UserDao userDao = new UserDaoImpl(mysqlService);
-
-    public OrderDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
+    private UserDao userDao = new UserDaoImpl();
 
     @Override
     public void addOrder(Order order) {
         String query = "INSERT INTO orders (user_id, order_status) VALUES (?, ?);";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setInt(1, order.getUser().getUserID()); 
@@ -71,7 +65,7 @@ public class OrderDaoImpl implements OrderDao{
     public Optional<Order> getOrderById(int orderNumber) {
         String query = "SELECT * FROM orders WHERE order_number = ?"; // Suppose the field name is order_number
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, orderNumber); //Set orderId to the query parameter
@@ -101,7 +95,7 @@ public class OrderDaoImpl implements OrderDao{
     @Override
     public Optional<Order> getPendingOrderByUserId(int userId) {
         String sql = "SELECT * FROM orders WHERE user_id = ? AND order_status = 'PENDING'";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, userId);
@@ -126,7 +120,7 @@ public class OrderDaoImpl implements OrderDao{
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -150,7 +144,7 @@ public class OrderDaoImpl implements OrderDao{
     public void updateOrderStatus(Order order) {
         String sql = "UPDATE orders SET order_status = ? WHERE order_number = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, order.getOrderStatus().toString());
@@ -172,7 +166,7 @@ public class OrderDaoImpl implements OrderDao{
     public void deleteOrder(int orderNumber) {
         String query = "DELETE FROM orders WHERE order_number = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, orderNumber); // Set orderId as a query parameter
@@ -197,7 +191,7 @@ public class OrderDaoImpl implements OrderDao{
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE u.user_id = ? AND o.order_status <> 'PENDING'";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId); // Set userId as a query parameter
@@ -223,7 +217,7 @@ public class OrderDaoImpl implements OrderDao{
     public void addOrderLine(OrderLine orderLine) {
         String sql = "INSERT INTO order_lines (order_number, product_code, quantity, line_cost) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setInt(1, orderLine.getOrderNumber());
@@ -245,7 +239,7 @@ public class OrderDaoImpl implements OrderDao{
     public void deleteOrderLine(OrderLine orderLine) {
         String sql = "DELETE FROM order_lines WHERE order_number = ? AND product_code = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setInt(1, orderLine.getOrderNumber());
@@ -269,7 +263,7 @@ public class OrderDaoImpl implements OrderDao{
     public Optional<OrderLine> findOrderLineByOrderNumberAndProductCode(int orderNumber, String productCode) {
         String sql = "SELECT * FROM order_lines WHERE order_number = ? AND product_code = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, orderNumber);

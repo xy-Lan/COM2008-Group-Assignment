@@ -10,7 +10,7 @@ import project.daoimpl.PartDaoImpl;
 import project.model.product.Controller;
 import project.model.product.enums.ControllerType;
 import project.model.product.enums.Gauge;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -24,11 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerDaoImplTest {
     private ControllerDao controllerDao;
-    private MysqlService mysqlService = new MysqlService();
     private static final Logger LOGGER = Logger.getLogger(ControllerDaoImplTest.class.getName());
     @BeforeEach
     public void setUp() {
-        controllerDao = new ControllerDaoImpl(mysqlService);
+        controllerDao = new ControllerDaoImpl();
     }
 
     @Test
@@ -70,7 +69,7 @@ public class ControllerDaoImplTest {
         String deleteSqlProduct = "DELETE FROM product WHERE product_code = 'C100'";
         String deleteSqlPart = "DELETE FROM part WHERE product_code = 'C100'";
         String deleteSqlController = "DELETE FROM controller WHERE product_code = 'C100'";
-        try (Connection conn = mysqlService.getConnection()) {
+        try (Connection conn = MySqlService.getConnection()) {
             // Delete from controller table
             try (PreparedStatement stmtController = conn.prepareStatement(deleteSqlController)) {
                 stmtController.executeUpdate();

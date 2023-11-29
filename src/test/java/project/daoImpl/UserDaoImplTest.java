@@ -6,20 +6,16 @@ import project.dao.UserDao;
 import project.daoimpl.OrderDaoImpl;
 import project.daoimpl.UserDaoImpl;
 import project.model.user.User;
-import project.service.MysqlService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserDaoImplTest {
-    private MysqlService mysqlService = new MysqlService();
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
-    private UserDao userDao = new UserDaoImpl(mysqlService);
+    private UserDao userDao = new UserDaoImpl();
 
     @BeforeEach
     public void setUp() {
-        userDao = new UserDaoImpl(mysqlService);
+        userDao = new UserDaoImpl();
     }
 
     @Test

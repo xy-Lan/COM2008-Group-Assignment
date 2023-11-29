@@ -6,18 +6,17 @@ import org.junit.jupiter.api.Test;
 import project.dao.LocomotiveDao;
 import project.daoimpl.LocomotiveDaoImpl;
 import project.model.product.Locomotive;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.List;
 
 public class LocomotiveDaoImplTest {
     private LocomotiveDao locomotiveDao;
-    private MysqlService mysqlService = new MysqlService();
 
     @BeforeEach
     public void setUp() {
         // 初始化 LocomotiveDao
-        locomotiveDao = new LocomotiveDaoImpl(mysqlService);
+        locomotiveDao = new LocomotiveDaoImpl();
     }
 
     @Test

@@ -7,18 +7,17 @@ import org.junit.jupiter.api.Assertions;
 import project.dao.TrainSetDao;
 import project.daoimpl.TrainSetDaoImpl;
 import project.model.product.TrainSet;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.List;
 
 public class TrainSetDaoImplTest {
     private TrainSetDao trainSetDao;
-    private MysqlService mysqlService = new MysqlService();
 
     @BeforeEach
     public void setUp() {
         // Create the TrainSetDao instance directly
-        trainSetDao = new TrainSetDaoImpl(mysqlService);
+        trainSetDao = new TrainSetDaoImpl();
     }
 
     @Test

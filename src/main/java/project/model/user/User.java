@@ -10,7 +10,7 @@ import project.model.address.*;
 import project.model.inventory.Inventory;
 import project.model.order.*;
 import project.model.payment.Payment;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 public class User {
 
@@ -287,7 +287,7 @@ public class User {
 	public void updateDatabase() {
 
 		try {
-			MysqlService mySqlService = MysqlService.getInstance();
+			MySqlService mySqlService = MySqlService.getInstance();
 			Connection con = mySqlService.getConnection();
 
 			String sql = "UPDATE users SET email = ?, forename = ?, surname = ?, " + "house_number = ?, post_code = ?, role = ? WHERE user_id = ?";

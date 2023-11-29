@@ -6,7 +6,7 @@ import project.model.product.Wagon;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.Era;
 import project.model.product.enums.WagonType;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,6 @@ import java.util.logging.Logger;
 
 public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
     private static final Logger LOGGER = Logger.getLogger(WagonDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public WagonDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
 
     @Override
     public void addWagon(Wagon wagon) {
@@ -28,11 +23,11 @@ public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(wagon, connection);
+            super.addProduct(wagon);
 
             // Then, add the specific attributes of the Wagon
             String sqlWagon = "INSERT INTO wagon (product_code, wagon_type, era) VALUES (?, ?, ?)";
@@ -70,7 +65,7 @@ public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // Retrieve common Product attributes
             Product product = super.getProduct(productCode);
@@ -110,7 +105,7 @@ public class WagonDaoImpl extends  ProductDaoImpl implements WagonDao {
         List<Wagon> wagons = new ArrayList<>();
         // Define the SQL query to retrieve all wagons
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, w.wagon_type, w.era FROM product p JOIN wagon w ON p.product_code = w.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

@@ -1,7 +1,7 @@
 package project.daoimpl;
 
 import project.model.user.*;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.model.inventory.*;
 import project.model.payment.*;
 import project.model.order.*;
@@ -18,18 +18,11 @@ import java.util.logging.Logger;
 public class UserDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
-
-    private MysqlService mysqlService = new MysqlService();
-
-    public UserDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
-
     @Override
     public void addUser(User user) {
         String sql = "INSERT INTO users (email,  forename, surname, house_number, post_code) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             user.prepareStatement(preparedStatement);
@@ -43,12 +36,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUserPasswordHash(int userId, String passwordHash) {
-        // Using mysqlService to add a user's password hash to the database
+        // Using MySqlService to add a user's password hash to the database
     }
 
     @Override
     public String getUserPasswordHash(String email) {
-        // Using mysqlService to get a user's password hash
+        // Using MySqlService to get a user's password hash
         return null; //Returns the user's password hash or null if not found
     }
 
@@ -56,7 +49,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> getUserById(int userId) {
         // Implement JDBC code to retrieve a User by userId from the database
         String query = "SELECT * FROM users WHERE user_id = ?";
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
@@ -106,7 +99,7 @@ public class UserDaoImpl implements UserDao {
         List<Role> roles = new ArrayList<>();
         String sql = "SELECT role FROM user_roles WHERE user_id = ?";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, userId);
@@ -129,7 +122,7 @@ public class UserDaoImpl implements UserDao {
     public void addUserRole(int userId, Role role) {
         String sql = "INSERT INTO user_roles (user_id, role) VALUES (?, ?)";
 
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, userId);

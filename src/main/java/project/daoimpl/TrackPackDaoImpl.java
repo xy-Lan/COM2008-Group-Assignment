@@ -5,7 +5,7 @@ import project.dao.TrackPackDao;
 import project.model.product.TrackPack;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.TrackPackType;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,6 @@ import java.util.logging.Logger;
 
 public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
     private static final Logger LOGGER = Logger.getLogger(TrackPackDaoImpl.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-
-    public TrackPackDaoImpl(MysqlService mysqlService) {
-        super(mysqlService);
-    }
 
     @Override
     public void addTrackPack(TrackPack trackPack) {
@@ -27,11 +22,11 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
             connection.setAutoCommit(false); // Start transaction
 
             // First, call the superclass method to handle the common Product attributes
-            super.addProduct(trackPack, connection);
+            super.addProduct(trackPack);
 
             // Then, add the specific attributes of the TrackPack
             String sqlTrackPack = "INSERT INTO track_pack (product_code, pack_type) VALUES (?, ?)";
@@ -68,7 +63,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
         ResultSet resultSet = null;
 
         try {
-            connection = mysqlService.getConnection();
+            connection = MySqlService.getConnection();
 
             // Retrieve common Product attributes
             Product product = super.getProduct(productCode);
@@ -105,7 +100,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
     public List<TrackPack> getAllTrackPacks() {
         List<TrackPack> trackPacks = new ArrayList<>();
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, tp.pack_type FROM product p JOIN track_pack tp ON p.product_code = tp.product_code";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

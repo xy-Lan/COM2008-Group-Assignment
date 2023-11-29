@@ -4,7 +4,7 @@ import project.dao.*;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.Gauge;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,15 +15,9 @@ import java.util.logging.*;
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
 
-    private MysqlService mysqlService = new MysqlService();
-
-    public ProductDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
-
     @Override
-    public void addProduct(Product product, Connection connection) {
-//        Connection connection = null;
+    public void addProduct(Product product) {
+        Connection connection = MySqlService.getConnection();
         PreparedStatement preparedStatement = null;
 
         try {
@@ -56,7 +50,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Product getProduct(String productCode) {
         String query = "SELECT * FROM product WHERE product_code = ?";
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, productCode);
@@ -72,27 +66,27 @@ public class ProductDaoImpl implements ProductDao {
                 System.out.println("it is "+firstChar);
                 switch (firstChar) {
                     case 'R':
-                        TrackDao trackDao = new TrackDaoImpl(mysqlService);
+                        TrackDao trackDao = new TrackDaoImpl();
                         System.out.println("it is a track");
                         return new Track(productCode, brandName, productName, retailPrice, gaugeType, null);
                     case 'C':
-                        ControllerDao controllerDao = new ControllerDaoImpl(mysqlService);
+                        ControllerDao controllerDao = new ControllerDaoImpl();
                         System.out.println("it is a controller");
                         return new Controller(productCode, brandName, productName, retailPrice, gaugeType, null, false);
 
                     case 'L':
-                        LocomotiveDao locomotiveDao = new LocomotiveDaoImpl(mysqlService);
+                        LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
                         System.out.println("it is a locomotive");
                         return new Locomotive(productCode, brandName, productName, retailPrice, gaugeType, null, null);
                     case 'S':
-                        RollingStockDao rollingStockDao = new RollingStockDaoImpl(mysqlService);
+                        RollingStockDao rollingStockDao = new RollingStockDaoImpl();
                         return new RollingStock(productCode, brandName, productName, retailPrice, gaugeType, null, null);
                     case 'M':
-                        TrainSetDao trainSetDao = new TrainSetDaoImpl(mysqlService);
+                        TrainSetDao trainSetDao = new TrainSetDaoImpl();
                         System.out.println("it is a TrainSet");
                         return new TrainSet(productCode, brandName, productName, retailPrice, gaugeType);
                     case 'P':
-                        TrackPackDao trackPackDao = new TrackPackDaoImpl(mysqlService);
+                        TrackPackDao trackPackDao = new TrackPackDaoImpl();
                         System.out.println("it is a TrackPack");
                         return new TrackPack(productCode, brandName, productName, retailPrice, gaugeType,null);
                     default:
@@ -113,7 +107,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM product";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -124,19 +118,19 @@ public class ProductDaoImpl implements ProductDao {
 
                 switch (firstChar) {
                     case 'R':
-                        product = new TrackDaoImpl(mysqlService).getTrack(productCode);
+                        product = new TrackDaoImpl().getTrack(productCode);
                         break;
                     case 'C':
-                        product = new ControllerDaoImpl(mysqlService).getController(productCode);
+                        product = new ControllerDaoImpl().getController(productCode);
                         break;
                     case 'L':
-                        product = new LocomotiveDaoImpl(mysqlService).getLocomotive(productCode);
+                        product = new LocomotiveDaoImpl().getLocomotive(productCode);
                         break;
                     case 'S':
                         String productTypePrefix = productCode.length() >= 2 ? productCode.substring(0, 2) : "";
                         product = switch (productTypePrefix) {
-                            case "SW" -> new WagonDaoImpl(mysqlService).getWagon(productCode);
-                            case "SC" -> new CarriageDaoImpl(mysqlService).getCarriage(productCode);
+                            case "SW" -> new WagonDaoImpl().getWagon(productCode);
+                            case "SC" -> new CarriageDaoImpl().getCarriage(productCode);
                             default-> {
                                 LOGGER.log(Level.WARNING, "Unknown rolling stock type: " + productTypePrefix);
                                 yield null;
@@ -144,10 +138,10 @@ public class ProductDaoImpl implements ProductDao {
                         };
                         break;
                     case 'M':
-                        product = new TrainSetDaoImpl(mysqlService).getTrainSet(productCode);
+                        product = new TrainSetDaoImpl().getTrainSet(productCode);
                         break;
                     case 'P':
-                        product = new TrackPackDaoImpl(mysqlService).getTrackPack(productCode);
+                        product = new TrackPackDaoImpl().getTrackPack(productCode);
                         break;
                     default:
                         product = null; // handle unknown types
@@ -167,7 +161,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateProduct(Product product) {
         String sql = "UPDATE product SET brand_name = ?, product_name = ?, retail_price = ?, gauge_type = ? WHERE product_code = ?";
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Setting Parameters in Update Statements
@@ -193,7 +187,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void deleteProduct(String productCode) {
         String sql = "DELETE FROM product WHERE product_code = ?";
-        try (Connection connection = mysqlService.getConnection();
+        try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Setting the productCode parameter in a PreparedStatement

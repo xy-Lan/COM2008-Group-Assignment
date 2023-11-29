@@ -10,24 +10,18 @@ import java.util.logging.Logger;
 import project.dao.BankCardDao;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.utils.EncryptionUtils;
 
 public class BankCardDaoImpl implements BankCardDao {
     private static final Logger LOGGER = Logger.getLogger(BankCardDaoImpl.class.getName());
-
-    private MysqlService mysqlService = new MysqlService();
-
-    public BankCardDaoImpl(MysqlService mysqlService) {
-        this.mysqlService = mysqlService;
-    }
 
     @Override
     public void addBankCard(BankCard bankCard) {
         String sql = "INSERT INTO bank_card (user_id, card_number, expiry_month, expiry_year, security_code) VALUES (?, ?, ?, ?, ?)";
         // SQL query to insert a BankCard into the database
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Using BankCard object to set parameters of the PreparedStatement
@@ -52,7 +46,7 @@ public class BankCardDaoImpl implements BankCardDao {
         String sql = "SELECT * FROM bank_card WHERE card_number = ?";
         // SQL query to retrieve a BankCard by its encrypted card number
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Encrypt the card number before querying the database
@@ -78,7 +72,7 @@ public class BankCardDaoImpl implements BankCardDao {
         String sql = "SELECT * FROM bank_card WHERE user_id = ?";
         // SQL query to retrieve a BankCard associated with a specific user
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
@@ -112,7 +106,7 @@ public class BankCardDaoImpl implements BankCardDao {
         String sql = "DELETE FROM bank_card WHERE user_id = ?";
         // SQL query to delete a BankCard associated with a specific user
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);

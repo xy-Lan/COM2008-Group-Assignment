@@ -2,7 +2,7 @@
 package project.gui;
 
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -291,7 +291,7 @@ public class SignUp extends javax.swing.JFrame {
   KEY `house_number` (`house_number`,`post_code`),
          */
 
-        newUser = MysqlService.getInstance().signUp(newUser, String.valueOf(jPasswordField1.getPassword()));
+        newUser = MySqlService.getInstance().signUp(newUser, String.valueOf(jPasswordField1.getPassword()));
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {

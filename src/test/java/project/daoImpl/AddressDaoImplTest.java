@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import project.dao.AddressDao;
 import project.daoimpl.AddressDaoImpl;
 import project.model.address.Address;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.sql.*;
 import java.util.List;
@@ -15,13 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AddressDaoImplTest {
 
-    private MysqlService mysqlService;
     private AddressDao addressDao;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        mysqlService = new MysqlService();
-        addressDao = new AddressDaoImpl(mysqlService);
+        addressDao = new AddressDaoImpl();
     }
 
     @Test
@@ -34,7 +32,7 @@ public class AddressDaoImplTest {
 
         addressDao.addAddress(address);
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM address WHERE house_number = ? AND post_code = ?")) {
             stmt.setString(1, address.getHouseNumber());
             stmt.setString(2, address.getPostCode());
@@ -49,13 +47,13 @@ public class AddressDaoImplTest {
     @Test
     public void testGetAddress() throws SQLException {
         // First try to clean up any test data that may already exist
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM address WHERE house_number = '100' AND post_code = '12345'");
         }
 
         String insertSql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('100', '12345', 'Test Road', 'Test City')";
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(insertSql);
         }
@@ -71,7 +69,7 @@ public class AddressDaoImplTest {
 
     @Test
     public void testGetAllAddresses() throws SQLException {
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute("INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('101', '12345', 'Test Road 1', 'Test City')");
             stmt.execute("INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('102', '54321', 'Test Road 2', 'Test City')");
@@ -83,7 +81,7 @@ public class AddressDaoImplTest {
         assertTrue(addresses.size() >= 2);
 
 
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM address WHERE house_number IN ('101', '102')");
         }
@@ -92,7 +90,7 @@ public class AddressDaoImplTest {
 
     @AfterEach
     public void tearDown() throws SQLException {
-        try (Connection conn = mysqlService.getConnection();
+        try (Connection conn = MySqlService.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM address WHERE house_number = '123' AND post_code = '12345'");
             stmt.execute("DELETE FROM address WHERE house_number = '100' AND post_code = '12345'");

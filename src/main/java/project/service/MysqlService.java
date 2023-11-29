@@ -19,22 +19,22 @@ connection management logic, leading
 to more maintainable and consistent database interaction across
 the application.
 */
-public class MysqlService {
+public class MySqlService {
 
     private static final String JDBC_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team015";
     private static final String USERNAME = "team015";
     private static final String PASSWORD = "eSh7Shahk";
 
-    private static final MysqlService mySqlService = new MysqlService();
+    private static final MySqlService mySqlService = new MySqlService();
 
-    public static MysqlService getInstance() {
+    public static MySqlService getInstance() {
         return mySqlService;
     }
 
 
-    private Connection connection;
+    private static Connection connection;
 
-    public MysqlService() {
+    public MySqlService() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -45,7 +45,7 @@ public class MysqlService {
         connect();
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
                 connect();
@@ -58,7 +58,7 @@ public class MysqlService {
         return connection;
     }
 
-    private void connect() {
+    private static void connect() {
         try {
             System.out.println("Connecting...");
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -69,7 +69,7 @@ public class MysqlService {
         }
     }
 
-    public void closeConnection() {
+    public static void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
@@ -80,7 +80,7 @@ public class MysqlService {
         }
     }
 
-    public ResultSet executeQuery(String query) {
+    public static ResultSet executeQuery(String query) {
         try {
             Connection connection = getConnection();
 
@@ -95,7 +95,7 @@ public class MysqlService {
         return null;
     }
 
-    public User signUp(User user, String password) {
+    public static User signUp(User user, String password) {
         System.out.println("Calling sign up...");
         try {
             Connection connection = getConnection();
@@ -132,7 +132,7 @@ public class MysqlService {
     }
 
 
-    public boolean login(String username, String password) {
+    public static boolean login(String username, String password) {
 
         Connection connection = getConnection();
 

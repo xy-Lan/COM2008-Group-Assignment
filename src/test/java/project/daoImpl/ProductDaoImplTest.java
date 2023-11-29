@@ -5,18 +5,16 @@ import org.junit.jupiter.api.Test;
 import project.daoimpl.ProductDaoImpl;
 import project.model.product.Controller;
 import project.model.product.abstractproduct.Product;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import java.math.BigDecimal;
 
 public class ProductDaoImplTest {
     private ProductDaoImpl productDao;
-    private MysqlService mysqlService;
 
     @BeforeEach
     public void setUp() {
-        mysqlService = new MysqlService(); // 初始化您的数据库服务
-        productDao = new ProductDaoImpl(mysqlService);
+        productDao = new ProductDaoImpl();
     }
 
 //    @Test

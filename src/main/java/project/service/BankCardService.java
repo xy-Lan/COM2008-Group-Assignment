@@ -14,9 +14,8 @@ import project.utils.BankCardUtils;
 
 public class BankCardService {
     private static final Logger LOGGER = Logger.getLogger(BankCardService.class.getName());
-    private MysqlService mysqlService = new MysqlService();
-    private BankCardDao bankCardDao = new BankCardDaoImpl(mysqlService);
-    private OrderDao orderDao = new OrderDaoImpl(mysqlService);
+    private BankCardDao bankCardDao = new BankCardDaoImpl();
+    private OrderDao orderDao = new OrderDaoImpl();
     private OrderService orderService = new OrderService(orderDao);
     private List<BankCard> bankCards;
 

@@ -23,12 +23,11 @@ public class OrderService {
 	private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
 	private List<Order> orders; // For managing multiple orders
-    MysqlService mysqlService = new MysqlService();
-    private OrderDao orderDao = new OrderDaoImpl(mysqlService);
-	private UserDao userDao = new UserDaoImpl(mysqlService);
-	private ProductDao productDao = new ProductDaoImpl(mysqlService);
-	private OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
-	private InventoryDao inventoryDao = new InventoryDaoImpl(mysqlService);
+    private OrderDao orderDao = new OrderDaoImpl();
+	private UserDao userDao = new UserDaoImpl();
+	private ProductDao productDao = new ProductDaoImpl();
+	private OrderLineDao orderLineDao = new OrderLineDaoImpl();
+	private InventoryDao inventoryDao = new InventoryDaoImpl();
 	public OrderService(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}

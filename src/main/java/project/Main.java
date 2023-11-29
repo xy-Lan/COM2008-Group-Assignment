@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import project.gui.Login;
-import project.service.MysqlService;
+import project.service.MySqlService;
 
 import javax.swing.*;
 
@@ -25,7 +25,7 @@ public class Main {
         }
 
         System.out.println("Starting");
-        MysqlService.getInstance();
+        MySqlService.getInstance();
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
         LoginFrame.pack();

@@ -15,7 +15,7 @@ import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
-import project.service.MysqlService;
+import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
 
@@ -201,10 +201,9 @@ public class RecentOrders extends javax.swing.JFrame {
 
     private void loadRecentOrders(){
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        MysqlService mysqlService = new MysqlService();
-        OrderDao orderDao = new OrderDaoImpl(mysqlService);
+        OrderDao orderDao = new OrderDaoImpl();
         OrderService orderService = new OrderService(orderDao);
-        OrderLineDao orderLineDao = new OrderLineDaoImpl(mysqlService);
+        OrderLineDao orderLineDao = new OrderLineDaoImpl();
         List<Order> allOrders = orderDao.getOrdersByUserId(currentUser.getUserID());
         orderContainer.setLayout(new BoxLayout(orderContainer, BoxLayout.Y_AXIS));
         orderContainer.add(Box.createVerticalStrut(15));
@@ -239,7 +238,7 @@ public class RecentOrders extends javax.swing.JFrame {
 
             //Display ordered products
             for(OrderLine orderLine : allOrderLines){
-                ProductDao productDao = new ProductDaoImpl(mysqlService);
+                ProductDao productDao = new ProductDaoImpl();
                 Product product = productDao.getProduct(orderLine.getProductCode());
 
                 //Display the order line
