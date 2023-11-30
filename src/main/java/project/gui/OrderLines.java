@@ -25,6 +25,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ public class OrderLines extends javax.swing.JFrame {
     private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
     private OrderDao orderDao = new OrderDaoImpl();
     private OrderLineDao orderLineDao = new OrderLineDaoImpl();
-    private OrderService OrderService = new OrderService(orderDao);
+    private OrderService orderService = new OrderService(orderDao);
 
     /**
      * Creates new form Default
@@ -140,27 +141,43 @@ public class OrderLines extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
-//        Boolean error = false;
+        Boolean error = false;
+        InventoryDao inventoryDao = new InventoryDaoImpl();
         Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
+            BigDecimal total = orderService.calculateTotal(order);
             List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
             for (OrderLine orderLine : allOrderLines){
                 int quantity = orderLine.getQuantity().intValue();
-                InventoryDao inventoryDao = new InventoryDaoImpl();
                 int stock = inventoryDao.getStock(orderLine.getProductCode());
                 if ( quantity > stock) {
                     JOptionPane.showMessageDialog(null, "The quantity of " + orderLine.getProductCode()
                                     + "selected exceeds the stock available! Please reduce the purchase quantity",
                             "Out of stock", WARNING_MESSAGE);
+                    error = true;
                 }
             }
-        }
+            if (!error) {
+                int response = JOptionPane.showConfirmDialog(null, "Please confirm your payment of " +
+                        total + " £", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.YES_OPTION){
+                    if (orderDao.hasOrderedBefore(currentUser.getUserID())){
+                        JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
+                                "Order Placed", INFORMATION_MESSAGE);
+                        //TODO update inventory
 
-        CheckOut CheckOutFrame = new CheckOut();
-        CheckOutFrame.setVisible(true);
-        CheckOutFrame.pack();
-        CheckOutFrame.setLocationRelativeTo(null);
+                    } else {
+                        CheckOut CheckOutFrame = new CheckOut();
+                        CheckOutFrame.setVisible(true);
+                        CheckOutFrame.pack();
+                        CheckOutFrame.setLocationRelativeTo(null);
+                    }
+                }
+
+
+            }
+        }
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
     private void loadPendingOrders(){
@@ -173,7 +190,10 @@ public class OrderLines extends javax.swing.JFrame {
         if (optionalOrder.isPresent()) {
             //Get the pending order
             Order order = optionalOrder.get();
+            BigDecimal total = orderService.calculateTotal(order);
             List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+            JLabel lblTotal = new JLabel(total.toString());
+            orderContainer.add(lblTotal);
 
             //Get all the product in the basket
             for(OrderLine orderLine : allOrderLines){
