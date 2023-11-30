@@ -49,9 +49,13 @@ public class BankCard {
         BankCard bankCard = new BankCard();
 		int userID = rs.getInt("customer_id");
         bankCard.setCustomer(new User(userID));
-        bankCard.setCardNumber(rs.getString("card_number"));
-        bankCard.setExpiryMonth(rs.getInt("expiry_month"));
-        bankCard.setExpiryYear(rs.getInt("expiry_year"));
+		 bankCard.setCardNumber(rs.getString("card_number"));
+		 bankCard.setExpiryMonth(rs.getInt("expiry_month"));
+		 bankCard.setExpiryYear(rs.getInt("expiry_year"));
+		 bankCard.setSecurityCode(rs.getString("security_code"));
+//		 bankCard.setFirstName(rs.getString("first_name"));
+//		 bankCard.setLastName(rs.getString("last_name"));
+//		 bankCard.setCardName(rs.getString("card_name"));
         return bankCard;
     }
 	
