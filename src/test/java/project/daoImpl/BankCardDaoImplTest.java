@@ -38,28 +38,28 @@ public class BankCardDaoImplTest {
 //    }
 
 ////    this test is successful
-//    @Test
-//    public void testAddBankCard() throws SQLException{
-//        // Create a BankCard instance with test data
-//        BankCard bankCard = new BankCard();
-//        bankCard.setCustomer(new User(123)); // Replace with test data
-//        bankCard.setCardNumber("1234567890123456"); // Replace with test data
-//        bankCard.setExpiryMonth(12); // Replace with test data
-//        bankCard.setExpiryYear(2025); // Replace with test data
-//        bankCard.setSecurityCode("123"); // Replace with test data
-//
-//        // Call addBankCard method
-//        bankCardDao.addBankCard(bankCard);
-//
-//        BankCard retrievedCard = bankCardDao.getBankCardByUserID(123);
-//        System.out.println(retrievedCard.getCardNumber());
-//        System.out.println(retrievedCard.getSecurityCode());
-////        assertNotNull(retrievedCard);
-////        assertEquals("1234567890123456", retrievedCard.getCardNumber());
-////        assertEquals(12, retrievedCard.getExpiryMonth());
-////        assertEquals(2025, retrievedCard.getExpiryYear());
-////        assertEquals("123", retrievedCard.getSecurityCode());
-//    }
+    @Test
+    public void testAddBankCard() throws SQLException{
+        // Create a BankCard instance with test data
+        BankCard bankCard = new BankCard();
+        bankCard.setCustomer(new User(123)); // Replace with test data
+        bankCard.setCardNumber("1234567890123456"); // Replace with test data
+        bankCard.setExpiryMonth(12); // Replace with test data
+        bankCard.setExpiryYear(2025); // Replace with test data
+        bankCard.setSecurityCode("123"); // Replace with test data
+
+        // Call addBankCard method
+        bankCardDao.addBankCard(bankCard);
+
+        BankCard retrievedCard = bankCardDao.getBankCardByUserID(123);
+        System.out.println(retrievedCard.getCardNumber());
+        System.out.println(retrievedCard.getSecurityCode());
+//        assertNotNull(retrievedCard);
+//        assertEquals("1234567890123456", retrievedCard.getCardNumber());
+//        assertEquals(12, retrievedCard.getExpiryMonth());
+//        assertEquals(2025, retrievedCard.getExpiryYear());
+//        assertEquals("123", retrievedCard.getSecurityCode());
+    }
 
 //    @Test
 //    public void testGetBankCardByUserID_ExistingUser() {

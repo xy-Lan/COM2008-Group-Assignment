@@ -59,8 +59,8 @@ public class UserDaoImplTest {
         @Test
     public void testAddUser() {
         // 创建一个用于测试的User对象
-        User user = new User("test2@example.com");
-        user.setEmail("test2@example.com");
+        User user = new User("test4@example.com");
+        user.setEmail("test4@example.com");
 //        user.setPasswordHash("hashed_password");
         user.setForename("Erin");
         user.setSurname("Doe");
@@ -70,15 +70,15 @@ public class UserDaoImplTest {
         userDao.addUser(user);
 
     }
-//    @Test
-//    public void testAddUserPasswordHash() {
-//        int userId = 123;
-//        String password = "TestPassword123";
-//
-//        // 调用方法以添加密码哈希
-//        userDao.addUserPasswordHash(userId, password);
-//
-//    }
+    @Test
+    public void testAddUserPasswordHash() {
+        int userId = 129;
+        String password = "TestPassword123";
+
+        // 调用方法以添加密码哈希
+        userDao.addUserPasswordHash(userId, password);
+
+    }
 
 //    @Test
 //    public void testGetUserPasswordHash() {

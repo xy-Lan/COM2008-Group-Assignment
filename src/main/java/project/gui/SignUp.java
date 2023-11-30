@@ -1,8 +1,17 @@
 
 package project.gui;
 
+import project.dao.AddressDao;
+import project.dao.UserDao;
+import project.daoimpl.AddressDaoImpl;
+import project.daoimpl.UserDaoImpl;
+import project.model.address.Address;
 import project.model.user.User;
 import project.service.MySqlService;
+
+import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -280,23 +289,43 @@ public class SignUp extends javax.swing.JFrame {
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:ystem.out.println("Creating user");
-        System.out.println(txtPassword.getPassword());
-        System.out.println(txtConfirmPassword.getPassword());
-        System.out.println(txtPassword.getPassword() != txtConfirmPassword.getPassword());
-        // if (jPasswordField1.getPassword() != jPasswordField2.getPassword()) return;
-
-        User newUser = new User(txtEmail.getText());
-        System.out.println(newUser.toMap());
-
-        /*
-         * house_number` varchar(255) DEFAULT NULL,
-  `post_code` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`user_address_id`),
-  KEY `user_id` (`user_id`),
-  KEY `house_number` (`house_number`,`post_code`),
-         */
-
-        newUser = MySqlService.getInstance().signUp(newUser, String.valueOf(txtPassword.getPassword()));
+        UserDao userDao = new UserDaoImpl();
+        if (isAnyFieldEmpty(txtCityName, txtHouseNum, txtEmail, txtConfirmPassword, txtPassword,
+                txtPostCode, txtForename, txtSurname, txtRoadName)){
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        }else {
+            if (userDao.getUserByEmail(txtEmail.getText().trim()) == null) {
+//                System.out.println("This email has not been registered");
+                if (!Arrays.equals(txtPassword.getPassword(), txtConfirmPassword.getPassword())) {
+                    JOptionPane.showMessageDialog(null, "The passwords do not match. Please try again",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Address address = new Address();
+                    address.setHouseNumber(txtHouseNum.getText().trim());
+                    address.setRoadName(txtRoadName.getText().trim());
+                    address.setCityName(txtCityName.getText().trim());
+                    address.setPostCode(txtPostCode.getText().trim());
+                    User user = new User();
+                    user.setEmail(txtEmail.getText().trim());
+                    user.setForename(txtForename.getText().trim());
+                    user.setSurname(txtSurname.getText().trim());
+                    AddressDao addressDao = new AddressDaoImpl();
+                    int addressId = addressDao.addAddressIfNotExist(address);
+                    user.setAddressId(addressId);
+//                    System.out.println("insert a user to the database");
+                    userDao.addUser(user);
+                    User newUser = userDao.getUserByEmail(user.getEmail());
+                    userDao.addUserPasswordHash(newUser.getUserID(), txtPassword.getPassword().toString());
+                    JOptionPane.showMessageDialog(null, "Successfully registered",
+                            "", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+//                System.out.println("This email has been registered");
+                JOptionPane.showMessageDialog(null, "This email address has been registered!",
+                        "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnSignUpActionPerformed
 
 
@@ -305,6 +334,15 @@ public class SignUp extends javax.swing.JFrame {
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
+    }
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
   

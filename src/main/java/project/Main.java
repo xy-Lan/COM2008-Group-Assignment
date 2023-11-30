@@ -43,7 +43,7 @@ public class Main {
             }
             @Override
             public void windowClosed(WindowEvent e) {
-                System.out.println("WIndow closed");
+                System.out.println("Window closed");
                 MySqlService.closeConnection();
             }
         });

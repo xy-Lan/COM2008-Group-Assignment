@@ -7,6 +7,7 @@ import project.model.product.enums.RollingStockType;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RollingStock extends Part {
@@ -17,6 +18,18 @@ public class RollingStock extends Part {
         super(productCode, brandName, productName, retailPrice, gaugeType);
         this.rollingStockType = rollingStockType;
         this.era = era;
+    }
+
+    public static RollingStock fromResultSet(ResultSet rs) throws SQLException {
+        String productCode = rs.getString("product_code");
+        String brandName = rs.getString("brand_name");
+        String productName = rs.getString("product_name");
+        BigDecimal retailPrice = rs.getBigDecimal("retail_price");
+        Gauge gaugeType = Gauge.valueOf(rs.getString("gauge_type"));
+        RollingStockType rollingStockType = RollingStockType.valueOf(rs.getString("rolling_stock_type"));
+        Era era = Era.valueOf(rs.getString("era"));
+
+        return new RollingStock(productCode, brandName, productName, retailPrice, gaugeType, rollingStockType, era);
     }
 
     public RollingStockType getRollingStockType() {

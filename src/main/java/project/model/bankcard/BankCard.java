@@ -37,6 +37,7 @@ public class BankCard {
 		this.lastName = lastName;
 		this.cardName = cardName;
 	}
+
 	public void setPreparedStatement(PreparedStatement stmt) throws SQLException {
         stmt.setInt(1, this.getCustomer().getUserID()); 
         stmt.setString(2, this.getEncryptedCardNumber());
@@ -49,13 +50,28 @@ public class BankCard {
         BankCard bankCard = new BankCard();
 		int userID = rs.getInt("customer_id");
         bankCard.setCustomer(new User(userID));
-        bankCard.setCardNumber(rs.getString("card_number"));
-        bankCard.setExpiryMonth(rs.getInt("expiry_month"));
-        bankCard.setExpiryYear(rs.getInt("expiry_year"));
+		 bankCard.setCardNumber(rs.getString("card_number"));
+		 bankCard.setExpiryMonth(rs.getInt("expiry_month"));
+		 bankCard.setExpiryYear(rs.getInt("expiry_year"));
+		 bankCard.setSecurityCode(rs.getString("security_code"));
+		 bankCard.setFirstName(rs.getString("first_name"));
+		 bankCard.setLastName(rs.getString("last_name"));
+		 bankCard.setCardName(rs.getString("card_name"));
         return bankCard;
     }
 	
 
+	public String getFirstName(){ return firstName;}
+
+	public void setFirstName(String firstName){ this.firstName = firstName; }
+
+	public String getLastName(){ return lastName;}
+
+	public void setLastName(String lastName){ this.lastName = lastName;}
+
+	public String getCardName(){ return cardName;}
+
+	public void setCardName(String cardName){ this.cardName = cardNumber; }
 	public User getCustomer() {
 		return customer;
 	}

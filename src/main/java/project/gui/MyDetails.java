@@ -4,6 +4,7 @@
  */
 package project.gui;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import project.dao.AddressDao;
@@ -42,8 +43,20 @@ public class MyDetails extends javax.swing.JFrame {
         AddressDao addressDao = new AddressDaoImpl();
         System.out.println("ID: " + user.getAddressId());
         address = addressDao.getAddress(user.getAddressId());
+        System.out.println("ADDRESS : "+address.getCityName()+address.getRoadName());
+//        if (address != null) {
+//            // Check if address is not null before accessing its properties
+//            txtRoadName.setText(address.getRoadName());
+//        } else {
+//            System.out.println("Address is null for user with ID: " + user.getUserID());
+//        }
         BankCardDao bankCardDao = new BankCardDaoImpl();
         bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
+        if (bankCard == null) {
+            JLabel nullMessage = new JLabel("You do not have a bank card yet, Please fill in details to add a bank card");
+            nullMessage.setForeground(Color.red);
+            bankCardPanel.add(nullMessage);
+        }
         initComponents();
     }
 
@@ -494,15 +507,23 @@ public class MyDetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
-        title.setText("Train Sets");
+
     }//GEN-LAST:event_btnProfileActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
-        // TODO add your handling code here:
+        MyDetails MyDetailsFrame = new MyDetails();
+        MyDetailsFrame.setVisible(true);
+        MyDetailsFrame.pack();
+        MyDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnMyDetailsActionPerformed
 
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
+        RecentOrders RecentOrdersFrame = new RecentOrders();
+        RecentOrdersFrame.setVisible(true);
+        RecentOrdersFrame.pack();
+        RecentOrdersFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
@@ -515,11 +536,27 @@ public class MyDetails extends javax.swing.JFrame {
 
     private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
         newPassword = JOptionPane.showInputDialog(null, "New password",
-                "Reset Password", JOptionPane.QUESTION_MESSAGE);
+                "Reset Password", JOptionPane.QUESTION_MESSAGE).trim();
     }//GEN-LAST:event_btnChangePasswordActionPerformed
 
     private void btnDeleteBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBankCardActionPerformed
         // TODO add your handling code here:
+        if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth, txtExpiryYear,
+                txtSecurityCode1, txtFirstName, txtLastName, txtBankCardName)){
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        }else {
+            BankCardDao bankCardDao = new BankCardDaoImpl();
+            bankCardDao.deleteBankCard(user.getUserID());
+            //Add a new bank card
+            BankCard newBankCard = new BankCard(user, txtCardNumber.getText().trim(), Integer.parseInt(txtExpiryMonth.getText()),
+                    Integer.parseInt(txtExpiryYear.getText()), txtSecurityCode1.getText().trim(), txtFirstName.getText().trim(),
+                    txtLastName.getText().trim(), txtBankCardName.getText().trim());
+            bankCardDao.addBankCard(newBankCard);
+            JOptionPane.showMessageDialog(null, "Bank card successfully updated",
+                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+        }
+
     }//GEN-LAST:event_btnDeleteBankCardActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -546,19 +583,32 @@ public class MyDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSavePersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePersonalDetailsActionPerformed
-        user.setEmail(txtEmail.getText());
+
         UserDao userDao = new UserDaoImpl();
-        if (newPassword == null){
-            userDao.updateUser(user);
+        if (txtEmail.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            //TODO reset password
+            if (!newPassword.isEmpty()){
+                userDao.updateUserPasswordHash(user.getUserID(), newPassword);
+            }
+            user.setEmail(txtEmail.getText().trim());
+            userDao.updateUser(user);
+            //Update address
+            if(isAnyFieldEmpty(txtHouseNum, txtRoadName, txtCityName, txtPostcode)) {
+                JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                        "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            } else {
+                address.setHouseNumber(txtHouseNum.getText().trim());
+                address.setRoadName(txtRoadName.getText().trim());
+                address.setCityName(txtCityName.getText().trim());
+                address.setPostCode(txtPostcode.getText().trim());
+                AddressDao addressDao = new AddressDaoImpl();
+                addressDao.updateAddress(address);
+                JOptionPane.showMessageDialog(null, "Details successfully updated",
+                        "Saved", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-        address.setHouseNumber(txtHouseNum.getText());
-        address.setRoadName(txtRoadName.getText());
-        address.setCityName(txtCityName.getText());
-        address.setPostCode(txtPostcode.getText());
-        AddressDao addressDao = new AddressDaoImpl();
-        addressDao.updateAddress(address);
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
@@ -568,6 +618,15 @@ public class MyDetails extends javax.swing.JFrame {
     private void txtCardNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCardNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCardNumberActionPerformed
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

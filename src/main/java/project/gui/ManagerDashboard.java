@@ -81,6 +81,12 @@ public class ManagerDashboard extends javax.swing.JFrame {
             e.printStackTrace();
             // Handle the exception (log or show an error message)
         }
+
+        // Set the model to the existing JTable
+        jTable1.setModel(model);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception (log or show an error message)
     }
     
 
@@ -464,7 +470,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
-    
+        
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");
@@ -506,7 +512,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
     
     private void button4ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
-    
+        
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");

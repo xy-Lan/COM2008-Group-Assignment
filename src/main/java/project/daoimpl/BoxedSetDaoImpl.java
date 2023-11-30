@@ -13,20 +13,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BoxedSetDaoImpl implements BoxedSetDao {
     private static final Logger LOGGER = Logger.getLogger(BoxedSetDaoImpl.class.getName());
     private ProductDao productDao;
     
-    public BoxedSetDaoImpl(ProductDao productDao) {
-        this.productDao = productDao;
-    }
+
 
     @Override
-    public void addBoxedSet(BoxedSet boxedSet) throws SQLException {
+    public void addBoxedSet(BoxedSet boxedSet, Connection connection) {
+        String sql = "INSERT INTO boxed_set (product_code) VALUES (?)";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, boxedSet.getProductCode());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new RuntimeException("Creating boxed set failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error adding boxed set to the database", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
+
 
     @Override
     public BoxedSet getBoxedSetById(String productCode) throws SQLException {
@@ -62,8 +74,22 @@ public class BoxedSetDaoImpl implements BoxedSetDao {
     }
 
     @Override
-    public void deleteBoxedSet(String productCode) throws SQLException {
+    public void deleteBoxedSet(String productCode, Connection connection) throws SQLException {
+        String sql = "DELETE FROM boxed_set WHERE product_code = ?";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, productCode);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.info("No boxed set was deleted for productCode: " + productCode);
+            } else {
+                LOGGER.info("BoxedSet deleted successfully for productCode: " + productCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error deleting boxed set from the database for productCode: " + productCode, e);
+            throw new RuntimeException("Failed to delete boxed set from the database for productCode: " + productCode, e);
+        }
     }
 
 }
