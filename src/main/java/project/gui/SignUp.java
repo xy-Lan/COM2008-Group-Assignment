@@ -289,32 +289,42 @@ public class SignUp extends javax.swing.JFrame {
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:ystem.out.println("Creating user");
+        UserDao userDao = new UserDaoImpl();
         if (isAnyFieldEmpty(txtCityName, txtHouseNum, txtEmail, txtConfirmPassword, txtPassword,
                 txtPostCode, txtForename, txtSurname, txtRoadName)){
-            JOptionPane.showMessageDialog(null, "Please enter a valid email address",
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }else {
-            if (!Arrays.equals(txtPassword.getPassword(),txtConfirmPassword.getPassword())){
-                JOptionPane.showMessageDialog(null, "The passwords do not match. Please try again",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+            if (userDao.getUserByEmail(txtEmail.getText().trim()) == null) {
+//                System.out.println("This email has not been registered");
+                if (!Arrays.equals(txtPassword.getPassword(), txtConfirmPassword.getPassword())) {
+                    JOptionPane.showMessageDialog(null, "The passwords do not match. Please try again",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Address address = new Address();
+                    address.setHouseNumber(txtHouseNum.getText().trim());
+                    address.setRoadName(txtRoadName.getText().trim());
+                    address.setCityName(txtCityName.getText().trim());
+                    address.setPostCode(txtPostCode.getText().trim());
+                    User user = new User();
+                    user.setEmail(txtEmail.getText().trim());
+                    user.setForename(txtForename.getText().trim());
+                    user.setSurname(txtSurname.getText().trim());
+                    AddressDao addressDao = new AddressDaoImpl();
+                    int addressId = addressDao.addAddressIfNotExist(address);
+                    user.setAddressId(addressId);
+//                    System.out.println("insert a user to the database");
+                    userDao.addUser(user);
+                    User newUser = userDao.getUserByEmail(user.getEmail());
+                    userDao.addUserPasswordHash(newUser.getUserID(), txtPassword.getPassword().toString());
+                    JOptionPane.showMessageDialog(null, "Successfully registered",
+                            "", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+//                System.out.println("This email has been registered");
+                JOptionPane.showMessageDialog(null, "This email address has been registered!",
+                        "Invalid Input", JOptionPane.WARNING_MESSAGE);
             }
-            Address address = new Address();
-            address.setHouseNumber(txtHouseNum.getText().trim());
-            address.setRoadName(txtRoadName.getText().trim());
-            address.setCityName(txtCityName.getText().trim());
-            address.setPostCode(txtPostCode.getText().trim());
-            User user = new User();
-            user.setEmail(txtEmail.getText().trim());
-            user.setForename(txtForename.getText().trim());
-            user.setSurname(txtSurname.getText().trim());
-            UserDao userDao = new UserDaoImpl();
-            AddressDao addressDao = new AddressDaoImpl();
-//            List<Address> allAddresses = addressDao.getAllAddresses();
-//            for(Address address : allAddresses)
-//            addressDao.addAddress(address);
-            user.setAddressId(address.getAddressId());
-            userDao.addUser(user);
-            userDao.addUserPasswordHash(user.getUserID(), txtPassword.getPassword().toString());
         }
     }//GEN-LAST:event_btnSignUpActionPerformed
 

@@ -4,6 +4,7 @@
  */
 package project.gui;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import project.dao.AddressDao;
@@ -42,14 +43,20 @@ public class MyDetails extends javax.swing.JFrame {
         AddressDao addressDao = new AddressDaoImpl();
         System.out.println("ID: " + user.getAddressId());
         address = addressDao.getAddress(user.getAddressId());
-        if (address != null) {
-            // Check if address is not null before accessing its properties
-            txtRoadName.setText(address.getRoadName());
-        } else {
-            System.out.println("Address is null for user with ID: " + user.getUserID());
-        }
+        System.out.println("ADDRESS : "+address.getCityName()+address.getRoadName());
+//        if (address != null) {
+//            // Check if address is not null before accessing its properties
+//            txtRoadName.setText(address.getRoadName());
+//        } else {
+//            System.out.println("Address is null for user with ID: " + user.getUserID());
+//        }
         BankCardDao bankCardDao = new BankCardDaoImpl();
         bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
+        if (bankCard == null) {
+            JLabel nullMessage = new JLabel("You do not have a bank card yet, Please fill in details to add a bank card");
+            nullMessage.setForeground(Color.red);
+            bankCardPanel.add(nullMessage);
+        }
         initComponents();
     }
 
