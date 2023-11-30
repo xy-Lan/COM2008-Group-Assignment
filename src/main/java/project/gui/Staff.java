@@ -4,11 +4,18 @@
  */
 package project.gui;
 
+import project.dao.InventoryDao;
+import project.dao.OrderDao;
 import project.dao.ProductDao;
+import project.daoimpl.InventoryDaoImpl;
+import project.daoimpl.OrderDaoImpl;
 import project.daoimpl.ProductDaoImpl;
+import project.model.order.Order;
 import project.model.product.abstractproduct.Product;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  *
@@ -21,6 +28,7 @@ public class Staff extends javax.swing.JFrame {
      */
     public Staff() {
         initComponents();
+        loadProductTabel();
     }
     
     
@@ -358,7 +366,7 @@ public class Staff extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditProductActionPerformed
 
-    private void loadData() {
+    private void loadProductTabel() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         model.setRowCount(0);
@@ -371,9 +379,94 @@ public class Staff extends javax.swing.JFrame {
         model.addColumn("Price");
         model.addColumn("Gauge Type");
         model.addColumn("Quantity");
+        model.addColumn("Edit");
 
         //Get all the products
         ProductDao productDao = new ProductDaoImpl();
+        InventoryDao inventoryDao = new InventoryDaoImpl();
+        List<Product> allProducts = productDao.getAllProducts();
+
+        for (Product product : allProducts){
+            //Add rows to the model
+            Object[] row = new Object[7];
+            JButton editProduct = new JButton();
+            editProduct.setText("Edit");
+            row[0] = product.getProductCode();
+            row[1] = product.getProductName();
+            row[2] = product.getBrandName();
+            row[3] = product.getRetailPrice();
+            row[4] = product.getGaugeType();
+            row[5] = inventoryDao.getStock(product.getProductCode());
+            row[6] = editProduct;
+        }
+    }
+
+    private void loadAllOrderTable(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("Order Number");
+        model.addColumn("Date");
+        model.addColumn("User ID");
+        model.addColumn("Status");
+        model.addColumn("Fulfil");
+        model.addColumn("Refuse");
+
+        //Get all the products
+        OrderDao orderDao = new OrderDaoImpl();
+        List<Order> allOrders = orderDao.getAllOrders();
+
+        for (Order order : allOrders){
+            //Add rows to the model
+            Object[] row = new Object[6];
+            JButton btnFulfil = new JButton();
+            btnFulfil.setText("Fulfil");
+            JButton btnRefuse = new JButton();
+            btnRefuse.setText("Refuse");
+            row[0] = order.getOrderNumber();
+            row[1] = order.getDate();
+            row[2] = order.getUser().getUserID();
+            row[3] = order.getOrderStatus();
+            row[4] = btnFulfil;
+            row[5] = btnRefuse;
+        }
+    }
+
+    private void loadConfirmedOrderTable(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("Order Number");
+        model.addColumn("Date");
+        model.addColumn("User ID");
+        model.addColumn("Status");
+        model.addColumn("Fulfil");
+        model.addColumn("Refuse");
+
+        //Get all the products
+        OrderDao orderDao = new OrderDaoImpl();
+        List<Order> allOrders = orderDao.getAllOrders();
+
+        for (Order order : allOrders){
+            //Add rows to the model
+            Object[] row = new Object[6];
+            JButton btnFulfil = new JButton();
+            btnFulfil.setText("Fulfil");
+            JButton btnRefuse = new JButton();
+            btnRefuse.setText("Refuse");
+            row[0] = order.getOrderNumber();
+            row[1] = order.getDate();
+            row[2] = order.getUser().getUserID();
+            row[3] = order.getOrderStatus();
+            row[4] = btnFulfil;
+            row[5] = btnRefuse;
+        }
     }
 
 

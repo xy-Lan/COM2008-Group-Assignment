@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
 
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 /**
@@ -35,6 +36,10 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
  * @author linyu
  */
 public class OrderLines extends javax.swing.JFrame {
+    private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+    private OrderDao orderDao = new OrderDaoImpl();
+    private OrderLineDao orderLineDao = new OrderLineDaoImpl();
+    private OrderService OrderService = new OrderService(orderDao);
 
     /**
      * Creates new form Default
@@ -135,6 +140,23 @@ public class OrderLines extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
+//        Boolean error = false;
+        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+            for (OrderLine orderLine : allOrderLines){
+                int quantity = orderLine.getQuantity().intValue();
+                InventoryDao inventoryDao = new InventoryDaoImpl();
+                int stock = inventoryDao.getStock(orderLine.getProductCode());
+                if ( quantity > stock) {
+                    JOptionPane.showMessageDialog(null, "The quantity of " + orderLine.getProductCode()
+                                    + "selected exceeds the stock available! Please reduce the purchase quantity",
+                            "Out of stock", WARNING_MESSAGE);
+                }
+            }
+        }
+
         CheckOut CheckOutFrame = new CheckOut();
         CheckOutFrame.setVisible(true);
         CheckOutFrame.pack();
@@ -142,9 +164,7 @@ public class OrderLines extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
     private void loadPendingOrders(){
-        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        OrderDao orderDao = new OrderDaoImpl();
-        OrderLineDao orderLineDao = new OrderLineDaoImpl();
+
         Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
         //List all the pending orders and set the layout of the order panel
         orderContainer.removeAll();
@@ -209,10 +229,17 @@ public class OrderLines extends javax.swing.JFrame {
                     @Override
                     public void stateChanged(ChangeEvent e) {
                         //Once the quantity is changed, update the order line
-                        orderLine.setQuantity((Integer)quantityVal.getValue());
-                        orderLineDao.updateOrderLine(orderLine);
-                        System.out.println("Quantity changed");
-                        System.out.println("Updated the order line");
+                        int quantity = (Integer) quantityVal.getValue();
+                        InventoryDao inventoryDao = new InventoryDaoImpl();
+                        int stock = inventoryDao.getStock(product.getProductCode());
+                        if ( quantity > stock) {
+                            JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
+                                    "Out of stock", WARNING_MESSAGE);
+                        } else {
+                            orderLine.setQuantity((Integer)quantityVal.getValue());
+                            orderLineDao.updateOrderLine(orderLine);
+                        }
+
                     }
                 });
 
@@ -226,6 +253,10 @@ public class OrderLines extends javax.swing.JFrame {
                 orderContainer.add(productPanel);
                 orderContainer.add(Box.createVerticalStrut(20));
             }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                            "No orders yet",
+                    "Null", WARNING_MESSAGE);
         }
     }
 
