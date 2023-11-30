@@ -4,16 +4,23 @@
  */
 package project.gui;
 
+import project.model.product.abstractproduct.Product;
+
+import javax.swing.*;
+
 /**
  *
  * @author linyu
  */
-public class ProductEiditor extends javax.swing.JFrame {
+public class ProductEidtor extends javax.swing.JFrame {
+
+    private Product product;
 
     /**
-     * Creates new form ProductEiditor
+     * Creates new form ProductEidtor
      */
-    public ProductEiditor() {
+    public ProductEidtor(Product product) {
+        this.product = product;
         initComponents();
     }
 
@@ -28,19 +35,19 @@ public class ProductEiditor extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtBrandName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtProductCode = new javax.swing.JTextField();
-        txtGuageType = new javax.swing.JTextField();
         txtProductName = new javax.swing.JTextField();
-        txtPrice = new javax.swing.JTextField();
         quantityVal = new javax.swing.JSpinner();
         btnBack = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        brandComboBox = new javax.swing.JComboBox<>();
+        gaugeTypeCombo = new javax.swing.JComboBox<>();
+        priceSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(350, 700));
@@ -51,8 +58,6 @@ public class ProductEiditor extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Product name:");
-
-        txtBrandName.setText("jTextField1");
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -74,13 +79,16 @@ public class ProductEiditor extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Quantity: ");
 
-        txtProductCode.setText("jTextField1");
+        txtProductCode.setText(product.getProductCode());
 
-        txtGuageType.setText("jTextField1");
+        txtProductName.setText(product.getProductName());
 
-        txtProductName.setText("jTextField1");
-
-        txtPrice.setText("jTextField1");
+        quantityVal.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        quantityVal.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                quantityValComponentRemoved(evt);
+            }
+        });
 
         btnBack.setBackground(new java.awt.Color(0, 155, 2));
         btnBack.setForeground(new java.awt.Color(255, 255, 255));
@@ -100,28 +108,40 @@ public class ProductEiditor extends javax.swing.JFrame {
             }
         });
 
+        brandComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LMS", "LNER", "GWR" }));
+
+        gaugeTypeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OO_GAUGE", "TT_GAUGE", "N_GAUGE" }));
+        gaugeTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaugeTypeComboActionPerformed(evt);
+            }
+        });
+
+        priceSpinner.setModel(new SpinnerNumberModel(product.getRetailPrice().intValue(), 0, Integer.MAX_VALUE, 1));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(79, 79, 79)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtBrandName, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtGuageType, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(priceSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(gaugeTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(quantityVal, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(brandComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtProductCode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(txtProductName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))))
                 .addContainerGap(94, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -138,15 +158,15 @@ public class ProductEiditor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtBrandName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(brandComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(priceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtGuageType, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(gaugeTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -157,6 +177,9 @@ public class ProductEiditor extends javax.swing.JFrame {
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
+
+        brandComboBox.setSelectedItem(product.getBrandName());
+        gaugeTypeCombo.setSelectedItem(product.getGaugeType());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,12 +205,42 @@ public class ProductEiditor extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
+        if (isAnyFieldEmpty(txtProductCode,txtProductName)){
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        } else {
+            //TODO update product
+            product.setProductCode(txtProductCode.getText().trim());
+            product.setProductName(txtProductName.getText().trim());
+            product.setBrandName(brandComboBox.getName());
+//            product.setGaugeType(gaugeTypeCombo.getSelectedItem());
+//            product.setRetailPrice(priceSpinner.getValue());
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void gaugeTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaugeTypeComboActionPerformed
+        //         // TODO add your handling code here:
+    }//GEN-LAST:event_gaugeTypeComboActionPerformed
+
+    private void quantityValComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_quantityValComponentRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_quantityValComponentRemoved
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> brandComboBox;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> gaugeTypeCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -195,10 +248,8 @@ public class ProductEiditor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner priceSpinner;
     private javax.swing.JSpinner quantityVal;
-    private javax.swing.JTextField txtBrandName;
-    private javax.swing.JTextField txtGuageType;
-    private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtProductCode;
     private javax.swing.JTextField txtProductName;
     // End of variables declaration//GEN-END:variables

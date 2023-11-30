@@ -4,6 +4,7 @@
  */
 package project.gui;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import project.dao.AddressDao;
@@ -50,6 +51,11 @@ public class MyDetails extends javax.swing.JFrame {
         }
         BankCardDao bankCardDao = new BankCardDaoImpl();
         bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
+        if (bankCard == null) {
+            JLabel nullMessage = new JLabel("You do not have a bank card yet, Please fill in details to add a bank card");
+            nullMessage.setForeground(Color.red);
+            bankCardPanel.add(nullMessage);
+        }
         initComponents();
     }
 

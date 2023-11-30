@@ -169,7 +169,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 10, 130, 16);
+        btnUser.setBounds(840, 10, 130, 17);
 
         btnManager.setBackground(new java.awt.Color(0, 102, 0));
         btnManager.setForeground(new java.awt.Color(204, 204, 204));
@@ -181,7 +181,7 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManager);
-        btnManager.setBounds(840, 50, 150, 16);
+        btnManager.setBounds(840, 50, 150, 17);
 
         btnPendingOrders.setBackground(new java.awt.Color(0, 102, 0));
         btnPendingOrders.setForeground(new java.awt.Color(255, 255, 255));
@@ -250,7 +250,7 @@ public class StaffDashboard extends javax.swing.JFrame {
 
         jLabel1.setText("Change Price:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(300, 250, 80, 16);
+        jLabel1.setBounds(300, 250, 80, 17);
 
         jTextField1.setText("Product ID");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -259,9 +259,9 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextField1);
-        jTextField1.setBounds(380, 250, 100, 22);
+        jTextField1.setBounds(380, 250, 100, 23);
         jPanel1.add(jSpinner1);
-        jSpinner1.setBounds(490, 250, 64, 22);
+        jSpinner1.setBounds(490, 250, 64, 23);
 
         jButton1.setText("Confirm");
         jPanel1.add(jButton1);
