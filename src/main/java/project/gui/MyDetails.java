@@ -520,14 +520,13 @@ public class MyDetails extends javax.swing.JFrame {
 
     private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
         newPassword = JOptionPane.showInputDialog(null, "New password",
-                "Reset Password", JOptionPane.QUESTION_MESSAGE);
+                "Reset Password", JOptionPane.QUESTION_MESSAGE).trim();
     }//GEN-LAST:event_btnChangePasswordActionPerformed
 
     private void btnDeleteBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBankCardActionPerformed
         // TODO add your handling code here:
-        if (txtCardNumber.getText().trim() == null || txtExpiryMonth.getText().trim() == null ||
-                txtExpiryYear.getText().trim() == null || txtSecurityCode1.getText().trim() == null || txtFirstName.getText().trim() == null ||
-                txtLastName.getText().trim() == null || txtBankCardName.getText().trim() == null){
+        if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth, txtExpiryYear,
+                txtSecurityCode1, txtFirstName, txtLastName, txtBankCardName)){
             JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }else {
@@ -555,18 +554,17 @@ public class MyDetails extends javax.swing.JFrame {
     private void btnSavePersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePersonalDetailsActionPerformed
 
         UserDao userDao = new UserDaoImpl();
-        if (txtEmail.getText().trim() == null){
+        if (txtEmail.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            if (newPassword != null){
-                //TODO reset password
+            if (!newPassword.isEmpty()){
+                userDao.updateUserPasswordHash(user.getUserID(), newPassword);
             }
             user.setEmail(txtEmail.getText().trim());
             userDao.updateUser(user);
             //Update address
-            if(txtHouseNum.getText().trim() == null || txtRoadName.getText().trim() == null || txtCityName.getText().trim() == null ||
-                    txtPostcode.getText().trim() == null) {
+            if(isAnyFieldEmpty(txtHouseNum, txtRoadName, txtCityName, txtPostcode)) {
                 JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                         "Invalid Input", JOptionPane.WARNING_MESSAGE);
             } else {
@@ -581,10 +579,6 @@ public class MyDetails extends javax.swing.JFrame {
             }
         }
 
-
-
-
-
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
@@ -594,6 +588,15 @@ public class MyDetails extends javax.swing.JFrame {
     private void txtCardNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCardNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCardNumberActionPerformed
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

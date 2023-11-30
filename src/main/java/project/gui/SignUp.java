@@ -9,6 +9,9 @@ import project.model.address.Address;
 import project.model.user.User;
 import project.service.MySqlService;
 
+import javax.swing.*;
+import java.util.Arrays;
+
 public class SignUp extends javax.swing.JFrame {
 
     /**
@@ -285,20 +288,31 @@ public class SignUp extends javax.swing.JFrame {
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:ystem.out.println("Creating user");
-        Address address = new Address();
-        address.setHouseNumber(txtHouseNum.getText().trim());
-        address.setRoadName(txtRoadName.getText().trim());
-        address.setCityName(txtCityName.getText().trim());
-        address.setPostCode(txtPostCode.getText().trim());
-        User user = new User();
-        user.setEmail(txtEmail.getText().trim());
-        user.setForename(txtForename.getText().trim());
-        user.setSurname(txtSurname.getText().trim());
-        user.setAddressId(address.getAddressId());
-        UserDao userDao = new UserDaoImpl();
-        AddressDao addressDao = new AddressDaoImpl();
-        addressDao.addAddress(address);
-        userDao.addUser(user);
+        if (isAnyFieldEmpty(txtCityName, txtHouseNum, txtEmail, txtConfirmPassword, txtPassword,
+                txtPostCode, txtForename, txtSurname, txtRoadName)){
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        }else {
+            if (Arrays.equals(txtPassword.getPassword(),txtConfirmPassword.getPassword())){
+                JOptionPane.showMessageDialog(null, "The passwords do not match. Please try again",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            Address address = new Address();
+            address.setHouseNumber(txtHouseNum.getText().trim());
+            address.setRoadName(txtRoadName.getText().trim());
+            address.setCityName(txtCityName.getText().trim());
+            address.setPostCode(txtPostCode.getText().trim());
+            User user = new User();
+            user.setEmail(txtEmail.getText().trim());
+            user.setForename(txtForename.getText().trim());
+            user.setSurname(txtSurname.getText().trim());
+            user.setAddressId(address.getAddressId());
+            UserDao userDao = new UserDaoImpl();
+            AddressDao addressDao = new AddressDaoImpl();
+            userDao.addUserPasswordHash(user.getUserID(), txtPassword.getPassword().toString());
+            addressDao.addAddress(address);
+            userDao.addUser(user);
+        }
     }//GEN-LAST:event_btnSignUpActionPerformed
 
 
@@ -307,6 +321,15 @@ public class SignUp extends javax.swing.JFrame {
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
+    }
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
   
