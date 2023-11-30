@@ -12,14 +12,14 @@ import javax.swing.*;
  *
  * @author linyu
  */
-public class ProductEidtor extends javax.swing.JFrame {
+public class ProductEditor extends javax.swing.JFrame {
 
     private Product product;
 
     /**
      * Creates new form ProductEidtor
      */
-    public ProductEidtor(Product product) {
+    public ProductEditor(Product product) {
         this.product = product;
         initComponents();
     }
