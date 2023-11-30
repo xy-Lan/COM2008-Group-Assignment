@@ -11,6 +11,7 @@ import project.service.MySqlService;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -293,7 +294,7 @@ public class SignUp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }else {
-            if (Arrays.equals(txtPassword.getPassword(),txtConfirmPassword.getPassword())){
+            if (!Arrays.equals(txtPassword.getPassword(),txtConfirmPassword.getPassword())){
                 JOptionPane.showMessageDialog(null, "The passwords do not match. Please try again",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -306,12 +307,14 @@ public class SignUp extends javax.swing.JFrame {
             user.setEmail(txtEmail.getText().trim());
             user.setForename(txtForename.getText().trim());
             user.setSurname(txtSurname.getText().trim());
-            user.setAddressId(address.getAddressId());
             UserDao userDao = new UserDaoImpl();
             AddressDao addressDao = new AddressDaoImpl();
-            userDao.addUserPasswordHash(user.getUserID(), txtPassword.getPassword().toString());
+//            List<Address> allAddresses = addressDao.getAllAddresses();
+//            for(Address address : allAddresses)
             addressDao.addAddress(address);
+            user.setAddressId(address.getAddressId());
             userDao.addUser(user);
+            userDao.addUserPasswordHash(user.getUserID(), txtPassword.getPassword().toString());
         }
     }//GEN-LAST:event_btnSignUpActionPerformed
 
