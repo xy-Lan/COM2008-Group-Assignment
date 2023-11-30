@@ -133,5 +133,23 @@ public class BankCardDaoImpl implements BankCardDao {
         }
     }
 
+    @Override
+    public boolean userHasBankCard(int userId) {
+        String sql = "SELECT COUNT(*) FROM bank_card WHERE user_id = ?";
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if user has bank card", e);
+        }
+        return false;
+    }
+
 
 }
