@@ -199,7 +199,7 @@ public class MySqlService {
         if ("LOCOMOTIVE".equals(productType)) {
             return "L" + highestProductCode("L");
         } else if ("CARRIAGE".equals(productType)) {
-            return checkWagonType(productType) + highestProductCode(checkWagonType(productType));
+            return "C" + highestProductCode("S");
         } else if ("CONTROLLER".equals(productType)) {
             return "C" + highestProductCode("C");
         } else if ("TRACK".equals(productType)) {
@@ -218,24 +218,6 @@ public class MySqlService {
     private static String highestProductCode(String productIdentifier){
         int maxProductCode = findMax(getFilteredProductCodes(productIdentifier));
         return String.valueOf(maxProductCode + 1);
-    }
-
-    public static String checkWagonType(String wagonType) {
-        switch (wagonType) {
-            case "CORRIDOR_FIRST":
-            case "OPEN_FIRST":
-            case "CORRIDOR_SECOND":
-            case "SLEEPER_CAR":
-            case "RESTAURANT_CAR":
-            case "BUFFET_CAR":
-            case "OPEN_SECOND":
-            case "BRAKE_SECOND":
-            case "PULLMAN":
-            case "STANDARD_CALSS":
-                return "RC"; // Passenger Carriage
-            default:
-                return "SW"; // Unknown wagon type
-        }
     }
 
     public static List<String> getAllProductCodes() {

@@ -13,19 +13,13 @@ import java.math.BigDecimal;
 
 import project.service.MySqlService;
 import project.daoimpl.LocomotiveDaoImpl;
-import project.model.product.Carriage;
 import project.model.product.Controller;
 import project.model.product.Locomotive;
-import project.model.product.Track;
-import project.model.product.enums.CarriageType;
 import project.model.product.enums.ControllerType;
 import project.model.product.enums.DCCType;
 import project.model.product.enums.Era;
 import project.model.product.enums.Gauge;
-import project.model.product.enums.TrackType;
 import project.daoimpl.ControllerDaoImpl;
-import project.daoimpl.TrackDaoImpl;
-import project.daoimpl.CarriageDaoImpl;
 
 /**
  *
@@ -92,6 +86,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
 
         jButton3.setText("Add");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLocomotiveGUI(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -127,8 +126,13 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         });
 
         jButton5.setText("Add");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addControllerGUI(evt);
+            }
+        });
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "true", "false" }));
+        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "TRUE", "FALSE" }));
         jComboBox9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox9ActionPerformed(evt);
@@ -166,7 +170,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addRailGUI(evt);
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -193,7 +197,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jTabbedPane1.addTab("Track", jPanel5);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ERA1", "ERA2", "ERA3", "ERA4", "ERA5", "ERA6", "ERA7", "ERA8", "ERA9", "ERA10", "ERA11", "ERA12" }));
         jComboBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox5ActionPerformed(evt);
@@ -205,7 +209,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton4.setText("Add");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCarriageGUI(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -257,6 +261,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jLabel5.setText("Price");
 
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancel(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -341,9 +350,17 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         dispose();
     }//GEN-LAST:event_cancel
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
         // TODO add your handling code here:
@@ -402,50 +419,6 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         );
 
         controllerDao.addController(controller);
-    }
-
-    private void addRailGUI(java.awt.event.ActionEvent evt){
-        TrackDaoImpl trackDao = new TrackDaoImpl();
-
-        int intValue = (Integer) jSpinner1.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String trackType = jComboBox8.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("TRACK");
-        
-        Track track = new Track(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            TrackType.valueOf(trackType)
-        );
-        
-        trackDao.addTrack(track);
-    }
-
-    private void addCarriageGUI(java.awt.event.ActionEvent evt) {
-        CarriageDaoImpl carriageDao = new CarriageDaoImpl();
-
-        int intValue = (Integer) jSpinner1.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String carriageType = jComboBox6.getSelectedItem().toString();
-        String era = jComboBox5.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("CARRIAGE");  
-
-        Carriage carriage = new Carriage(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            CarriageType.valueOf(carriageType),
-            Era.valueOf(era)
-        );
-
-        carriageDao.addCarriage(carriage);
     }
 
 
