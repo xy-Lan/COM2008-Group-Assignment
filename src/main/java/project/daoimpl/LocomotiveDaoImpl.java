@@ -71,16 +71,25 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
         ResultSet resultSet = null;
 
         try {
-            connection = MySqlService.getConnection();
-
-            // Retrieve common Product attributes
+            // First get the generic attributes from the product table
             Product product = super.getProduct(productCode);
+            if (product == null) {
+                LOGGER.info("No product found with productCode: " + productCode);
+                return null;
+            }
+
             if (!(product instanceof Locomotive)) {
                 throw new RuntimeException("Product with code " + productCode + " is not a Locomotive.");
             }
             Locomotive locomotive = (Locomotive) product;
 
-            // Retrieve specific attributes of the Locomotive
+            connection = MySqlService.getConnection();
+            if (connection == null) {
+                LOGGER.info("Database connection is null");
+                return null;
+            }
+
+            // Then get the unique properties from the locomotive table
             String sqlLocomotive = "SELECT dcc_type, era FROM locomotive WHERE product_code = ?";
             preparedStatement = connection.prepareStatement(sqlLocomotive);
             preparedStatement.setString(1, productCode);
@@ -98,10 +107,6 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving locomotive with productCode: " + productCode, e);
             throw new RuntimeException("Database operation failed", e);
-        } finally {
-            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { /* ignored */ }
-            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
-            if (connection != null) try { connection.close(); } catch (SQLException e) { /* ignored */ }
         }
     }
 
@@ -129,12 +134,80 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
 
     @Override
     public void updateLocomotive(Locomotive locomotive) {
-        // Implement logic to update a locomotive's information in the database
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = MySqlService.getConnection();
+            connection.setAutoCommit(false); // Start transaction
+
+            // Update common Product attributes
+            super.updateProduct(locomotive, connection);
+
+            // Update specific Locomotive attributes
+            String sqlLocomotive = "UPDATE locomotive SET dcc_type = ?, era = ? WHERE product_code = ?";
+            preparedStatement = connection.prepareStatement(sqlLocomotive);
+
+            preparedStatement.setString(1, locomotive.getDccType().name());
+            preparedStatement.setString(2, locomotive.getEra().name());
+            preparedStatement.setString(3, locomotive.getProductCode());
+            preparedStatement.executeUpdate();
+
+            connection.commit(); // Commit transaction
+            LOGGER.info("Locomotive updated successfully for productCode: " + locomotive.getProductCode());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating locomotive: " + e.getMessage(), e);
+            if (connection != null) {
+                try {
+                    connection.rollback(); // Rollback transaction in case of error
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override
-    public void deleteLocomotive(String id) {
-        // Implement logic to delete a locomotive from the database
+    public void deleteLocomotive(String productCode) {
+        Connection connection = null;
+
+        try {
+            connection = MySqlService.getConnection();
+            connection.setAutoCommit(false); // Start transaction
+
+            // Delete from locomotive table
+            String sqlLocomotive = "DELETE FROM locomotive WHERE product_code = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlLocomotive)) {
+                preparedStatement.setString(1, productCode);
+                preparedStatement.executeUpdate();
+            }
+
+            // Delete from part table if necessary
+            // Assuming you have a method to delete part
+            PartDao partDao = new PartDaoImpl();
+            partDao.deletePart(productCode, connection);
+
+            // Delete from product table
+            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
+                preparedStatement.setString(1, productCode);
+                preparedStatement.executeUpdate();
+            }
+
+            connection.commit(); // Commit transaction
+            LOGGER.info("Locomotive deleted successfully for productCode: " + productCode);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error deleting locomotive: " + e.getMessage(), e);
+            if (connection != null) {
+                try {
+                    connection.rollback(); // Rollback transaction in case of error
+                } catch (SQLException ex) {
+                    LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
+                }
+            }
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     // Other necessary methods...

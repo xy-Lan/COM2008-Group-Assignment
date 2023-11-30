@@ -4,7 +4,6 @@
  */
 package project.gui;
 
-import com.google.protobuf.Empty;
 import project.dao.AddressDao;
 import project.dao.BankCardDao;
 import project.dao.UserDao;
@@ -38,6 +37,7 @@ public class MyDetails extends javax.swing.JFrame {
     public MyDetails() {
         user = UserSessionManager.getInstance().getLoggedInUser();
         AddressDao addressDao = new AddressDaoImpl();
+        System.out.println("ID: " + user.getAddressId());
         address = addressDao.getAddress(user.getAddressId());
         BankCardDao bankCardDao = new BankCardDaoImpl();
         bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
