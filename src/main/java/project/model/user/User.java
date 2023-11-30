@@ -39,6 +39,8 @@ public class User {
 		user.setSurname(resultSet.getString("surname"));
 		user.setAddressId(resultSet.getInt("address_id"));
 
+		System.out.println("Found " + user.addressId);
+
 		return user;
 	}
 

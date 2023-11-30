@@ -26,4 +26,17 @@ public enum Gauge {
     public String toString() {
         return name + " (" + scale + ")";
     }
+
+    public static Gauge fromString(String gauge) {
+        switch (gauge.toUpperCase()) {
+            case "OO GAUGE":
+            return Gauge.OO_GAUGE;
+            case "TT GAUGE":
+            return Gauge.TT_GAUGE;
+            case "N GAUGE":
+            return Gauge.N_GAUGE;
+            default:
+            return Gauge.OO_GAUGE;
+        }
+    }
 }

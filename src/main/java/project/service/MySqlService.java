@@ -149,7 +149,7 @@ public class MySqlService {
 
         Connection connection = getConnection();
 
-        String sql = "SELECT u.user_id, u.email FROM users u " +
+        String sql = "SELECT u.user_id, u.email, u.address_id FROM users u " +
                         "JOIN hashed_passwords p ON u.user_id = p.user_id " +
                         "WHERE u.email = ? AND p.password_hash = ?";
 
@@ -165,10 +165,12 @@ public class MySqlService {
                 try {
                     while (resultSet.next()) {
                         int id = resultSet.getInt("user_id");
+                        int address_id = resultSet.getInt("address_id");
                         String email = resultSet.getString("email");
                         System.out.println("Found user with id: " + id);
                         User user = new User(email);
                         user.setUserID(id);
+                        user.setAddressId(address_id);
                         UserSessionManager.getInstance().setLoggedInUser(user);
                         return true;
                     }

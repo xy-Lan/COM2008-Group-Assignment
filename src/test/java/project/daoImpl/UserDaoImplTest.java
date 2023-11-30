@@ -99,6 +99,7 @@ public class UserDaoImplTest {
 //
 //
 //        User user = userDao.getUserByEmail(email);
+
 //
 //        assertNotNull(user, "User should not be null for valid email");
 //        assertEquals(expectedForeName, user.getForename(), "User name should match the expected value");

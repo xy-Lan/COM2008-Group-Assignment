@@ -52,9 +52,11 @@ public class AddressDaoImpl implements AddressDao{
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, addressId);
+            System.out.println(stmt);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
+                    System.out.println(rs);
                     address = Address.fromResultSet(rs);
                 }
             }
