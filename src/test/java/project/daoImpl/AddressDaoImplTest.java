@@ -44,6 +44,20 @@ public class AddressDaoImplTest {
         }
     }
 
+    @Test
+    public void testIsAddressExist_WhenAddressDoesNotExist() {
+        String houseNumber = "123";
+        String postCode = "ABC123";
+        assertFalse(addressDao.isAddressExist(houseNumber, postCode), "Should return false for non-existing address");
+    }
+
+    @Test
+    public void testIsAddressExist_WhenAddressExists() {
+        String houseNumber = "protobello";
+        String postCode = "S1 4AT";
+
+        assertTrue(addressDao.isAddressExist(houseNumber, postCode), "Should return true for existing address");
+    }
 
     @Test
     public void testGetAddressById() throws SQLException {

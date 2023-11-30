@@ -15,6 +15,35 @@ public class AddressDaoImpl implements AddressDao{
     private static final Logger LOGGER = Logger.getLogger(AddressDaoImpl.class.getName());
 
     @Override
+    public Boolean isAddressExist(String houseNumber, String postCode) {
+        String sql = "SELECT COUNT(*) FROM address WHERE house_number = ? AND post_code = ?";
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, houseNumber);
+            stmt.setString(2, postCode);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if address exists", e);
+        }
+        return false;
+    }
+
+    @Override
+    public void addAddressIfNotExist(Address address) {
+        if (!isAddressExist(address.getHouseNumber(), address.getPostCode())) {
+            addAddress(address);
+        } else {
+            LOGGER.info("Address already exists: " + address.getHouseNumber() + ", " + address.getPostCode());
+        }
+    }
+
+    @Override
     public void addAddress(Address address) {
         String sql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES (?, ?, ?, ?)";
         Connection conn = null;
