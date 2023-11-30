@@ -15,6 +15,7 @@ import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
+import project.service.InventoryService;
 import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
@@ -143,6 +144,7 @@ public class OrderLines extends javax.swing.JFrame {
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
         Boolean error = false;
         InventoryDao inventoryDao = new InventoryDaoImpl();
+        InventoryService inventoryService = new InventoryService();
         Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
@@ -165,10 +167,9 @@ public class OrderLines extends javax.swing.JFrame {
                     if (orderDao.hasOrderedBefore(currentUser.getUserID())){
                         JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
                                 "Order Placed", INFORMATION_MESSAGE);
-                        //TODO update inventory
-
+                        inventoryService.updateInventoryForOrder(order);
                     } else {
-                        CheckOut CheckOutFrame = new CheckOut();
+                        CheckOut CheckOutFrame = new CheckOut(order);
                         CheckOutFrame.setVisible(true);
                         CheckOutFrame.pack();
                         CheckOutFrame.setLocationRelativeTo(null);
