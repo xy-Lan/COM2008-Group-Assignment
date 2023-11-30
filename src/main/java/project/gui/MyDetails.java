@@ -535,6 +535,8 @@ public class MyDetails extends javax.swing.JFrame {
         address.setRoadName(txtRoadName.getText());
         address.setCityName(txtCityName.getText());
         address.setPostCode(txtPostcode.getText());
+        AddressDao addressDao = new AddressDaoImpl();
+        addressDao.updateAddress(address);
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
