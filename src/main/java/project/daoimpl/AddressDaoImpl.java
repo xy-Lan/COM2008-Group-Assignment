@@ -81,12 +81,7 @@ public class AddressDaoImpl implements AddressDao{
              PreparedStatement stmt = conn.prepareStatement(sql)) {
     
             stmt.setInt(1, addressId);
-<<<<<<< Updated upstream
             System.out.println(stmt);
-
-=======
-    
->>>>>>> Stashed changes
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println(rs);
