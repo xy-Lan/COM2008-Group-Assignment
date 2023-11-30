@@ -10,6 +10,8 @@ import project.model.user.Role;
 
 import java.sql.*;
 
+import java.util.*;
+
 /**
  *
  * @author linyu
@@ -22,36 +24,54 @@ public class ManagerDashboard extends javax.swing.JFrame {
     public ManagerDashboard() {
         initComponents();
         loadManagerData();
+        populateRoleChoice();
     }
 
-    private void loadManagerData(){
+    private static final Map<String, Integer> roleMap = new HashMap<>();
+
+    static {
+        roleMap.put("STAFF", 1); // Replace with actual role IDs
+        roleMap.put("CUSTOMER", 2);
+        roleMap.put("MANAGER", 3);
+    }
+
+    private void populateRoleChoice() {
+        for (String roleName : roleMap.keySet()) {
+            choice1.add(roleName);
+        }
+    }
+
+    private void loadManagerData() {
         DefaultTableModel model = new DefaultTableModel();
     
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");
         model.addColumn("Surname");
-        model.addColumn("Email Address");
-        model.addColumn("House Number");
-        model.addColumn("Post Code");
-        model.addColumn("Role");
+        model.addColumn("Email");
+        model.addColumn("Roles");
     
         // Use try-with-resources to automatically close resources
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users`");
+            ResultSet rs = stmt.executeQuery(
+                "SELECT users.user_id, users.forename, users.surname, users.email, " +
+                "GROUP_CONCAT(roles.role_name ORDER BY roles.role_name) AS roles " +
+                "FROM users " +
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "GROUP BY users.user_id"
+            )
         ) {
             // Add rows to the model
             while (rs.next()) {
-                Object[] row = new Object[7];
+                Object[] row = new Object[5];
                 row[0] = rs.getString("user_id");
                 row[1] = rs.getString("forename");
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
-                row[4] = rs.getInt("house_number");
-                row[5] = rs.getString("post_code");
-                row[6] = rs.getString("role");
+                row[4] = rs.getString("roles"); // Note: Make sure this matches the actual column name in the result set
                 model.addRow(row);
             }
     
@@ -62,6 +82,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             // Handle the exception (log or show an error message)
         }
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,12 +97,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnTrainSets = new javax.swing.JButton();
-        btnTrackPacks = new javax.swing.JButton();
-        btnLocomotives = new javax.swing.JButton();
-        btnTrack = new javax.swing.JButton();
-        btnRollingStock = new javax.swing.JButton();
-        btnControllers = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
@@ -117,82 +132,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
-
-        btnTrainSets.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrainSets.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrainSets.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrainSets.setText("Train Sets");
-        btnTrainSets.setBorder(null);
-        btnTrainSets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrainSetsActionPerformed(evt);
-            }
-        });
-
-        btnTrackPacks.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrackPacks.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrackPacks.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrackPacks.setText("Track Packs");
-        btnTrackPacks.setBorder(null);
-        btnTrackPacks.setBorderPainted(false);
-        btnTrackPacks.setFocusPainted(false);
-        btnTrackPacks.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackPacksActionPerformed(evt);
-            }
-        });
-
-        btnLocomotives.setBackground(new java.awt.Color(0, 102, 0));
-        btnLocomotives.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnLocomotives.setForeground(new java.awt.Color(255, 255, 255));
-        btnLocomotives.setText("Locomotives");
-        btnLocomotives.setBorder(null);
-        btnLocomotives.setBorderPainted(false);
-        btnLocomotives.setFocusPainted(false);
-        btnLocomotives.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocomotivesActionPerformed(evt);
-            }
-        });
-
-        btnTrack.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrack.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrack.setText("Track");
-        btnTrack.setBorder(null);
-        btnTrack.setBorderPainted(false);
-        btnTrack.setFocusPainted(false);
-        btnTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackActionPerformed(evt);
-            }
-        });
-
-        btnRollingStock.setBackground(new java.awt.Color(0, 102, 0));
-        btnRollingStock.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnRollingStock.setForeground(new java.awt.Color(255, 255, 255));
-        btnRollingStock.setText("Rolling Stock");
-        btnRollingStock.setBorder(null);
-        btnRollingStock.setBorderPainted(false);
-        btnRollingStock.setFocusPainted(false);
-        btnRollingStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRollingStockActionPerformed(evt);
-            }
-        });
-
-        btnControllers.setBackground(new java.awt.Color(0, 102, 0));
-        btnControllers.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnControllers.setForeground(new java.awt.Color(255, 255, 255));
-        btnControllers.setText("Controllers");
-        btnControllers.setBorder(null);
-        btnControllers.setBorderPainted(false);
-        btnControllers.setFocusPainted(false);
-        btnControllers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnControllersActionPerformed(evt);
-            }
-        });
 
         btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
         btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
@@ -230,26 +169,17 @@ public class ManagerDashboard extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTrainSets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocomotives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTrackPacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRollingStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                    .addComponent(btnTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnControllers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(btnRecentOrders))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(6, 6, 6)
+                                .addComponent(btnRecentOrders))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,19 +188,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
                 .addComponent(btnMyDetails)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRecentOrders)
-                .addGap(155, 155, 155)
-                .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrackPacks, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRollingStock, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 667, Short.MAX_VALUE)
                 .addComponent(btnLogOut)
                 .addGap(61, 61, 61))
         );
@@ -369,9 +287,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jTextField1.setBounds(530, 720, 180, 22);
         jPanel1.add(choice1);
         choice1.setBounds(720, 720, 60, 20);
-        choice1.add("CUSTOMER");
-        choice1.add("STAFF");
-        choice1.add("MANAGER");
 
         label1.setText("Change User Role:");
         jPanel1.add(label1);
@@ -431,18 +346,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
-        title.setText("Track Packs");
-    }//GEN-LAST:event_btnTrackPacksActionPerformed
-
-    private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
-        title.setText("Locomotives");
-    }//GEN-LAST:event_btnLocomotivesActionPerformed
-
-    private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
-        title.setText("Train Sets");
-    }//GEN-LAST:event_btnTrainSetsActionPerformed
-
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
         // Jump to My Details page:
         MyDetails MyDetailsFrame = new MyDetails();
@@ -455,18 +358,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
-
-    private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
-        title.setText("Controllers");
-    }//GEN-LAST:event_btnControllersActionPerformed
-
-    private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
-        title.setText("Track");
-    }//GEN-LAST:event_btnTrackActionPerformed
-
-    private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
-        title.setText("Rolling Stock");
-    }//GEN-LAST:event_btnRollingStockActionPerformed
 
     private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
         // log out
@@ -493,9 +384,9 @@ public class ManagerDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void button1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1
+    private void button1(java.awt.event.ActionEvent evt) {
         // Get the selected role from choice1
-        String selectedRole = choice1.getSelectedItem();
+        String selectedRole = ((String) choice1.getSelectedItem()); // Convert to lowercase
     
         // Get the user_id from the text area
         String userId = jTextField1.getText();
@@ -504,69 +395,118 @@ public class ManagerDashboard extends javax.swing.JFrame {
         if (userId.isEmpty() || selectedRole == null || selectedRole.isEmpty()) {
             // Handle the case where user_id or selectedRole is empty
             // (show an error message, log, etc.)
+            System.out.println("User ID or Role is empty.");
             return;
         }
     
-        // SQL query to update the role in the users table
-        String updateQuery = "UPDATE users SET role = ? WHERE user_id = ?";
+        // Get the role_id based on the selected role using the class variable roleMap
+        Integer roleId = roleMap.get(selectedRole);
+    
+        if (roleId == null) {
+            // Handle the case where the selected role is not recognized
+            // (show an error message, log, etc.)
+            System.out.println("Role not recognized.");
+            return;
+        }
+    
+        // SQL query to check if the user already has the specified role
+        String checkRoleQuery = "SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role_id = ?";
+    
+        // SQL query to remove the specified role if it already exists for the user
+        String removeRoleQuery = "DELETE FROM user_roles WHERE user_id = ? AND role_id = ?";
+    
+        // SQL query to insert the specified role if it doesn't exist for the user
+        String insertRoleQuery = "INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)";
     
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-            PreparedStatement pstmt = con.prepareStatement(updateQuery);
+            PreparedStatement checkStmt = con.prepareStatement(checkRoleQuery);
+            PreparedStatement removeStmt = con.prepareStatement(removeRoleQuery);
+            PreparedStatement insertStmt = con.prepareStatement(insertRoleQuery);
         ) {
-            // Set parameters for the prepared statement
-            pstmt.setString(1, selectedRole);
-            pstmt.setString(2, userId);
+            // Check if the user already has the specified role
+            checkStmt.setString(1, userId);
+            checkStmt.setInt(2, roleId);
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
     
-            // Execute the update
-            int rowsAffected = pstmt.executeUpdate();
+            if (count > 0) {
+                // User already has the role, so remove it
+                removeStmt.setString(1, userId);
+                removeStmt.setInt(2, roleId);
+                int rowsRemoved = removeStmt.executeUpdate();
     
-            // Check if the update was successful
-            if (rowsAffected > 0) {
-                // Reload manager data to update the table
-                loadManagerData();
-                System.out.println("User role updated successfully.");
+                if (rowsRemoved > 0) {
+                    // Reload manager data to update the table
+                    loadManagerData();
+                    System.out.println("User role removed successfully.");
+                } else {
+                    System.out.println("Failed to remove user role.");
+                }
             } else {
-                System.out.println("Failed to update user role.");
+                // User doesn't have the role, so insert it
+                insertStmt.setString(1, userId);
+                insertStmt.setInt(2, roleId);
+                int rowsInserted = insertStmt.executeUpdate();
+    
+                if (rowsInserted > 0) {
+                    // Reload manager data to update the table
+                    loadManagerData();
+                    System.out.println("User role added successfully.");
+                } else {
+                    System.out.println("Failed to add user role.");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("SQL Exception: " + e.getMessage());
             // Handle the exception (log or show an error message)
         }
-    }//GEN-LAST:event_button1
+    }
+    
+    
+    
+    
+    
+    
+
 
     private void defaultTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTable
         loadManagerData();
     }//GEN-LAST:event_defaultTable
 
-    private void staffTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffTable
+    private void staffTable(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
     
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");
         model.addColumn("Surname");
-        model.addColumn("Email Address");
-        model.addColumn("House Number");
-        model.addColumn("Post Code");
-        model.addColumn("Role");
+        model.addColumn("Email");
+        model.addColumn("Roles");
     
         // Use try-with-resources to automatically close resources
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users` WHERE `role` = 'staff'");
+            ResultSet rs = stmt.executeQuery(
+                "SELECT users.user_id, users.forename, users.surname, users.email, GROUP_CONCAT(roles.role_name) AS roles " +
+                "FROM users " +
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "WHERE roles.role_name = 'STAFF' " +
+                "GROUP BY users.user_id"
+            )
         ) {
             // Add rows to the model
             while (rs.next()) {
-                Object[] row = new Object[7];
+                Object[] row = new Object[5];
                 row[0] = rs.getString("user_id");
                 row[1] = rs.getString("forename");
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
-                row[4] = rs.getInt("house_number");
-                row[5] = rs.getString("post_code");
-                row[6] = rs.getString("role");
+                row[4] = rs.getString("roles");
                 model.addRow(row);
             }
     
@@ -576,36 +516,39 @@ public class ManagerDashboard extends javax.swing.JFrame {
             e.printStackTrace();
             // Handle the exception (log or show an error message)
         }
-    }//GEN-LAST:event_staffTable
-
-    private void managerTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_managerTable
+    }
+    
+    private void managerTable(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
     
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");
         model.addColumn("Surname");
-        model.addColumn("Email Address");
-        model.addColumn("House Number");
-        model.addColumn("Post Code");
-        model.addColumn("Role");
+        model.addColumn("Email");
+        model.addColumn("Roles");
     
         // Use try-with-resources to automatically close resources
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT `user_id`, `forename`, `surname`, `email`, `house_number`, `post_code`, `role` FROM `users` WHERE `role` = 'manager'");
+            ResultSet rs = stmt.executeQuery(
+                "SELECT users.user_id, users.forename, users.surname, users.email, GROUP_CONCAT(roles.role_name) AS roles " +
+                "FROM users " +
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "WHERE roles.role_name = 'MANAGER' " +
+                "GROUP BY users.user_id"
+            )
         ) {
             // Add rows to the model
             while (rs.next()) {
-                Object[] row = new Object[7];
+                Object[] row = new Object[5];
                 row[0] = rs.getString("user_id");
                 row[1] = rs.getString("forename");
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
-                row[4] = rs.getInt("house_number");
-                row[5] = rs.getString("post_code");
-                row[6] = rs.getString("role");
+                row[4] = rs.getString("roles");
                 model.addRow(row);
             }
     
@@ -615,20 +558,16 @@ public class ManagerDashboard extends javax.swing.JFrame {
             e.printStackTrace();
             // Handle the exception (log or show an error message)
         }
-    }//GEN-LAST:event_managerTable
+    }
+    
+    
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnControllers;
-    private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
-    private javax.swing.JButton btnRollingStock;
     private javax.swing.JButton btnStaff;
-    private javax.swing.JButton btnTrack;
-    private javax.swing.JButton btnTrackPacks;
-    private javax.swing.JButton btnTrainSets;
     private javax.swing.JButton btnUser;
     private java.awt.Button button1;
     private java.awt.Button button2;
