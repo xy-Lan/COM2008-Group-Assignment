@@ -4,6 +4,8 @@
  */
 package project.gui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import project.dao.AddressDao;
 import project.dao.BankCardDao;
 import project.dao.UserDao;
@@ -16,6 +18,7 @@ import project.model.user.User;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
+import project.service.MySqlService;
 
 /**
  *
@@ -520,7 +523,26 @@ public class MyDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteBankCardActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
+         Default DefaultFrame = new Default();
+            DefaultFrame.setVisible(true);
+            DefaultFrame.pack();
+            DefaultFrame.setLocationRelativeTo(null);
+            
+            DefaultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            DefaultFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    MySqlService.closeConnection();
+                    System.out.println("Window is closing");
+                }
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    MySqlService.closeConnection();
+                    System.out.println("WIndow closed");
+                }
+            });
+            this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSavePersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePersonalDetailsActionPerformed
