@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 import project.model.user.User;
 import project.utils.UserSessionManager;
@@ -191,5 +192,92 @@ public class MySqlService {
         }
 
         return false;
+    }
+
+    public static String generateProductCode(String productType) {
+        if ("LOCOMOTIVE".equals(productType)) {
+            return "L" + highestProductCode("L");
+        } else if ("CARRIAGE".equals(productType)) {
+            return checkWagonType(productType) + highestProductCode(checkWagonType(productType));
+        } else if ("CONTROLLER".equals(productType)) {
+            return "C" + highestProductCode("C");
+        } else if ("TRACK".equals(productType)) {
+            return "R" + highestProductCode("R");
+        } else if ("TRACK_PACK".equals(productType)) {
+            return "P" + highestProductCode("P");
+        } else if ("BOXED_SET".equals(productType)) {
+            return "PO" + highestProductCode("PO");
+        } else if ("TRAIN_SET".equals(productType)) {
+            return "M" + highestProductCode("M");
+        } else {
+            return "ERROR";
+        }
+    }
+    
+    private static String highestProductCode(String productIdentifier){
+        int maxProductCode = findMax(getFilteredProductCodes(productIdentifier));
+        return String.valueOf(maxProductCode + 1);
+    }
+
+    public static String checkWagonType(String wagonType) {
+        switch (wagonType) {
+            case "PASSENGER_CARRIAGE":
+                return "RC"; // Passenger Carriage
+            default:
+                return "SW"; // Unknown wagon type
+        }
+    }
+
+    public static List<String> getAllProductCodes() {
+        List<String> productCodes = new ArrayList<>();
+    
+        try (Connection conn = MySqlService.getConnection();) {
+            String sql = "SELECT product_code FROM product";
+            try (PreparedStatement preparedStatement = conn.prepareStatement(sql);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+    
+                while (resultSet.next()) {
+                    String productCode = resultSet.getString("product_code");
+                    productCodes.add(productCode);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+        return productCodes;
+    }
+    
+
+    public static List<Integer> getFilteredProductCodes(String prefixToFilter) {
+        List<Integer> filteredProductCodes = new ArrayList<>();
+        List<String> allProductCodes = getAllProductCodes();
+    
+        int prefixLength = prefixToFilter.length();
+    
+        for (String productCode : allProductCodes) {
+            if (productCode.startsWith(prefixToFilter)) {
+                try {
+                    int productCodeInt = Integer.parseInt(productCode.substring(prefixLength));
+                    filteredProductCodes.add(productCodeInt);
+                } catch (NumberFormatException e) {
+                    // Handle the exception if the numeric part is not a valid integer
+                    e.printStackTrace();
+                }
+            }
+        }
+    
+        return filteredProductCodes;
+    }
+    
+
+    public static int findMax(List<Integer> numbers) {
+        int max = Integer.MIN_VALUE;
+
+        for (int number : numbers) {
+            if (number > max) {
+                max = number;
+            }
+        }
+        return max;
     }
 }

@@ -9,7 +9,15 @@ import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import java.math.BigDecimal;
+
 import project.service.MySqlService;
+import project.daoimpl.LocomotiveDaoImpl;
+import project.model.product.Locomotive;
+import project.model.product.enums.DCCType;
+import project.model.product.enums.Era;
+import project.model.product.enums.Gauge;
+import project.model.product.Locomotive;
 
 /**
  *
@@ -41,28 +49,28 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<String>();
+        jComboBox4 = new javax.swing.JComboBox<String>();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        jComboBox7 = new javax.swing.JComboBox<String>();
         jButton5 = new javax.swing.JButton();
-        jComboBox9 = new javax.swing.JComboBox<>();
+        jComboBox9 = new javax.swing.JComboBox<String>();
         jPanel5 = new javax.swing.JPanel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        jComboBox8 = new javax.swing.JComboBox<String>();
         jButton6 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
+        jComboBox5 = new javax.swing.JComboBox<String>();
+        jComboBox6 = new javax.swing.JComboBox<String>();
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<String>();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<String>();
         jLabel5 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
@@ -71,11 +79,16 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jPanel2.setToolTipText("");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ANALOGUE", "DCC_READY", "DCC_FITTED", "DCC_SOUND" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ANALOGUE", "DCC_READY", "DCC_FITTED", "DCC_SOUND" }));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA1", "ERA2", "ERA3", "ERA4", "ERA5", "ERA6", "ERA7", "ERA8", "ERA9", "ERA10", "ERA11", "ERA12" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
 
         jButton3.setText("Add");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLocomotiveGUI(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -103,7 +116,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jTabbedPane1.addTab("Locomotive", jPanel2);
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STANDARD_CONTROLLER", "DCC_CONTROLLER", "DCC_EDIT_CONTROLLER" }));
+        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "STANDARD_CONTROLLER", "DCC_CONTROLLER", "DCC_EDIT_CONTROLLER" }));
         jComboBox7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox7ActionPerformed(evt);
@@ -112,7 +125,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jButton5.setText("Add");
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TRUE", "FALSE" }));
+        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "TRUE", "FALSE" }));
         jComboBox9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox9ActionPerformed(evt);
@@ -145,7 +158,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jTabbedPane1.addTab("Controller", jPanel3);
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STRAIGHT", "CURVE", "POINT", "CROSSOVER" }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "STRAIGHT", "CURVE", "POINT", "CROSSOVER" }));
 
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -177,14 +190,14 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jTabbedPane1.addTab("Track", jPanel5);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA1", "ERA2", "ERA3", "ERA4", "ERA5", "ERA6", "ERA7", "ERA8", "ERA9", "ERA10", "ERA11", "ERA12" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "ERA1", "ERA2", "ERA3", "ERA4", "ERA5", "ERA6", "ERA7", "ERA8", "ERA9", "ERA10", "ERA11", "ERA12" }));
         jComboBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox5ActionPerformed(evt);
             }
         });
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CORRIDOR_FIRST", "OPEN_FIRST", "CORRIDOR_SECOND", "SLEEPER_CAR", "RESTAURANT_CAR", "BUFFET_CAR", "COMPOSITE_COACH", "GENERAL_UTILITY_VAN", "OPEN_SECOND", "POST_OFFICE_SORTING_VAN", "BRAKE_VAN", "BRAKE_SECOND", "COMPOSITE_BRAKE_VAN", "PULLMAN", "STANDARD_CALSS" }));
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "CORRIDOR_FIRST", "OPEN_FIRST", "CORRIDOR_SECOND", "SLEEPER_CAR", "RESTAURANT_CAR", "BUFFET_CAR", "COMPOSITE_COACH", "GENERAL_UTILITY_VAN", "OPEN_SECOND", "POST_OFFICE_SORTING_VAN", "BRAKE_VAN", "BRAKE_SECOND", "COMPOSITE_BRAKE_VAN", "PULLMAN", "STANDARD_CALSS" }));
 
         jButton4.setText("Add");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -225,13 +238,13 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jLabel2.setText("Brand");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LMS", "LNER", "GWR" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "LMS", "LNER", "GWR" }));
 
         jLabel3.setText("Name");
 
         jLabel4.setText("Gauge");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OO_GAUGE", "TT_GAUGE", "N_GAUGE" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "OO_GAUGE", "TT_GAUGE", "N_GAUGE" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -261,8 +274,8 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                         .addComponent(jTextField1)
                         .addComponent(jLabel3)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel5)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -345,23 +358,50 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
-    private void addProduct(java.awt.event.ActionEvent evt) {
+    private void addLocomotiveGUI(java.awt.event.ActionEvent evt) {
+        LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
+
+        // Assuming jSpinner1.getValue() returns a BigDecimal
+        int intValue = (Integer) jSpinner1.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+
+        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+        String gaugeType = jComboBox2.getSelectedItem().toString();
+        String dccType = jComboBox3.getSelectedItem().toString();
+        String era = jComboBox4.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("LOCOMOTIVE");
+
+        // Create a Locomotive object
+        Locomotive locomotive = new Locomotive(
+            productCode,
+            jComboBox1.getSelectedItem().toString(),
+            jTextField1.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            DCCType.valueOf(dccType), // Assuming DCCType is an enum
+            Era.valueOf(era) // Assuming Era is an enum
+        );
+
+        locomotiveDao.addLocomotive(locomotive);
+    }
+
+    private void addProduct(String product_code) {
         String brand = jComboBox1.getSelectedItem().toString();
         String name = jTextField1.getText();
         String gauge = jComboBox2.getSelectedItem().toString();
-        int price = (int) jSpinner1.getValue();
+        int intValue = (Integer) jSpinner1.getValue();
+        BigDecimal price = new BigDecimal(intValue);
     
-        String updateQuery = "INSERT INTO products (product_code, brand, name, gauge, price) VALUES (?, ?, ?, ?, ?)";
+        String updateQuery = "INSERT INTO product (product_code, brand_name, product_name, gauge_type, retail_price) VALUES (?, ?, ?, ?, ?)";
     
         try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk")) {
             try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
-                // Assuming product_code is an auto-incrementing column in the database
-                // You can adjust this if the product_code needs to be generated in a different way
-                pstmt.setString(1, productCode());
+                // Assuming product_code is passed as a parameter
+                pstmt.setString(1, product_code);
                 pstmt.setString(2, brand);
                 pstmt.setString(3, name);
                 pstmt.setString(4, gauge);
-                pstmt.setInt(5, price);
+                pstmt.setBigDecimal(5, price);
     
                 int rowsAffected = pstmt.executeUpdate();
     
@@ -377,11 +417,9 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
             // Handle database-related exceptions (show an error message, log, etc.)
             e.printStackTrace();
         }
-    }                           
-
-    private String productCode(){
-        return "yh";
     }
+    
+                            
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
