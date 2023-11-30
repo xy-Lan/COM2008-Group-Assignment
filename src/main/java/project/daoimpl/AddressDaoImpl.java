@@ -76,13 +76,17 @@ public class AddressDaoImpl implements AddressDao{
     public Address getAddress(int addressId) {
         Address address = null;
         String sql = "SELECT * FROM address WHERE address_id = ?";
-
+    
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+    
             stmt.setInt(1, addressId);
+<<<<<<< Updated upstream
             System.out.println(stmt);
 
+=======
+    
+>>>>>>> Stashed changes
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println(rs);
@@ -91,10 +95,12 @@ public class AddressDaoImpl implements AddressDao{
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving address from the database", e);
+            // Consider throwing a more specific exception or handling the exception accordingly.
             throw new RuntimeException("Database operation failed", e);
         }
         return address;
     }
+    
 
 
     @Override
