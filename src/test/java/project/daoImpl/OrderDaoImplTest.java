@@ -35,6 +35,18 @@ public class OrderDaoImplTest {
         orderDao = new OrderDaoImpl();
     }
 
+    @Test
+    public void testGetAllOrders() {
+        List<Order> orders = orderDao.getAllOrders();
+
+        assertNotNull(orders, "Orders list should not be null");
+
+        boolean allNotPending = orders.stream()
+                .noneMatch(order -> order.getOrderStatus().equals(OrderStatus.PENDING));
+        assertTrue(allNotPending, "All orders should have a status other than PENDING");
+
+    }
+
 //    @Test
 //    public void testUpdateOrderStatus() {
 //        int orderNumber = 125;

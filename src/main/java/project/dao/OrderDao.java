@@ -28,6 +28,10 @@ public interface OrderDao {
     // Retrieves all orders for a specific user from the database
     List<Order> getOrdersByUserId(int userId);
 
+    List<Order> getConfirmedOrder();
+
+    Boolean hasOrderedBefore (int userId);
+
     // Other order-related methods...
     void addOrderLine(OrderLine orderLine);
 
