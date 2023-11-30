@@ -377,16 +377,27 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextField1);
-        jTextField1.setBounds(380, 250, 100, 26);
+        jTextField1.setBounds(380, 250, 100, 22);
         jPanel1.add(jSpinner1);
-        jSpinner1.setBounds(490, 250, 68, 26);
+        jSpinner1.setBounds(490, 250, 64, 22);
 
         jButton1.setText("Confirm");
         jPanel1.add(jButton1);
-        jButton1.setBounds(570, 250, 110, 27);
+        jButton1.setBounds(570, 250, 110, 23);
 
         jButton2.setBackground(new java.awt.Color(0, 102, 0));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("New Product");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(760, 247, 140, 30);
 
@@ -645,6 +656,20 @@ public class StaffDashboard extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        NewProduct newProduct = new NewProduct();
+        newProduct.setVisible(true);
+        
+        newProduct.pack();
+        newProduct.setLocationRelativeTo(null);
+        newProduct.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
 
