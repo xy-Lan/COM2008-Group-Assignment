@@ -56,6 +56,17 @@ public class BankCard {
     }
 	
 
+	public String getFirstName(){ return firstName;}
+
+	public void setFirstName(String firstName){ this.firstName = firstName; }
+
+	public String getLastName(){ return lastName;}
+
+	public void setLastName(){ this.lastName = lastName;}
+
+	public String getCardName(){ return cardName;}
+
+	public void setCardName(){ this.cardName = cardNumber; }
 	public User getCustomer() {
 		return customer;
 	}

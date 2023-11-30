@@ -4,6 +4,12 @@
  */
 package project.gui;
 
+import project.dao.ProductDao;
+import project.daoimpl.ProductDaoImpl;
+import project.model.product.abstractproduct.Product;
+
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author linyu
@@ -351,6 +357,24 @@ public class Staff extends javax.swing.JFrame {
     private void btnEditProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProductActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditProductActionPerformed
+
+    private void loadData() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("Code");
+        model.addColumn("Name");
+        model.addColumn("Brand");
+        model.addColumn("Price");
+        model.addColumn("Gauge Type");
+        model.addColumn("Quantity");
+
+        //Get all the products
+        ProductDao productDao = new ProductDaoImpl();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
