@@ -46,7 +46,7 @@ public class ControllerDaoImplTest {
 
     @Test
     public void testDeleteController() {
-        String productCode = "testProductCode"; // 测试用的 productCode
+        String productCode = "C100"; // 测试用的 productCode
 
         // 执行删除操作
         controllerDao.deleteController(productCode);

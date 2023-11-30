@@ -161,7 +161,7 @@ public class OrderService {
 		}
 
 		// Remove the order line from the database
-		orderDao.deleteOrderLine(orderLineOptional.get());
+		orderLineDao.deleteOrderLine(orderLineOptional.get().getOrderNumber(),orderLineOptional.get().getProductCode());
 	}
 
 	/**

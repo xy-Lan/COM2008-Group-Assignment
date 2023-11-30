@@ -29,7 +29,7 @@ public class TrainSetDaoImplTest {
     @Test
     public void testAddTrainSet() {
         TrainSetDao trainSetDao = new TrainSetDaoImpl();
-        TrainSet testTrainSet = new TrainSet("M224", "TestBrand", "TestName", new BigDecimal("99.99"), Gauge.N_GAUGE);
+        TrainSet testTrainSet = new TrainSet("M229", "TestBrand", "TestName", new BigDecimal("99.99"), Gauge.N_GAUGE);
 
         trainSetDao.addTrainSet(testTrainSet);
 
@@ -66,7 +66,7 @@ public class TrainSetDaoImplTest {
 
     @Test
     void testDeleteTrainSet() {
-        trainSetDao.deleteTrainSet("M224");
+        trainSetDao.deleteTrainSet("M229");
 
         assertNull(trainSetDao.getTrainSet("TestCode"), "TrainSet should be deleted from the database");
     }
