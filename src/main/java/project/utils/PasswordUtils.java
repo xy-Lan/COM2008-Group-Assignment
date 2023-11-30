@@ -1,6 +1,6 @@
 package project.utils;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordUtils {
     public static String hashPassword(String password) {
