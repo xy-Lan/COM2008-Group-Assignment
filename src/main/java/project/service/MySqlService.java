@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import project.model.product.enums.CarriageType;
 import project.model.user.User;
 import project.utils.UserSessionManager;
 
@@ -221,7 +222,16 @@ public class MySqlService {
 
     public static String checkWagonType(String wagonType) {
         switch (wagonType) {
-            case "PASSENGER_CARRIAGE":
+            case "CORRIDOR_FIRST":
+            case "OPEN_FIRST":
+            case "CORRIDOR_SECOND":
+            case "SLEEPER_CAR":
+            case "RESTAURANT_CAR":
+            case "BUFFET_CAR":
+            case "OPEN_SECOND":
+            case "BRAKE_SECOND":
+            case "PULLMAN":
+            case "STANDARD_CALSS":
                 return "RC"; // Passenger Carriage
             default:
                 return "SW"; // Unknown wagon type
