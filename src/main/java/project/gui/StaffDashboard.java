@@ -275,11 +275,6 @@ public class StaffDashboard extends javax.swing.JFrame {
                 jButton2MouseClicked(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
         jPanel1.add(jButton2);
         jButton2.setBounds(760, 247, 140, 30);
 
@@ -499,6 +494,14 @@ public class StaffDashboard extends javax.swing.JFrame {
         this.dispose();
 
     }//GEN-LAST:event_btnLogOutActionPerformed
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        NewProduct newProduct = new NewProduct();
+        newProduct.setVisible(true);
+        
+        newProduct.pack();
+        newProduct.setLocationRelativeTo(null);
+        newProduct.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }//GEN-LAST:event_jButton2MouseClicked
 
     private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
         // TODO add your handling code here:
