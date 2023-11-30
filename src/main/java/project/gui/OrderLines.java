@@ -15,6 +15,7 @@ import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
+import project.service.InventoryService;
 import project.service.MySqlService;
 import project.service.OrderService;
 import project.utils.UserSessionManager;
@@ -25,9 +26,11 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 /**
@@ -35,6 +38,10 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
  * @author linyu
  */
 public class OrderLines extends javax.swing.JFrame {
+    private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
+    private OrderDao orderDao = new OrderDaoImpl();
+    private OrderLineDao orderLineDao = new OrderLineDaoImpl();
+    private OrderService orderService = new OrderService(orderDao);
 
     /**
      * Creates new form Default
@@ -135,16 +142,47 @@ public class OrderLines extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
-        CheckOut CheckOutFrame = new CheckOut();
-        CheckOutFrame.setVisible(true);
-        CheckOutFrame.pack();
-        CheckOutFrame.setLocationRelativeTo(null);
+        Boolean error = false;
+        InventoryDao inventoryDao = new InventoryDaoImpl();
+        InventoryService inventoryService = new InventoryService();
+        Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            BigDecimal total = orderService.calculateTotal(order);
+            List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+            for (OrderLine orderLine : allOrderLines){
+                int quantity = orderLine.getQuantity().intValue();
+                int stock = inventoryDao.getStock(orderLine.getProductCode());
+                if ( quantity > stock) {
+                    JOptionPane.showMessageDialog(null, "The quantity of " + orderLine.getProductCode()
+                                    + "selected exceeds the stock available! Please reduce the purchase quantity",
+                            "Out of stock", WARNING_MESSAGE);
+                    error = true;
+                }
+            }
+            if (!error) {
+                int response = JOptionPane.showConfirmDialog(null, "Please confirm your payment of " +
+                        total + " £", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.YES_OPTION){
+                    if (orderDao.hasOrderedBefore(currentUser.getUserID())){
+                        JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
+                                "Order Placed", INFORMATION_MESSAGE);
+                        inventoryService.updateInventoryForOrder(order);
+                    } else {
+                        CheckOut CheckOutFrame = new CheckOut(order);
+                        CheckOutFrame.setVisible(true);
+                        CheckOutFrame.pack();
+                        CheckOutFrame.setLocationRelativeTo(null);
+                    }
+                }
+
+
+            }
+        }
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
     private void loadPendingOrders(){
-        User currentUser = UserSessionManager.getInstance().getLoggedInUser();
-        OrderDao orderDao = new OrderDaoImpl();
-        OrderLineDao orderLineDao = new OrderLineDaoImpl();
+
         Optional<Order> optionalOrder = orderDao.getPendingOrderByUserId(currentUser.getUserID());
         //List all the pending orders and set the layout of the order panel
         orderContainer.removeAll();
@@ -153,7 +191,10 @@ public class OrderLines extends javax.swing.JFrame {
         if (optionalOrder.isPresent()) {
             //Get the pending order
             Order order = optionalOrder.get();
+            BigDecimal total = orderService.calculateTotal(order);
             List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
+            JLabel lblTotal = new JLabel(total.toString());
+            orderContainer.add(lblTotal);
 
             //Get all the product in the basket
             for(OrderLine orderLine : allOrderLines){
@@ -209,10 +250,17 @@ public class OrderLines extends javax.swing.JFrame {
                     @Override
                     public void stateChanged(ChangeEvent e) {
                         //Once the quantity is changed, update the order line
-                        orderLine.setQuantity((Integer)quantityVal.getValue());
-                        orderLineDao.updateOrderLine(orderLine);
-                        System.out.println("Quantity changed");
-                        System.out.println("Updated the order line");
+                        int quantity = (Integer) quantityVal.getValue();
+                        InventoryDao inventoryDao = new InventoryDaoImpl();
+                        int stock = inventoryDao.getStock(product.getProductCode());
+                        if ( quantity > stock) {
+                            JOptionPane.showMessageDialog(null, "The quantity selected exceeds the stock available! Please reduce the purchase quantity",
+                                    "Out of stock", WARNING_MESSAGE);
+                        } else {
+                            orderLine.setQuantity((Integer)quantityVal.getValue());
+                            orderLineDao.updateOrderLine(orderLine);
+                        }
+
                     }
                 });
 
@@ -226,6 +274,10 @@ public class OrderLines extends javax.swing.JFrame {
                 orderContainer.add(productPanel);
                 orderContainer.add(Box.createVerticalStrut(20));
             }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                            "No orders yet",
+                    "Null", WARNING_MESSAGE);
         }
     }
 

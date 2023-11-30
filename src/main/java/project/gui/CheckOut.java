@@ -5,11 +5,19 @@
 package project.gui;
 
 import project.dao.BankCardDao;
+import project.dao.InventoryDao;
 import project.daoimpl.BankCardDaoImpl;
+import project.daoimpl.InventoryDaoImpl;
 import project.model.bankcard.BankCard;
+import project.model.order.Order;
 import project.model.user.User;
+import project.service.InventoryService;
 import project.service.MySqlService;
 import project.utils.UserSessionManager;
+
+import javax.swing.*;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 /**
  *
@@ -17,10 +25,13 @@ import project.utils.UserSessionManager;
  */
 public class CheckOut extends javax.swing.JFrame {
 
+    private Order order;
+
     /**
      * Creates new form CheckOut
      */
-    public CheckOut() {
+    public CheckOut(Order order) {
+        this.order = order;
         initComponents();
     }
 
@@ -228,7 +239,7 @@ public class CheckOut extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        // TODO add your handling code here:
+
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
         String cardNumber = txtCardNumber.getText();
         Integer expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
@@ -240,7 +251,18 @@ public class CheckOut extends javax.swing.JFrame {
         BankCardDao bankCardDao = new BankCardDaoImpl();
         BankCard bankCard = new BankCard(currentUser, cardNumber, expiryMonth, expiryYear, securityCode,
                             firstName, lastName,cardName);
-        bankCardDao.addBankCard(bankCard);
+        if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth)){
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        } else {
+            bankCardDao.addBankCard(bankCard);
+            InventoryService inventoryService = new InventoryService();
+            inventoryService.updateInventoryForOrder(order);
+            JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
+                    "Order Placed", INFORMATION_MESSAGE);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void txtCardNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCardNumberActionPerformed
@@ -250,6 +272,15 @@ public class CheckOut extends javax.swing.JFrame {
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFirstNameActionPerformed
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

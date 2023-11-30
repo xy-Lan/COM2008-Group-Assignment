@@ -366,11 +366,11 @@ public class MyDetails extends javax.swing.JFrame {
 
         jLabel6.setText("Card Number:");
 
-        txtBankCardName.setText("e.g. Visa");
+        txtBankCardName.setText(bankCard.getCardName());
 
         jLabel8.setText("Expiry Month:");
 
-        txtFirstName.setText("First name");
+        txtFirstName.setText(bankCard.getFirstName());
         txtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFirstNameActionPerformed(evt);
@@ -383,7 +383,7 @@ public class MyDetails extends javax.swing.JFrame {
 
         jLabel9.setText("Security Code:");
 
-        txtLastName.setText("Last name");
+        txtLastName.setText(bankCard.getLastName());
 
         jLabel10.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 102, 0));

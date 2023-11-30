@@ -10,6 +10,8 @@ import project.model.user.Role;
 
 import java.sql.*;
 
+import java.util.*;
+
 /**
  *
  * @author linyu
@@ -22,47 +24,65 @@ public class ManagerDashboard extends javax.swing.JFrame {
     public ManagerDashboard() {
         initComponents();
         loadManagerData();
+        populateRoleChoice();
     }
 
-    private void loadManagerData(){
-    DefaultTableModel model = new DefaultTableModel();
-    
-    // Add column headers
-    model.addColumn("User ID");
-    model.addColumn("Forename");
-    model.addColumn("Surname");
-    model.addColumn("Email");
-    model.addColumn("Role");
+    private static final Map<String, Integer> roleMap = new HashMap<>();
 
-    // Use try-with-resources to automatically close resources
-    try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(
-            "SELECT users.user_id, users.forename, users.surname, users.email, " +
-            "roles.role_name " +
-            "FROM users " +
-            "JOIN roles ON users.user_id = roles.role_id "
-        )
-    ) {
-        // Add rows to the model
-        while (rs.next()) {
-            Object[] row = new Object[5];
-            row[0] = rs.getString("user_id");
-            row[1] = rs.getString("forename");
-            row[2] = rs.getString("surname");
-            row[3] = rs.getString("email");
-            row[4] = rs.getString("role_name"); // Note: Make sure this matches the actual column name in the result set
-            model.addRow(row);
+    static {
+        roleMap.put("STAFF", 1); // Replace with actual role IDs
+        roleMap.put("CUSTOMER", 2);
+        roleMap.put("MANAGER", 3);
+    }
+
+    private void populateRoleChoice() {
+        for (String roleName : roleMap.keySet()) {
+            choice1.add(roleName);
         }
-
-        // Set the model to the existing JTable
-        jTable1.setModel(model);
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle the exception (log or show an error message)
     }
-}
+
+    private void loadManagerData() {
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email");
+        model.addColumn("Roles");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                "SELECT users.user_id, users.forename, users.surname, users.email, " +
+                "GROUP_CONCAT(roles.role_name ORDER BY roles.role_name) AS roles " +
+                "FROM users " +
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "GROUP BY users.user_id"
+            )
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[5];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getString("roles"); // Note: Make sure this matches the actual column name in the result set
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -275,9 +295,9 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button1.setActionCommand("Confirm");
         button1.setBackground(new java.awt.Color(0, 102, 0));
         button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setLabel("Confirm");
+        button1.setLabel("Add/Remove");
         jPanel1.add(button1);
-        button1.setBounds(790, 720, 58, 24);
+        button1.setBounds(790, 720, 80, 24);
 
         button2.setActionCommand("Confirm");
         button2.setBackground(new java.awt.Color(0, 102, 0));
@@ -285,6 +305,11 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button2.setLabel("All");
         jPanel1.add(button2);
         button2.setBounds(340, 250, 50, 20);
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1(evt);
+            }
+        });
 
         button3.setActionCommand("Confirm");
         button3.setBackground(new java.awt.Color(0, 102, 0));
@@ -292,7 +317,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button3.setLabel("Staff");
         button3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1(evt);
+                button3ActionPerformed(evt);
             }
         });
         jPanel1.add(button3);
@@ -304,7 +329,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button4.setLabel("Managers");
         button4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1(evt);
+                button4ActionPerformed(evt);
             }
         });
         jPanel1.add(button4);
@@ -354,73 +379,110 @@ public class ManagerDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void button1(java.awt.event.ActionEvent evt) {                         
-    // Get the selected role from choice1
-    String selectedRole = choice1.getSelectedItem();
-
-    // Get the user_id from the text area
-    String userId = jTextField1.getText();
-
-    // Validate user_id and selectedRole
-    if (userId.isEmpty() || selectedRole == null || selectedRole.isEmpty()) {
-        // Handle the case where user_id or selectedRole is empty
-        // (show an error message, log, etc.)
-        return;
-    }
-
-    // SQL query to update the role_id in the users table
-    String updateQuery = "UPDATE roles SET role_name = ? WHERE role_id = ?";
-
-    try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-        PreparedStatement pstmt = con.prepareStatement(updateQuery);
-    ) {
-        // Set parameters for the prepared statement
-        pstmt.setString(1, selectedRole);
-        pstmt.setString(2, userId);
-
-        // Execute the update
-        int rowsAffected = pstmt.executeUpdate();
-
-        // Check if the update was successful
-        if (rowsAffected > 0) {
-            // Reload manager data to update the table
-            loadManagerData();
-            System.out.println("User role updated successfully.");
-        } else {
-            System.out.println("Failed to update user role.");
+    private void button1(java.awt.event.ActionEvent evt) {
+        // Get the selected role from choice1
+        String selectedRole = ((String) choice1.getSelectedItem()); // Convert to lowercase
+    
+        // Get the user_id from the text area
+        String userId = jTextField1.getText();
+    
+        // Validate user_id and selectedRole
+        if (userId.isEmpty() || selectedRole == null || selectedRole.isEmpty()) {
+            // Handle the case where user_id or selectedRole is empty
+            // (show an error message, log, etc.)
+            System.out.println("User ID or Role is empty.");
+            return;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle the exception (log or show an error message)
+    
+        // Get the role_id based on the selected role using the class variable roleMap
+        Integer roleId = roleMap.get(selectedRole);
+    
+        if (roleId == null) {
+            System.out.println("Role not recognized.");
+            return;
+        }
+    
+        // SQL query to check if the user already has the specified role
+        String checkRoleQuery = "SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role_id = ?";
+    
+        // SQL query to remove the specified role if it already exists for the user
+        String removeRoleQuery = "DELETE FROM user_roles WHERE user_id = ? AND role_id = ?";
+    
+        // SQL query to insert the specified role if it doesn't exist for the user
+        String insertRoleQuery = "INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)";
+    
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            PreparedStatement checkStmt = con.prepareStatement(checkRoleQuery);
+            PreparedStatement removeStmt = con.prepareStatement(removeRoleQuery);
+            PreparedStatement insertStmt = con.prepareStatement(insertRoleQuery);
+        ) {
+            // Check if the user already has the specified role
+            checkStmt.setString(1, userId);
+            checkStmt.setInt(2, roleId);
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+    
+            if (count > 0) {
+                // User already has the role, so remove it
+                removeStmt.setString(1, userId);
+                removeStmt.setInt(2, roleId);
+                int rowsRemoved = removeStmt.executeUpdate();
+    
+                if (rowsRemoved > 0) {
+                    // Reload manager data to update the table
+                    loadManagerData();
+                    System.out.println("User role removed successfully.");
+                } else {
+                    System.out.println("Failed to remove user role.");
+                }
+            } else {
+                // User doesn't have the role, so insert it
+                insertStmt.setString(1, userId);
+                insertStmt.setInt(2, roleId);
+                int rowsInserted = insertStmt.executeUpdate();
+    
+                if (rowsInserted > 0) {
+                    // Reload manager data to update the table
+                    loadManagerData();
+                    System.out.println("User role added successfully.");
+                } else {
+                    System.out.println("Failed to add user role.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Exception: " + e.getMessage());
+            // Handle the exception (log or show an error message)
+        }
     }
-}
-
-
+    
     private void defaultTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTable
         loadManagerData();
     }//GEN-LAST:event_defaultTable
 
-    private void staffTable(java.awt.event.ActionEvent evt) {
+    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
-        
+    
         // Add column headers
         model.addColumn("User ID");
         model.addColumn("Forename");
         model.addColumn("Surname");
         model.addColumn("Email");
-        model.addColumn("Role");
+        model.addColumn("Roles");
     
         // Use try-with-resources to automatically close resources
         try (
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(
-                "SELECT users.user_id, users.forename, users.surname, users.email, " +
-                "roles.role_name " +
+                "SELECT users.user_id, users.forename, users.surname, users.email, GROUP_CONCAT(roles.role_name) AS roles " +
                 "FROM users " +
-                "JOIN roles ON users.user_id = roles.role_id " +
-                "WHERE roles.role_name = 'staff'"
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "WHERE roles.role_name = 'STAFF' " +
+                "GROUP BY users.user_id"
             )
         ) {
             // Add rows to the model
@@ -430,7 +492,49 @@ public class ManagerDashboard extends javax.swing.JFrame {
                 row[1] = rs.getString("forename");
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
-                row[4] = rs.getString("role_name"); // Note: Make sure this matches the actual column name in the result set
+                row[4] = rs.getString("roles");
+                model.addRow(row);
+            }
+    
+            // Set the model to the existing JTable
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (log or show an error message)
+        }
+    }
+    
+    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {
+        DefaultTableModel model = new DefaultTableModel();
+    
+        // Add column headers
+        model.addColumn("User ID");
+        model.addColumn("Forename");
+        model.addColumn("Surname");
+        model.addColumn("Email");
+        model.addColumn("Roles");
+    
+        // Use try-with-resources to automatically close resources
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                "SELECT users.user_id, users.forename, users.surname, users.email, GROUP_CONCAT(roles.role_name) AS roles " +
+                "FROM users " +
+                "JOIN user_roles ON users.user_id = user_roles.user_id " +
+                "JOIN roles ON user_roles.role_id = roles.role_id " +
+                "WHERE roles.role_name = 'MANAGER' " +
+                "GROUP BY users.user_id"
+            )
+        ) {
+            // Add rows to the model
+            while (rs.next()) {
+                Object[] row = new Object[5];
+                row[0] = rs.getString("user_id");
+                row[1] = rs.getString("forename");
+                row[2] = rs.getString("surname");
+                row[3] = rs.getString("email");
+                row[4] = rs.getString("roles");
                 model.addRow(row);
             }
     
@@ -443,47 +547,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
     }
     
     
-
-    private void managerTable(java.awt.event.ActionEvent evt) {                              
-        DefaultTableModel model = new DefaultTableModel();
-        
-        // Add column headers
-        model.addColumn("User ID");
-        model.addColumn("Forename");
-        model.addColumn("Surname");
-        model.addColumn("Email");
-        model.addColumn("Role");
-    
-        // Use try-with-resources to automatically close resources
-        try (
-            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                "SELECT users.user_id, users.forename, users.surname, users.email, " +
-                "roles.role_name " +
-                "FROM users " +
-                "JOIN roles ON users.user_id = roles.role_id " +
-                "WHERE roles.role_name = 'manager'"
-            )
-        ) {
-            // Add rows to the model
-            while (rs.next()) {
-                Object[] row = new Object[5];
-                row[0] = rs.getString("user_id");
-                row[1] = rs.getString("forename");
-                row[2] = rs.getString("surname");
-                row[3] = rs.getString("email");
-                row[4] = rs.getString("role_name"); // Note: Make sure this matches the actual column name in the result set
-                model.addRow(row);
-            }
-    
-            // Set the model to the existing JTable
-            jTable1.setModel(model);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the exception (log or show an error message)
-        }
-    }
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

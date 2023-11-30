@@ -66,6 +66,7 @@ public class Default extends javax.swing.JFrame {
         btnStaffDashboard = new javax.swing.JButton();
         btnManagerDashboard = new javax.swing.JButton();
         btnBasket = new javax.swing.JButton();
+        btnStaffDashboard1 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -248,7 +249,7 @@ public class Default extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Categories");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 194, 47);
+        jLabel2.setBounds(279, 56, 192, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -305,7 +306,7 @@ public class Default extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(840, 10, 130, 16);
+        btnStaffDashboard.setBounds(680, 10, 130, 17);
 
         btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
         btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
@@ -317,7 +318,7 @@ public class Default extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnManagerDashboard);
-        btnManagerDashboard.setBounds(840, 50, 150, 16);
+        btnManagerDashboard.setBounds(840, 50, 150, 17);
 
         btnBasket.setBackground(new java.awt.Color(0, 102, 0));
         btnBasket.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -331,6 +332,18 @@ public class Default extends javax.swing.JFrame {
         });
         jPanel1.add(btnBasket);
         btnBasket.setBounds(790, 680, 170, 40);
+
+        btnStaffDashboard1.setBackground(new java.awt.Color(0, 102, 0));
+        btnStaffDashboard1.setForeground(new java.awt.Color(204, 204, 204));
+        btnStaffDashboard1.setText("Staff interface");
+        btnStaffDashboard1.setBorder(null);
+        btnStaffDashboard1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffDashboard1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnStaffDashboard1);
+        btnStaffDashboard1.setBounds(840, 10, 130, 17);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -426,6 +439,14 @@ public class Default extends javax.swing.JFrame {
         OrderLinesFrame.pack();
         OrderLinesFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBasketActionPerformed
+
+    private void btnStaffDashboard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboard1ActionPerformed
+        Staff StaffFrame = new Staff();
+        StaffFrame.setVisible(true);
+        StaffFrame.pack();
+        StaffFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnStaffDashboard1ActionPerformed
 
 
     private void loadProductsByType(List<? extends Product> allProducts) {
@@ -544,6 +565,7 @@ public class Default extends javax.swing.JFrame {
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnRollingStock;
     private javax.swing.JButton btnStaffDashboard;
+    private javax.swing.JButton btnStaffDashboard1;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;
     private javax.swing.JButton btnTrainSets;

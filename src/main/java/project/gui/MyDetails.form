@@ -621,7 +621,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtBankCardName">
               <Properties>
-                <Property name="text" type="java.lang.String" value="e.g. Visa"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="bankCard.getCardName()" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
@@ -631,7 +633,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtFirstName">
               <Properties>
-                <Property name="text" type="java.lang.String" value="First name"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="bankCard.getFirstName()" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFirstNameActionPerformed"/>
@@ -658,7 +662,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtLastName">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Last name"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="bankCard.getLastName()" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
