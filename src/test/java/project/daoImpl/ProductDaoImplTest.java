@@ -8,13 +8,34 @@ import project.model.product.abstractproduct.Product;
 import project.service.MySqlService;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProductDaoImplTest {
     private ProductDaoImpl productDao;
 
+
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        // 准备数据库连接和DAO
         productDao = new ProductDaoImpl();
+        // 插入测试数据
+        // ...
+    }
+
+    @Test
+    void testGetAllProducts() {
+        // 调用方法
+        List<Product> products = productDao.getAllProducts();
+
+        // 断言：检查列表是否包含所有类型的产品
+        // ...
+        assertNotNull(products);
+        assertFalse(products.isEmpty());
+        // 进一步断言来检查产品类型和数据
     }
 
 //    @Test

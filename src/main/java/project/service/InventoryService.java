@@ -52,7 +52,7 @@ public class InventoryService {
         }
     }
 
-    public void updateInventoryForOrder(Order order) throws SQLException {
+    public void updateInventoryForOrder(Order order)  {
         List<OrderLine> orderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
 
         for (OrderLine orderLine : orderLines) {

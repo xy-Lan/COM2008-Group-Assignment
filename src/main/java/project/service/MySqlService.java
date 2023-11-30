@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import project.model.user.User;
+import project.utils.PasswordUtils;
 import project.utils.UserSessionManager;
 
 /*
@@ -150,8 +151,8 @@ public class MySqlService {
         Connection connection = getConnection();
 
         String sql = "SELECT u.user_id, u.email, u.address_id FROM users u " +
-                        "JOIN hashed_passwords p ON u.user_id = p.user_id " +
-                        "WHERE u.email = ? AND p.password_hash = ?";
+                "JOIN hashed_passwords p ON u.user_id = p.user_id " +
+                "WHERE u.email = ? AND p.password_hash = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
@@ -192,4 +193,5 @@ public class MySqlService {
 
         return false;
     }
+
 }
