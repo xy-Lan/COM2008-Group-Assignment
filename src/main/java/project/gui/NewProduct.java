@@ -13,11 +13,13 @@ import java.math.BigDecimal;
 
 import project.service.MySqlService;
 import project.daoimpl.LocomotiveDaoImpl;
+import project.model.product.Controller;
 import project.model.product.Locomotive;
+import project.model.product.enums.ControllerType;
 import project.model.product.enums.DCCType;
 import project.model.product.enums.Era;
 import project.model.product.enums.Gauge;
-import project.model.product.Locomotive;
+import project.daoimpl.ControllerDaoImpl;
 
 /**
  *
@@ -124,6 +126,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         });
 
         jButton5.setText("Add");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addControllerGUI(evt);
+            }
+        });
 
         jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "TRUE", "FALSE" }));
         jComboBox9.addActionListener(new java.awt.event.ActionListener() {
@@ -385,39 +392,64 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         locomotiveDao.addLocomotive(locomotive);
     }
 
-    private void addProduct(String product_code) {
-        String brand = jComboBox1.getSelectedItem().toString();
-        String name = jTextField1.getText();
-        String gauge = jComboBox2.getSelectedItem().toString();
+    private void addControllerGUI(java.awt.event.ActionEvent evt) {
+        ControllerDaoImpl controllerDao = new ControllerDaoImpl();
+
         int intValue = (Integer) jSpinner1.getValue();
-        BigDecimal price = new BigDecimal(intValue);
-    
-        String updateQuery = "INSERT INTO product (product_code, brand_name, product_name, gauge_type, retail_price) VALUES (?, ?, ?, ?, ?)";
-    
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk")) {
-            try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
-                // Assuming product_code is passed as a parameter
-                pstmt.setString(1, product_code);
-                pstmt.setString(2, brand);
-                pstmt.setString(3, name);
-                pstmt.setString(4, gauge);
-                pstmt.setBigDecimal(5, price);
-    
-                int rowsAffected = pstmt.executeUpdate();
-    
-                // Check if the insert was successful
-                if (rowsAffected > 0) {
-                    System.out.println("Product added successfully.");
-                    // You might want to clear the form or update the UI after adding the product
-                } else {
-                    System.out.println("Product not added. No rows affected.");
-                }
-            }
-        } catch (SQLException e) {
-            // Handle database-related exceptions (show an error message, log, etc.)
-            e.printStackTrace();
-        }
+        BigDecimal retailPrice = new BigDecimal(intValue);
+        String gaugeType = jComboBox2.getSelectedItem().toString();
+        ControllerType controllerType = ControllerType.valueOf(jComboBox7.getSelectedItem().toString());
+        Boolean isDigital = Boolean.valueOf(jComboBox9.getSelectedItem().toString());
+        String productCode = MySqlService.generateProductCode("CONTROLLER");
+
+        // Create a Controller object
+        Controller controller = new Controller(
+            productCode,
+            jComboBox1.getSelectedItem().toString(),
+            jTextField1.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            controllerType,
+            isDigital
+        );
+
+        controllerDao.addController(controller);
     }
+
+
+    // private void addProduct(String product_code) {
+    //     String brand = jComboBox1.getSelectedItem().toString();
+    //     String name = jTextField1.getText();
+    //     String gauge = jComboBox2.getSelectedItem().toString();
+    //     int intValue = (Integer) jSpinner1.getValue();
+    //     BigDecimal price = new BigDecimal(intValue);
+    
+    //     String updateQuery = "INSERT INTO product (product_code, brand_name, product_name, gauge_type, retail_price) VALUES (?, ?, ?, ?, ?)";
+    
+    //     try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk")) {
+    //         try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+    //             // Assuming product_code is passed as a parameter
+    //             pstmt.setString(1, product_code);
+    //             pstmt.setString(2, brand);
+    //             pstmt.setString(3, name);
+    //             pstmt.setString(4, gauge);
+    //             pstmt.setBigDecimal(5, price);
+    
+    //             int rowsAffected = pstmt.executeUpdate();
+    
+    //             // Check if the insert was successful
+    //             if (rowsAffected > 0) {
+    //                 System.out.println("Product added successfully.");
+    //                 // You might want to clear the form or update the UI after adding the product
+    //             } else {
+    //                 System.out.println("Product not added. No rows affected.");
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         // Handle database-related exceptions (show an error message, log, etc.)
+    //         e.printStackTrace();
+    //     }
+    // }
     
                             
 
