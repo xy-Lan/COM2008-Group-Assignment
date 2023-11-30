@@ -6,8 +6,13 @@ import project.model.address.Address;
 
 public interface AddressDao {
     Boolean isAddressExist(String houseNumber, String postCode);
-    void addAddressIfNotExist(Address address);
+    Integer addAddressIfNotExist(Address address);
+//    Integer addAddress(Address address);
     void addAddress(Address address);
+
+    int addAddressReturnId(Address address);
+
+    Integer getAddressId(String houseNumber, String postCode);
 
     Address getAddress(int addressId);
 

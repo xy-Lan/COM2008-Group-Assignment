@@ -311,7 +311,7 @@ public class SignUp extends javax.swing.JFrame {
             AddressDao addressDao = new AddressDaoImpl();
 //            List<Address> allAddresses = addressDao.getAllAddresses();
 //            for(Address address : allAddresses)
-            addressDao.addAddress(address);
+//            addressDao.addAddress(address);
             user.setAddressId(address.getAddressId());
             userDao.addUser(user);
             userDao.addUserPasswordHash(user.getUserID(), txtPassword.getPassword().toString());
