@@ -203,11 +203,12 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
             partDao.deletePart(productCode, connection);
 
             // Delete from product table
-            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
-                preparedStatement.setString(1, productCode);
-                preparedStatement.executeUpdate();
-            }
+//            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
+//            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
+//                preparedStatement.setString(1, productCode);
+//                preparedStatement.executeUpdate();
+//            }
+            super.deleteProduct(productCode, connection);
 
             connection.commit(); // Commit transaction
             LOGGER.info("Controller deleted successfully");

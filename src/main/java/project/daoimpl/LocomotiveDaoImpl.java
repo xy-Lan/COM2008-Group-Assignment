@@ -194,11 +194,12 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
             partDao.deletePart(productCode, connection);
 
             // Delete from product table
-            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
-                preparedStatement.setString(1, productCode);
-                preparedStatement.executeUpdate();
-            }
+//            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
+//            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
+//                preparedStatement.setString(1, productCode);
+//                preparedStatement.executeUpdate();
+//            }
+            super.deleteProduct(productCode, connection);
 
             connection.commit(); // Commit transaction
             LOGGER.info("Locomotive deleted successfully for productCode: " + productCode);

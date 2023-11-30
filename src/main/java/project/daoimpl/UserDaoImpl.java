@@ -140,7 +140,7 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting user by email: " + email, e);
-            // Depending on how you want to handle the error, you can either log it, throw a runtime exception, or handle it in another way.
+
         }
 
         return null;

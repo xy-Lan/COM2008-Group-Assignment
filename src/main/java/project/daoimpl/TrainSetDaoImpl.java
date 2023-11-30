@@ -3,6 +3,7 @@ package project.daoimpl;
 import project.dao.BoxedSetDao;
 import project.dao.ProductDao;
 import project.dao.TrainSetDao;
+import project.exceptions.CustomDuplicateKeyException;
 import project.exceptions.UserDatabaseException;
 import project.model.product.TrainSet;
 import project.model.product.abstractproduct.Product;
@@ -37,8 +38,6 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
             preparedStatement.executeUpdate();
 
-            // If TrainSet has more specific attributes, add them here
-
             connection.commit(); // Commit transaction
         } catch (SQLException e) {
             if (connection != null) {
@@ -47,6 +46,9 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
+            }
+            if (e.getSQLState().equals("23000")) {
+                throw new CustomDuplicateKeyException("A train set with the same product code already exists.");
             }
             LOGGER.log(Level.SEVERE, "Error adding train set to the database", e);
             throw new RuntimeException("Error adding train set", e);
@@ -123,7 +125,6 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
             // Update common Product attributes
             super.updateProduct(trainSet, connection);
 
-
             connection.commit(); // Commit transaction
             LOGGER.info("TrainSet updated successfully for productCode: " + trainSet.getProductCode());
         } catch (SQLException e) {
@@ -157,11 +158,7 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
             BoxedSetDao boxedSetDao = new BoxedSetDaoImpl();
             boxedSetDao.deleteBoxedSet(productCode, connection);
 
-            String sqlProduct = "DELETE FROM product WHERE product_code = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
-                preparedStatement.setString(1, productCode);
-                preparedStatement.executeUpdate();
-            }
+            super.deleteProduct(productCode, connection);
 
             connection.commit();
             LOGGER.info("TrainSet deleted successfully for productCode: " + productCode);
