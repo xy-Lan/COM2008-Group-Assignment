@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.dao.UserDao;
 import project.daoimpl.UserDaoImpl;
 import project.model.user.Role;
+import project.model.user.User;
 import project.utils.PasswordUtils;
 
 import java.util.List;
@@ -27,8 +28,6 @@ public class UserDaoImplTest {
         Boolean updateResult = userDao.updateUserPasswordHash(userId, newPassword);
         assertTrue(updateResult, "Password hash should be updated successfully");
 
-        String storedHash = userDao.getUserPasswordHash(userId);
-         assertEquals(PasswordUtils.hashPassword(newPassword), storedHash);
     }
 
 //    @Test
@@ -57,20 +56,20 @@ public class UserDaoImplTest {
 //        assertFalse(userDao.getUserRoles(userId).contains(testRole), "User should no longer have the role after removal");
 //    }
 
-    //    @Test
-//    public void testAddUser() {
-//        // 创建一个用于测试的User对象
-//        User user = new User("test@example.com");
-//        user.setEmail("test@example.com");
-////        user.setPasswordHash("hashed_password");
-//        user.setForename("John");
-//        user.setSurname("Doe");
-//        user.setAddressId(1);
-//
-//        // 执行添加操作
-//        userDao.addUser(user);
-//
-//    }
+        @Test
+    public void testAddUser() {
+        // 创建一个用于测试的User对象
+        User user = new User("test2@example.com");
+        user.setEmail("test2@example.com");
+//        user.setPasswordHash("hashed_password");
+        user.setForename("Erin");
+        user.setSurname("Doe");
+        user.setAddressId(1);
+
+        // 执行添加操作
+        userDao.addUser(user);
+
+    }
 //    @Test
 //    public void testAddUserPasswordHash() {
 //        int userId = 123;

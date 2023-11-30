@@ -59,7 +59,7 @@ public class User {
 		preparedStatement.setString(2, this.getForename());
 		preparedStatement.setString(3, this.getSurname());
 		preparedStatement.setInt(4, this.getAddressId());
-		preparedStatement.setInt(5, this.getUserID());
+
 	}
 
 	public void setUserID(int id) {

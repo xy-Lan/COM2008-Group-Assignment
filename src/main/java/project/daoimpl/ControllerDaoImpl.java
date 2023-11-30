@@ -120,11 +120,6 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving controller with productCode: " + productCode, e);
             throw new RuntimeException("Database operation failed", e);
-        } finally {
-            // Close resources
-            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { /* ignored */ }
-            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { /* ignored */ }
-            if (connection != null) try { connection.close(); } catch (SQLException e) { /* ignored */ }
         }
     }
 
