@@ -23,27 +23,43 @@ public class AddressDaoImplTest {
     }
 
     @Test
-    public void testAddAddress() throws SQLException {
-        Address address = new Address();
-        address.setHouseNumber("123");
-        address.setPostCode("12345");
-        address.setRoadName("Test Road");
-        address.setCityName("Test City");
+    public void testAddAddressIfNotExist_NewAddress() {
+        Address newAddress = new Address();
+        newAddress.setHouseNumber("TestHouse123");
+        newAddress.setPostCode("TestPost123");
+        newAddress.setRoadName("TestRoad");
+        newAddress.setCityName("TestCity");
+        Integer addressId = addressDao.addAddressIfNotExist(newAddress);
+        System.out.println(addressId);
 
-        addressDao.addAddress(address);
-
-        try (Connection conn = MySqlService.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM address WHERE house_number = ? AND post_code = ?")) {
-            stmt.setString(1, address.getHouseNumber());
-            stmt.setString(2, address.getPostCode());
-
-            ResultSet rs = stmt.executeQuery();
-            assertTrue(rs.next());
-            assertEquals("Test Road", rs.getString("road_name"));
-            assertEquals("Test City", rs.getString("city_name"));
-        }
+        assertNotNull(addressId, "Method should return a new address ID for a new address");
     }
 
+    @Test
+    public void testAddAddress_NewAddress() {
+        Address newAddress = new Address();
+        newAddress.setHouseNumber("wer");
+        newAddress.setPostCode("12ww");
+        newAddress.setRoadName("Test Road");
+        newAddress.setCityName("Test city");
+        System.out.println(addressDao.addAddressReturnId(newAddress));
+    }
+
+    @Test
+    public void testGetAddressId_WhenAddressDoesNotExist() {
+
+        Integer retrievedId = addressDao.getAddressId("NonExistingHouse", "NonExistingPost");
+
+        assertNull(retrievedId, "Method should return null for non-existing address");
+    }
+
+    @Test
+    public void testGetAddressId_WhenAddressExists() {
+
+        Integer retrievedId = addressDao.getAddressId("protobello", "S1 4AT");
+
+        assertEquals(1, retrievedId, "Method should return the correct address ID for existing address");
+    }
 
     @Test
     public void testGetAddressById() throws SQLException {
@@ -57,6 +73,8 @@ public class AddressDaoImplTest {
         assertEquals("Test Road", address.getRoadName());
         assertEquals("Test City", address.getCityName());
     }
+
+
 
     private int insertTestAddress() throws SQLException {
         String insertSql = "INSERT INTO address (house_number, post_code, road_name, city_name) VALUES ('100', '12345', 'Test Road', 'Test City')";

@@ -34,15 +34,8 @@ public class StaffDashboard extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnDashboard = new javax.swing.JButton();
-        btnTrackPacks = new javax.swing.JButton();
-        btnLocomotives = new javax.swing.JButton();
-        btnTrack = new javax.swing.JButton();
-        btnRollingStock = new javax.swing.JButton();
-        btnControllers = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
         btnRecentOrders = new javax.swing.JButton();
-        btnTrainSets1 = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
@@ -77,82 +70,6 @@ public class StaffDashboard extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
 
-        btnDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnDashboard.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
-        btnDashboard.setText("Dashboard");
-        btnDashboard.setBorder(null);
-        btnDashboard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDashboardActionPerformed(evt);
-            }
-        });
-
-        btnTrackPacks.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrackPacks.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrackPacks.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrackPacks.setText("Track Packs");
-        btnTrackPacks.setBorder(null);
-        btnTrackPacks.setBorderPainted(false);
-        btnTrackPacks.setFocusPainted(false);
-        btnTrackPacks.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackPacksActionPerformed(evt);
-            }
-        });
-
-        btnLocomotives.setBackground(new java.awt.Color(0, 102, 0));
-        btnLocomotives.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnLocomotives.setForeground(new java.awt.Color(255, 255, 255));
-        btnLocomotives.setText("Locomotives");
-        btnLocomotives.setBorder(null);
-        btnLocomotives.setBorderPainted(false);
-        btnLocomotives.setFocusPainted(false);
-        btnLocomotives.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocomotivesActionPerformed(evt);
-            }
-        });
-
-        btnTrack.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrack.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrack.setText("Track");
-        btnTrack.setBorder(null);
-        btnTrack.setBorderPainted(false);
-        btnTrack.setFocusPainted(false);
-        btnTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackActionPerformed(evt);
-            }
-        });
-
-        btnRollingStock.setBackground(new java.awt.Color(0, 102, 0));
-        btnRollingStock.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnRollingStock.setForeground(new java.awt.Color(255, 255, 255));
-        btnRollingStock.setText("Rolling Stock");
-        btnRollingStock.setBorder(null);
-        btnRollingStock.setBorderPainted(false);
-        btnRollingStock.setFocusPainted(false);
-        btnRollingStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRollingStockActionPerformed(evt);
-            }
-        });
-
-        btnControllers.setBackground(new java.awt.Color(0, 102, 0));
-        btnControllers.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnControllers.setForeground(new java.awt.Color(255, 255, 255));
-        btnControllers.setText("Controllers");
-        btnControllers.setBorder(null);
-        btnControllers.setBorderPainted(false);
-        btnControllers.setFocusPainted(false);
-        btnControllers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnControllersActionPerformed(evt);
-            }
-        });
-
         btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
         btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
         btnMyDetails.setText("My Details");
@@ -173,17 +90,6 @@ public class StaffDashboard extends javax.swing.JFrame {
             }
         });
 
-        btnTrainSets1.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrainSets1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrainSets1.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrainSets1.setText("Train Sets");
-        btnTrainSets1.setBorder(null);
-        btnTrainSets1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrainSets1ActionPerformed(evt);
-            }
-        });
-
         btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
         btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
         btnLogOut.setText("Log out");
@@ -200,27 +106,17 @@ public class StaffDashboard extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocomotives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTrackPacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRollingStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                    .addComponent(btnTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnControllers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(btnRecentOrders))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnTrainSets1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                                .addGap(6, 6, 6)
+                                .addComponent(btnRecentOrders))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,21 +125,7 @@ public class StaffDashboard extends javax.swing.JFrame {
                 .addComponent(btnMyDetails)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRecentOrders)
-                .addGap(155, 155, 155)
-                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrainSets1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrackPacks, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRollingStock, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 667, Short.MAX_VALUE)
                 .addComponent(btnLogOut)
                 .addGap(61, 61, 61))
         );
@@ -447,43 +329,6 @@ public class StaffDashboard extends javax.swing.JFrame {
     }
     
 
-    private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
-        title.setText("Track Packs");
-    }//GEN-LAST:event_btnTrackPacksActionPerformed
-
-    private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
-        title.setText("Locomotives");
-    }//GEN-LAST:event_btnLocomotivesActionPerformed
-
-    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        title.setText("Train Sets");
-    }//GEN-LAST:event_btnDashboardActionPerformed
-
-    private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
-        // Jump to My Details page:
-        MyDetails MyDetailsFrame = new MyDetails();
-        MyDetailsFrame.setVisible(true);
-        MyDetailsFrame.pack();
-        MyDetailsFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnMyDetailsActionPerformed
-
-    private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRecentOrdersActionPerformed
-
-    private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
-        title.setText("Controllers");
-    }//GEN-LAST:event_btnControllersActionPerformed
-
-    private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
-        title.setText("Track");
-    }//GEN-LAST:event_btnTrackActionPerformed
-
-    private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
-        title.setText("Rolling Stock");
-    }//GEN-LAST:event_btnRollingStockActionPerformed
-
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
         // log out
         Default DefaultFrame = new Default();
@@ -537,20 +382,6 @@ public class StaffDashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnPendingOrdersActionPerformed
 
-    private void btnTrainSets1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSets1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTrainSets1ActionPerformed
-
-    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-        // TODO add your handling code here:
-        Login LoginFrame = new Login();
-        LoginFrame.setVisible(true);
-        LoginFrame.pack();
-        LoginFrame.setLocationRelativeTo(null);
-        this.dispose();
-        
-    }//GEN-LAST:event_btnLogOutActionPerformed
-
     private void btnListCustomers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCustomers1ActionPerformed
         // Code to list customers in a table
         
@@ -563,25 +394,27 @@ public class StaffDashboard extends javax.swing.JFrame {
         model.addColumn("Forename");
         model.addColumn("Surname");
         model.addColumn("Email");
-        model.addColumn("House Number");
-        model.addColumn("Postcode");
         model.addColumn("Role");
 
         try (
-            Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role = 'customer'");
+        Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team015", "team015", "eSh7Shahk");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(
+            "SELECT users.user_id, users.forename, users.surname, users.email, " +
+            "roles.role_name " +
+            "FROM users " +
+            "JOIN roles ON users.user_id = roles.role_id " +
+            "WHERE roles.role_name = 'customer'"
+        )
         ) {
             // Add rows to the model
             while (rs.next()) {
-                Object[] row = new Object[7];
+                Object[] row = new Object[5];
                 row[0] = rs.getString("user_id");
                 row[1] = rs.getString("forename");
                 row[2] = rs.getString("surname");
                 row[3] = rs.getString("email");
-                row[4] = rs.getString("house_number");
-                row[5] = rs.getString("post_code");
-                row[6] = rs.getString("role");
+                row[4] = rs.getString("role_name");
                 model.addRow(row);
             }
 
@@ -657,19 +490,28 @@ public class StaffDashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_confirmButtonActionPerformed
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        
-    }//GEN-LAST:event_jButton2MouseClicked
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
+        Login LoginFrame = new Login();
+        LoginFrame.setVisible(true);
+        LoginFrame.pack();
+        LoginFrame.setLocationRelativeTo(null);
+        this.dispose();
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        NewProduct newProduct = new NewProduct();
-        newProduct.setVisible(true);
-        
-        newProduct.pack();
-        newProduct.setLocationRelativeTo(null);
-        newProduct.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRecentOrdersActionPerformed
+
+    private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
+        // Jump to My Details page:
+        MyDetails MyDetailsFrame = new MyDetails();
+        MyDetailsFrame.setVisible(true);
+        MyDetailsFrame.pack();
+        MyDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnMyDetailsActionPerformed
 
     
 
@@ -677,19 +519,12 @@ public class StaffDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct1;
     private javax.swing.JButton btnAddProduct3;
-    private javax.swing.JButton btnControllers;
-    private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnListCustomers1;
-    private javax.swing.JButton btnLocomotives;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnManager;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnPendingOrders;
     private javax.swing.JButton btnRecentOrders;
-    private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnTrack;
-    private javax.swing.JButton btnTrackPacks;
-    private javax.swing.JButton btnTrainSets1;
     private javax.swing.JButton btnUser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
