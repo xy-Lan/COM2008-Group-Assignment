@@ -18,14 +18,21 @@ public class BankCardDaoImpl implements BankCardDao {
 
     @Override
     public void addBankCard(BankCard bankCard) {
-        String sql = "INSERT INTO bank_card (user_id, card_number, expiry_month, expiry_year, security_code) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bank_card (user_id, card_number, expiry_month, expiry_year, security_code, first_name, last_name, card_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         // SQL query to insert a BankCard into the database
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Using BankCard object to set parameters of the PreparedStatement
-            bankCard.setPreparedStatement(stmt);
+            stmt.setInt(1, bankCard.getCustomer().getUserID());
+            stmt.setString(2, bankCard.getCardNumber());
+            stmt.setInt(3, bankCard.getExpiryMonth());
+            stmt.setInt(4, bankCard.getExpiryYear());
+            stmt.setString(5, bankCard.getSecurityCode());
+            stmt.setString(6, bankCard.getFirstName());
+            stmt.setString(7, bankCard.getLastName());
+            stmt.setString(8, bankCard.getCardName());
 
             // Executing the insert operation
             int rowsAffected = stmt.executeUpdate();
@@ -39,6 +46,7 @@ public class BankCardDaoImpl implements BankCardDao {
             throw new RuntimeException("Database operation failed", e);
         }
     }
+
 
 
     @Override
@@ -97,9 +105,13 @@ public class BankCardDaoImpl implements BankCardDao {
         bankCard.setExpiryMonth(rs.getInt("expiry_month"));
         bankCard.setExpiryYear(rs.getInt("expiry_year"));
         bankCard.setSecurityCode(rs.getString("security_code"));
+        bankCard.setFirstName(rs.getString("first_name"));
+        bankCard.setLastName(rs.getString("last_name"));
+        bankCard.setCardName(rs.getString("card_name"));
 
         return bankCard;
     }
+
 
     @Override
     public void deleteBankCard(int userId) {

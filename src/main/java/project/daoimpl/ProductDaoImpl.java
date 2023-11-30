@@ -127,15 +127,7 @@ public class ProductDaoImpl implements ProductDao {
                         product = new LocomotiveDaoImpl().getLocomotive(productCode);
                         break;
                     case 'S':
-                        String productTypePrefix = productCode.length() >= 2 ? productCode.substring(0, 2) : "";
-                        product = switch (productTypePrefix) {
-                            case "SW" -> new WagonDaoImpl().getWagon(productCode);
-                            case "SC" -> new CarriageDaoImpl().getCarriage(productCode);
-                            default-> {
-                                LOGGER.log(Level.WARNING, "Unknown rolling stock type: " + productTypePrefix);
-                                yield null;
-                            }
-                        };
+                        product = new RollingStockDaoImpl().getRollingStock(productCode);
                         break;
                     case 'M':
                         product = new TrainSetDaoImpl().getTrainSet(productCode);

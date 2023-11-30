@@ -119,7 +119,7 @@ public class OrderDaoImpl implements OrderDao{
     @Override
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id";
+        String query = "SELECT o.*, u.* FROM orders o INNER JOIN users u ON o.user_id = u.user_id WHERE o.order_status <> 'PENDING'";
 
         try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -129,7 +129,7 @@ public class OrderDaoImpl implements OrderDao{
                 // Suppose the Order class has a constructor that accepts a ResultSet.
                 int userID = resultSet.getInt("user_id");
                 User user = new User(userID);
-                Order order = new Order(user);
+                Order order = Order.fromResultSet(resultSet, user);
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -213,6 +213,57 @@ public class OrderDaoImpl implements OrderDao{
         return orders; // Returns a list of orders for a specific user
 
     }
+
+    @Override
+    public List<Order> getConfirmedOrder() {
+        List<Order> confirmedOrders = new ArrayList<>();
+        String query = "SELECT * FROM orders WHERE order_status = 'CONFIRMED'";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int userId = resultSet.getInt("user_id");
+                User user = new User(userId);
+
+                Order order = Order.fromResultSet(resultSet, user);
+
+                confirmedOrders.add(order);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving confirmed orders", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return confirmedOrders;
+    }
+
+
+    @Override
+    public Boolean hasOrderedBefore(int userId) {
+        String query = "SELECT COUNT(*) FROM orders WHERE user_id = ? AND order_status <> 'PENDING'";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if user has ordered before", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return false;
+    }
+
+
 
     @Override
     public void addOrderLine(OrderLine orderLine) {
