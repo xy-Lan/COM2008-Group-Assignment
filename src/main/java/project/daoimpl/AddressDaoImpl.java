@@ -153,12 +153,9 @@ public class AddressDaoImpl implements AddressDao{
              PreparedStatement stmt = conn.prepareStatement(sql)) {
     
             stmt.setInt(1, addressId);
-<<<<<<< Updated upstream
-            System.out.println(stmt);
 
-=======
-    
->>>>>>> Stashed changes
+//            System.out.println(stmt);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println(rs);
@@ -167,7 +164,6 @@ public class AddressDaoImpl implements AddressDao{
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving address from the database", e);
-            // Consider throwing a more specific exception or handling the exception accordingly.
             throw new RuntimeException("Database operation failed", e);
         }
         return address;
@@ -186,13 +182,11 @@ public class AddressDaoImpl implements AddressDao{
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                // Using the fromResultSet method to create an Address instance from the current row in the ResultSet
                 Address address = Address.fromResultSet(rs);
                 addresses.add(address);
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all addresses", e);
-            // Handle exceptions and possibly throw a runtime exception
             throw new RuntimeException("Database operation failed", e);
         }
         return addresses;

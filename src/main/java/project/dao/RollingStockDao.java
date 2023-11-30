@@ -10,5 +10,5 @@ public interface RollingStockDao {
     RollingStock getRollingStock(String productNumber) throws SQLException;
     List<RollingStock> getAllRollingStock() throws SQLException;
     void updateRollingStock(RollingStock rollingStock) throws SQLException;
-    void deleteRollingStockById(int id) throws SQLException;
+    void deleteRollingStock(String productCode) throws SQLException;
 }

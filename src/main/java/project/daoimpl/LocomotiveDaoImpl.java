@@ -2,6 +2,7 @@ package project.daoimpl;
 
 import project.dao.LocomotiveDao;
 import project.dao.PartDao;
+import project.exceptions.CustomDuplicateKeyException;
 import project.model.product.Locomotive;
 import project.dao.ProductDao;
 import project.model.product.abstractproduct.Product;
@@ -59,6 +60,10 @@ public class LocomotiveDaoImpl extends ProductDaoImpl implements LocomotiveDao  
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
             }
+            if (e.getSQLState().equals("23000")) {
+                throw new CustomDuplicateKeyException("A rolling stock with the same product code already exists.");
+            }
+
             throw new RuntimeException("Database operation failed", e);
         }
     }

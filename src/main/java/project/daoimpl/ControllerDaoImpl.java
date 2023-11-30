@@ -3,6 +3,7 @@ package project.daoimpl;
 import project.dao.ControllerDao;
 import project.dao.PartDao;
 import project.dao.ProductDao;
+import project.exceptions.CustomDuplicateKeyException;
 import project.model.product.Controller;
 import project.model.product.abstractproduct.Product;
 import project.model.product.enums.ControllerType;
@@ -68,7 +69,9 @@ public class ControllerDaoImpl extends ProductDaoImpl implements ControllerDao {
                 }
             }
             LOGGER.log(Level.SEVERE, "Error in operation: " + e.getMessage(), e);
-            e.printStackTrace();
+            if (e.getSQLState().equals("23000")) {
+                throw new CustomDuplicateKeyException("A rolling stock with the same product code already exists.");
+            }
             throw new RuntimeException("Database operation failed", e);
         }
     }

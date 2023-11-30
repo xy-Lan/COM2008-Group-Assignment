@@ -5,30 +5,78 @@ import java.util.List;
 
 import java.sql.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import project.dao.InventoryDao;
 import project.model.inventory.Inventory;
 import project.service.MySqlService;
 
 public class InventoryDaoImpl implements InventoryDao {
+    private static final Logger LOGGER = Logger.getLogger(InventoryDaoImpl.class.getName());
 
     @Override
     public void increaseStock(String productCode, int newShipmentQuantity) {
-        // Implementation for increasing stock
-        // Similar to your existing increaseStock method in the Inventory class
+        String sql = "UPDATE inventory SET quantity = quantity + ? WHERE product_code = ?";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, newShipmentQuantity);
+            stmt.setString(2, productCode);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No inventory record found for product code: " + productCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating inventory for product code: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override
     public void decreaseStock(String productCode, int quantityDecrease) {
-        // Implementation for decreasing stock
-        // Similar to your existing decreaseStock method in the Inventory class
+        String sql = "UPDATE inventory SET quantity = GREATEST(0, quantity - ?) WHERE product_code = ?";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, quantityDecrease);
+            stmt.setString(2, productCode);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No inventory record found for product code: " + productCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating inventory for product code: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override
     public List<Inventory> checkStock() {
-        // Implementation to check current stock
-        // This method would query the database and return a list of InventoryItem objects
-        return new ArrayList<>();
+        List<Inventory> inventoryList = new ArrayList<>();
+        String sql = "SELECT product_code, quantity FROM inventory";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String productCode = rs.getString("product_code");
+                int quantity = rs.getInt("quantity");
+
+                Inventory inventory = new Inventory(productCode, quantity);
+                inventoryList.add(inventory);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving inventory from database", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return inventoryList;
     }
 
     public Integer getStock (String productCode) {
