@@ -175,7 +175,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // jButton6ActionPerformed(evt);
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -214,7 +214,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton4.setText("Add");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // jButton4ActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -306,6 +306,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jLabel5.setText("Price");
 
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -326,8 +331,12 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                         .addComponent(jTextField1)
                         .addComponent(jLabel3)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(72, 72, 72))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(20, 20, 20))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -387,7 +396,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void cancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel
-        dispose();
+        this.dispose();
     }//GEN-LAST:event_cancel
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
@@ -405,6 +414,10 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void addLocomotiveGUI() {
         LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();

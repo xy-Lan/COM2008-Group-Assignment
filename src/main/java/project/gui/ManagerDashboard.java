@@ -4,8 +4,11 @@
  */
 package project.gui;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import project.dao.UserDao;
+import project.daoimpl.UserDaoImpl;
 import project.model.user.Role;
 
 import java.sql.*;
@@ -17,6 +20,12 @@ import java.util.*;
  * @author linyu
  */
 public class ManagerDashboard extends javax.swing.JFrame {
+
+    private int userId;
+
+    private Role role;
+
+    private UserDao userDao = new UserDaoImpl();
 
     /**
      * Creates new form Default
@@ -37,7 +46,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     private void populateRoleChoice() {
         for (String roleName : roleMap.keySet()) {
-            choice1.add(roleName);
+            roleChoice.add(roleName);
         }
     }
 
@@ -108,13 +117,14 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnStaff = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        choice1 = new java.awt.Choice();
+        txtUserId = new javax.swing.JTextField();
+        roleChoice = new java.awt.Choice();
         label1 = new java.awt.Label();
-        button1 = new java.awt.Button();
+        btnAddRole = new java.awt.Button();
         button2 = new java.awt.Button();
         button3 = new java.awt.Button();
         button4 = new java.awt.Button();
+        btnRemoveRole = new java.awt.Button();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -268,7 +278,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnStaff);
-        btnStaff.setBounds(840, 10, 130, 16);
+        btnStaff.setBounds(840, 10, 130, 17);
 
         btnUser.setBackground(new java.awt.Color(0, 102, 0));
         btnUser.setForeground(new java.awt.Color(204, 204, 204));
@@ -280,24 +290,29 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnUser);
-        btnUser.setBounds(840, 50, 150, 16);
+        btnUser.setBounds(840, 50, 150, 17);
 
-        jTextField1.setText("User ID");
-        jPanel1.add(jTextField1);
-        jTextField1.setBounds(530, 720, 180, 22);
-        jPanel1.add(choice1);
-        choice1.setBounds(720, 720, 60, 20);
+        txtUserId.setText("User ID");
+        jPanel1.add(txtUserId);
+        txtUserId.setBounds(530, 720, 180, 23);
+        jPanel1.add(roleChoice);
+        roleChoice.setBounds(720, 720, 60, 20);
 
         label1.setText("Change User Role:");
         jPanel1.add(label1);
         label1.setBounds(420, 720, 110, 20);
 
-        button1.setActionCommand("Confirm");
-        button1.setBackground(new java.awt.Color(0, 102, 0));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setLabel("Confirm");
-        jPanel1.add(button1);
-        button1.setBounds(790, 720, 60, 24);
+        btnAddRole.setActionCommand("Confirm");
+        btnAddRole.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddRole.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddRole.setLabel("Add");
+        btnAddRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddRoleActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAddRole);
+        btnAddRole.setBounds(790, 720, 37, 24);
 
         button2.setActionCommand("Confirm");
         button2.setBackground(new java.awt.Color(0, 102, 0));
@@ -329,6 +344,18 @@ public class ManagerDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(button4);
         button4.setBounds(480, 250, 60, 20);
+
+        btnRemoveRole.setActionCommand("Confirm");
+        btnRemoveRole.setBackground(new java.awt.Color(0, 102, 0));
+        btnRemoveRole.setForeground(new java.awt.Color(255, 255, 255));
+        btnRemoveRole.setLabel("Remove");
+        btnRemoveRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveRoleActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRemoveRole);
+        btnRemoveRole.setBounds(860, 720, 60, 24);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -376,10 +403,10 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     private void button1(java.awt.event.ActionEvent evt) {
         // Get the selected role from choice1
-        String selectedRole = ((String) choice1.getSelectedItem()); // Convert to lowercase
+        String selectedRole = ((String) roleChoice.getSelectedItem()); // Convert to lowercase
     
         // Get the user_id from the text area
-        String userId = jTextField1.getText();
+        String userId = txtUserId.getText();
     
         // Validate user_id and selectedRole
         if (userId.isEmpty() || selectedRole == null || selectedRole.isEmpty()) {
@@ -456,6 +483,36 @@ public class ManagerDashboard extends javax.swing.JFrame {
     private void defaultTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTable
         loadManagerData();
     }//GEN-LAST:event_defaultTable
+
+    private void btnAddRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRoleActionPerformed
+        // TODO add your handling code here:
+        userId = Integer.parseInt(txtUserId.getText());
+        String choice = roleChoice.getSelectedItem();
+        try {
+            Role role = Role.valueOf(choice);
+            userDao.addUserRole(userId, role);
+            JOptionPane.showMessageDialog(null,  role + " role of User: " + userId + " has been added",
+                    "Add role", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unexpected gauge type");
+        }
+
+        
+    }//GEN-LAST:event_btnAddRoleActionPerformed
+
+    private void btnRemoveRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveRoleActionPerformed
+        // TODO add your handling code here:
+        userId = Integer.parseInt(txtUserId.getText());
+        String choice = roleChoice.getSelectedItem();
+        try {
+            Role role = Role.valueOf(choice);
+            userDao.removeUserRole(userId, role);
+            JOptionPane.showMessageDialog(null,  role + " role of User: " + userId + " has been removed",
+                    "Remove role", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unexpected gauge type");
+        }
+    }//GEN-LAST:event_btnRemoveRoleActionPerformed
 
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = new DefaultTableModel();
@@ -545,16 +602,16 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button btnAddRole;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
+    private java.awt.Button btnRemoveRole;
     private javax.swing.JButton btnStaff;
     private javax.swing.JButton btnUser;
-    private java.awt.Button button1;
     private java.awt.Button button2;
     private java.awt.Button button3;
     private java.awt.Button button4;
-    private java.awt.Choice choice1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -564,8 +621,9 @@ public class ManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
+    private java.awt.Choice roleChoice;
     private javax.swing.JLabel title;
+    private javax.swing.JTextField txtUserId;
     // End of variables declaration//GEN-END:variables
 }
