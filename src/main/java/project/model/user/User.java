@@ -9,7 +9,7 @@ import java.util.Map;
 import project.model.address.*;
 import project.model.inventory.Inventory;
 import project.model.order.*;
-import project.model.payment.Payment;
+//import project.model.payment.Payment;
 import project.service.MySqlService;
 
 public class User {
