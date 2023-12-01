@@ -12,6 +12,7 @@ import project.model.user.User;
 import project.service.InventoryService;
 import project.service.MySqlService;
 import project.service.OrderService;
+import project.service.UserService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -34,6 +35,9 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
 public class OrderLines extends javax.swing.JFrame {
     private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
     private OrderDao orderDao = new OrderDaoImpl();
+
+    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserService(userDao);
 
     private BankCardDao bankCardDao = new BankCardDaoImpl();
     private OrderLineDao orderLineDao = new OrderLineDaoImpl();
@@ -160,7 +164,7 @@ public class OrderLines extends javax.swing.JFrame {
                 int response = JOptionPane.showConfirmDialog(null, "Please confirm your payment of " +
                         total + " £", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION){
-                    if (bankCardDao.getBankCardByUserID(currentUser.getUserID()) != null){
+                    if (userService.checkUserHasBankCard(currentUser.getUserID())){
                         JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
                                 "Order Placed", INFORMATION_MESSAGE);
                         inventoryService.updateInventoryForOrder(order);
@@ -189,7 +193,7 @@ public class OrderLines extends javax.swing.JFrame {
             Order order = optionalOrder.get();
             BigDecimal total = orderService.calculateTotal(order);
             List<OrderLine> allOrderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
-            JLabel lblTotal = new JLabel(total.toString());
+            JLabel lblTotal = new JLabel("Total: " + total.toString());
             orderContainer.add(lblTotal);
 
             //Get all the product in the basket
@@ -260,15 +264,19 @@ public class OrderLines extends javax.swing.JFrame {
                     }
                 });
 
-                btnRemove.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        orderLineDao.deleteOrderLine(orderLine.getOrderNumber(), orderLine.getProductCode());
-                    }
-                });
+
 
                 orderContainer.add(productPanel);
                 orderContainer.add(Box.createVerticalStrut(20));
+                btnRemove.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        orderLineDao.deleteOrderLine(orderLine.getOrderNumber(), orderLine.getProductCode());
+//                        System.out.println("Refresh");
+                        orderContainer.removeAll();
+                        loadPendingOrders();
+                    }
+                });
             }
         } else {
             JOptionPane.showMessageDialog(null,

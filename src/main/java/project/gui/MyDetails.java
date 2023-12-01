@@ -52,12 +52,13 @@ public class MyDetails extends javax.swing.JFrame {
 //        }
         BankCardDao bankCardDao = new BankCardDaoImpl();
         bankCard = bankCardDao.getBankCardByUserID(user.getUserID());
+        initComponents();
         if (bankCard == null) {
             JLabel nullMessage = new JLabel("You do not have a bank card yet, Please fill in details to add a bank card");
             nullMessage.setForeground(Color.red);
             bankCardPanel.add(nullMessage);
         }
-        initComponents();
+
     }
 
     /**
@@ -92,7 +93,7 @@ public class MyDetails extends javax.swing.JFrame {
         btnSavePersonalDetails = new javax.swing.JButton();
         txtHouseNum = new javax.swing.JFormattedTextField();
         bankCardPanel = new javax.swing.JPanel();
-        btnDeleteBankCard = new javax.swing.JButton();
+        btnUpdateBankCard = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtSecurityCode1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -351,39 +352,55 @@ public class MyDetails extends javax.swing.JFrame {
 
         bankCardPanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        btnDeleteBankCard.setBackground(new java.awt.Color(255, 102, 102));
-        btnDeleteBankCard.setForeground(new java.awt.Color(255, 255, 255));
-        btnDeleteBankCard.setText("Delete");
-        btnDeleteBankCard.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdateBankCard.setBackground(new java.awt.Color(255, 102, 102));
+        btnUpdateBankCard.setForeground(new java.awt.Color(255, 255, 255));
+        if (bankCard != null){
+            btnUpdateBankCard.setText("Update");
+        } else {
+            btnUpdateBankCard.setText("Add");
+        }
+        btnUpdateBankCard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteBankCardActionPerformed(evt);
+                btnUpdateBankCardActionPerformed(evt);
             }
         });
 
         jLabel4.setText("Expiry Year:");
 
-        txtSecurityCode1.setText(bankCard.getEncryptedSecurityCode());
+        if (bankCard != null){
+            txtSecurityCode1.setText(bankCard.getEncryptedSecurityCode());
+        }
 
         jLabel6.setText("Card Number:");
 
-        txtBankCardName.setText(bankCard.getCardName());
+        if (bankCard != null){
+            txtBankCardName.setText(bankCard.getCardName());
+        }
 
         jLabel8.setText("Expiry Month:");
 
-        txtFirstName.setText(bankCard.getFirstName());
+        if (bankCard != null){
+            txtFirstName.setText(bankCard.getFirstName());
+        }
         txtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFirstNameActionPerformed(evt);
             }
         });
 
-        txtExpiryYear.setText(bankCard.getExpiryYear().toString());
+        if (bankCard != null){
+            txtExpiryYear.setText(bankCard.getExpiryYear().toString());
+        }
 
-        txtExpiryMonth.setText(bankCard.getExpiryMonth().toString());
+        if (bankCard != null){
+            txtExpiryMonth.setText(bankCard.getExpiryMonth().toString());
+        }
 
         jLabel9.setText("Security Code:");
 
-        txtLastName.setText(bankCard.getLastName());
+        if (bankCard != null){
+            txtLastName.setText(bankCard.getLastName());
+        }
 
         jLabel10.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 102, 0));
@@ -391,7 +408,9 @@ public class MyDetails extends javax.swing.JFrame {
 
         jLabel11.setText("Bank Card Name:");
 
-        txtCardNumber.setText(bankCard.getCardNumber());
+        if (bankCard != null ){
+            txtCardNumber.setText(bankCard.getCardNumber());
+        }
         txtCardNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCardNumberActionPerformed(evt);
@@ -446,7 +465,7 @@ public class MyDetails extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(bankCardPanelLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(btnDeleteBankCard, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnUpdateBankCard, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bankCardPanelLayout.setVerticalGroup(
@@ -478,7 +497,7 @@ public class MyDetails extends javax.swing.JFrame {
                     .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnDeleteBankCard)
+                .addComponent(btnUpdateBankCard)
                 .addContainerGap(118, Short.MAX_VALUE))
         );
 
@@ -536,10 +555,10 @@ public class MyDetails extends javax.swing.JFrame {
 
     private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
         newPassword = JOptionPane.showInputDialog(null, "New password",
-                "Reset Password", JOptionPane.QUESTION_MESSAGE).trim();
+                "Reset Password", JOptionPane.QUESTION_MESSAGE);
     }//GEN-LAST:event_btnChangePasswordActionPerformed
 
-    private void btnDeleteBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBankCardActionPerformed
+    private void btnUpdateBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBankCardActionPerformed
         // TODO add your handling code here:
         if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth, txtExpiryYear,
                 txtSecurityCode1, txtFirstName, txtLastName, txtBankCardName)){
@@ -547,17 +566,27 @@ public class MyDetails extends javax.swing.JFrame {
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }else {
             BankCardDao bankCardDao = new BankCardDaoImpl();
-            bankCardDao.deleteBankCard(user.getUserID());
             //Add a new bank card
             BankCard newBankCard = new BankCard(user, txtCardNumber.getText().trim(), Integer.parseInt(txtExpiryMonth.getText()),
                     Integer.parseInt(txtExpiryYear.getText()), txtSecurityCode1.getText().trim(), txtFirstName.getText().trim(),
                     txtLastName.getText().trim(), txtBankCardName.getText().trim());
-            bankCardDao.addBankCard(newBankCard);
-            JOptionPane.showMessageDialog(null, "Bank card successfully updated",
-                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+            newBankCard.setCardName(txtBankCardName.getText().trim());
+            if (bankCardDao.userHasBankCard(user.getUserID())) {
+                bankCardDao.deleteBankCard(user.getUserID());
+                bankCardDao.addBankCard(newBankCard);
+                JOptionPane.showMessageDialog(null, "Bank card successfully updated",
+                        "Saved", JOptionPane.INFORMATION_MESSAGE);
+                initComponents();
+            } else {
+                bankCardDao.addBankCard(newBankCard);
+                JOptionPane.showMessageDialog(null, "Bank card added",
+                        "Saved", JOptionPane.INFORMATION_MESSAGE);
+                initComponents();
+            }
+
         }
 
-    }//GEN-LAST:event_btnDeleteBankCardActionPerformed
+    }//GEN-LAST:event_btnUpdateBankCardActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
          Default DefaultFrame = new Default();
@@ -589,11 +618,13 @@ public class MyDetails extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            if (!newPassword.isEmpty()){
+            if (newPassword != null && !newPassword.isEmpty()){
                 userDao.updateUserPasswordHash(user.getUserID(), newPassword);
             }
             user.setEmail(txtEmail.getText().trim());
             userDao.updateUser(user);
+            initComponents();
+
             //Update address
             if(isAnyFieldEmpty(txtHouseNum, txtRoadName, txtCityName, txtPostcode)) {
                 JOptionPane.showMessageDialog(null, "Please enter valid inputs",
@@ -607,6 +638,7 @@ public class MyDetails extends javax.swing.JFrame {
                 addressDao.updateAddress(address);
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
+                initComponents();
             }
         }
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
@@ -633,12 +665,12 @@ public class MyDetails extends javax.swing.JFrame {
     private javax.swing.JPanel bankCardPanel;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnChangePassword;
-    private javax.swing.JButton btnDeleteBankCard;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnProfile;
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnSavePersonalDetails;
+    private javax.swing.JButton btnUpdateBankCard;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
