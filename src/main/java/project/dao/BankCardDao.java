@@ -8,8 +8,6 @@ public interface BankCardDao {
     // Method to add a BankCard to the data source
     void addBankCard(BankCard bankCard);
 
-    // Method to retrieve a BankCard by its card number
-    BankCard getBankCardByNumber(String cardNumber);
 
     BankCard getBankCardByUserID(int userId);
 

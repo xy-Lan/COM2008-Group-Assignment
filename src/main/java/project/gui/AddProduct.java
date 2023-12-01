@@ -5,15 +5,43 @@
 package project.gui;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import project.dao.ControllerDao;
+import project.dao.InventoryDao;
+import project.dao.LocomotiveDao;
+import project.dao.OrderDao;
+import project.dao.RollingStockDao;
+import project.dao.TrackDao;
+import project.dao.TrainSetDao;
 import project.daoimpl.CarriageDaoImpl;
 import project.daoimpl.ControllerDaoImpl;
+import project.daoimpl.InventoryDaoImpl;
 import project.daoimpl.LocomotiveDaoImpl;
+import project.daoimpl.OrderDaoImpl;
+import project.daoimpl.ProductDaoImpl;
+import project.daoimpl.RollingStockDaoImpl;
 import project.daoimpl.TrackDaoImpl;
+import project.daoimpl.TrainSetDaoImpl;
+import project.model.order.Order;
 import project.model.product.Carriage;
 import project.model.product.Controller;
 import project.model.product.Locomotive;
+import project.model.product.RollingStock;
 import project.model.product.Track;
+import project.model.product.TrainSet;
+import project.model.product.abstractproduct.Product;
 import project.model.product.enums.CarriageType;
 import project.model.product.enums.ControllerType;
 import project.model.product.enums.DCCType;
@@ -33,6 +61,66 @@ public class AddProduct extends javax.swing.JFrame {
      */
     public AddProduct() {
         initComponents();
+        loadData();
+    }
+    
+    private void loadData() {
+
+        ControllerDao ControllerDao = new ControllerDaoImpl();
+        List<Controller> allControllers = ControllerDao.getAllControllers();
+        
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+
+        TrackDao TrackDao = new TrackDaoImpl();
+        List<Track> allTracks = TrackDao.getAllTracks();
+
+        // TODO add your handling code here:
+        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl();
+        List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
+        
+        List<Product> allProducts = new ArrayList<Product>();
+        allProducts.addAll(allControllers);
+        
+        loadProductTabelByTable(allProducts);
+    }                                              
+
+    private void loadProductTabelByTable(List<? extends Product> allProducts) {
+        DefaultTableModel model = (DefaultTableModel) partsListBox.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("Code");
+        model.addColumn("Name");
+        model.addColumn("Brand");
+        model.addColumn("Price");
+        model.addColumn("Gauge Type");
+        model.addColumn("Quantity");
+        model.addColumn("Edit");
+
+        //Get all the products
+        InventoryDao inventoryDao = new InventoryDaoImpl();
+
+        for (Product product : allProducts){
+            //Add rows to the model
+            Object[] row = new Object[7];
+            JButton editProduct = new JButton();
+            editProduct.setText("Edit");
+            row[0] = product.getProductCode();
+            row[1] = product.getProductName();
+            row[2] = product.getBrandName();
+            row[3] = product.getRetailPrice();
+            row[4] = product.getGaugeType();
+            row[5] = inventoryDao.getStock(product.getProductCode());
+            row[6] = editProduct;
+            model.addRow(row);
+        }
+        partsListBox.setModel(model);
+        
+        partsListBox.getColumn("Edit").setCellRenderer(new CheckBoxCell());
+        partsListBox.getColumn("Edit").setCellEditor(new CheckBoxCell());
     }
 
     /**
@@ -81,6 +169,9 @@ public class AddProduct extends javax.swing.JFrame {
         priceLabel = new javax.swing.JLabel();
         priceSpinner = new javax.swing.JSpinner();
         cancelButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        partsListBox = new javax.swing.JTable();
+        addSelectedButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 105, 0));
@@ -119,7 +210,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(locomotiveTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(locomotiveEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
                 .addComponent(locomotiveAddButton)
                 .addContainerGap())
         );
@@ -176,7 +267,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(4, 4, 4)
                 .addComponent(isDigitalBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 275, Short.MAX_VALUE)
                 .addComponent(addControllerButton)
                 .addContainerGap())
         );
@@ -213,7 +304,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(trackTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 329, Short.MAX_VALUE)
                 .addComponent(addTrackButton)
                 .addContainerGap())
         );
@@ -265,7 +356,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(3, 3, 3)
                 .addComponent(carriageEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
                 .addComponent(addCarriageButton)
                 .addContainerGap())
         );
@@ -294,7 +385,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addContainerGap(354, Short.MAX_VALUE))
         );
 
         partTypeTabbedPane.addTab("Track_Pack", trackPackPanel);
@@ -307,7 +398,7 @@ public class AddProduct extends javax.swing.JFrame {
         );
         trainSetPanelLayout.setVerticalGroup(
             trainSetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
+            .addGap(0, 409, Short.MAX_VALUE)
         );
 
         partTypeTabbedPane.addTab("Train Set", trainSetPanel);
@@ -390,6 +481,26 @@ public class AddProduct extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
+        partsListBox.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(partsListBox);
+
+        addSelectedButton.setText("Add Selected");
+        addSelectedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSelectedButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
@@ -399,16 +510,27 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(generalDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addComponent(partTypeTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addSelectedButton))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(generalDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(partTypeTabbedPane))
-                .addGap(16, 16, 16))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(addSelectedButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(generalDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(partTypeTabbedPane))
+                        .addGap(16, 16, 16))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -545,9 +667,14 @@ public class AddProduct extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Added Locomotive with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_locomotiveAddButtonActionPerformed
 
+    private void addSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSelectedButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addSelectedButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCarriageButton;
     private javax.swing.JButton addControllerButton;
+    private javax.swing.JButton addSelectedButton;
     private javax.swing.JButton addTrackButton;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> brandBox;
@@ -570,6 +697,7 @@ public class AddProduct extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton locomotiveAddButton;
     private javax.swing.JComboBox<String> locomotiveEraBox;
     private javax.swing.JPanel locomotivePanel;
@@ -577,6 +705,7 @@ public class AddProduct extends javax.swing.JFrame {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextBox;
     private javax.swing.JTabbedPane partTypeTabbedPane;
+    private javax.swing.JTable partsListBox;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JSpinner priceSpinner;
     private javax.swing.JPanel trackPackPanel;
