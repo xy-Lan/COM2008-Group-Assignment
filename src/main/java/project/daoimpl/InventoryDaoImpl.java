@@ -17,15 +17,20 @@ public class InventoryDaoImpl implements InventoryDao {
     @Override
     public void addInventory(String productCode, int newQuantity) {
         String insertSql = "INSERT INTO inventory (product_code, quantity) VALUES (?, ?)";
+        System.out.println("Add Inventory method : " + productCode + "quantity: " + newQuantity);
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
 
+            conn.setAutoCommit(false);
             insertStmt.setString(1, productCode);
             insertStmt.setInt(2, newQuantity);
             int affectedRows = insertStmt.executeUpdate();
+            System.out.println(affectedRows);
+            conn.commit();
 
             if (affectedRows == 0) {
+                conn.rollback();
                 LOGGER.log(Level.WARNING, "No new inventory record created for product code: " + productCode);
                 throw new RuntimeException("Creating inventory record failed, no rows affected.");
             }
