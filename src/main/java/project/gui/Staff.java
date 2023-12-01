@@ -288,7 +288,7 @@ public class Staff extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoadConfirmedOrdersActionPerformed
 
     private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
-        AddProduct NewProductFrame = new AddProduct();
+       NewProduct NewProductFrame = new NewProduct();
        NewProductFrame.setVisible(true);
        NewProductFrame.pack();
        NewProductFrame.setLocationRelativeTo(null); 
