@@ -55,6 +55,26 @@ public class InventoryDaoImpl implements InventoryDao {
     }
 
     @Override
+    public void updateStockLevel(String productCode, int newQuantity) {
+        String sql = "UPDATE inventory SET quantity = ? WHERE product_code = ?";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, Math.max(0, newQuantity));
+            stmt.setString(2, productCode);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No inventory record found for product code: " + productCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating inventory for product code: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+    }
+
+    @Override
     public List<Inventory> checkStock() {
         List<Inventory> inventoryList = new ArrayList<>();
         String sql = "SELECT product_code, quantity FROM inventory";

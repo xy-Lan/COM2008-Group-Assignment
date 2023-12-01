@@ -207,8 +207,6 @@ public class MySqlService {
             return "R" + highestProductCode("R");
         } else if ("TRACK_PACK".equals(productType)) {
             return "P" + highestProductCode("P");
-        } else if ("BOXED_SET".equals(productType)) {
-            return "PO" + highestProductCode("PO");
         } else if ("TRAIN_SET".equals(productType)) {
             return "M" + highestProductCode("M");
         } else {

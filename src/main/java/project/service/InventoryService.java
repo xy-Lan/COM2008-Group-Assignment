@@ -42,6 +42,8 @@ public class InventoryService {
         }
     }
 
+
+
     public Boolean decreaseStock(String productCode, int quantityDecrease) {
         try {
             inventoryDao.decreaseStock(productCode, quantityDecrease);
@@ -52,6 +54,9 @@ public class InventoryService {
         }
     }
 
+    public void updateStockLevel(String productCode, int newQuantity) {
+        inventoryDao.updateStockLevel(productCode, newQuantity);
+    }
 
     public void updateInventoryForOrder(Order order)  {
 
@@ -67,7 +72,6 @@ public class InventoryService {
 
     public void checkStock() {
         checkStaffRole();
-
     }
 
 

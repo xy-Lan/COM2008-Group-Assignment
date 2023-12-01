@@ -6,6 +6,7 @@ import project.dao.InventoryDao;
 import project.daoimpl.InventoryDaoImpl;
 import project.model.inventory.Inventory;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,6 +20,16 @@ public class InventoryDaoImplTest {
     @BeforeEach
     void setUp() {
         inventoryDao = new InventoryDaoImpl();
+    }
+
+    @Test
+    public void testUpdateStockLevel() throws SQLException {
+        String productCode = "P122";
+        int newQuantity = 75;
+
+
+        inventoryDao.updateStockLevel(productCode, newQuantity);
+
     }
 
 //    @Test
