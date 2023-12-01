@@ -1,0 +1,206 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Beans/Customizer.java to edit this template
+ */
+package project.gui;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import project.dao.ControllerDao;
+import project.dao.InventoryDao;
+import project.dao.LocomotiveDao;
+import project.dao.OrderDao;
+import project.dao.RollingStockDao;
+import project.dao.TrackDao;
+import project.dao.TrainSetDao;
+import project.daoimpl.CarriageDaoImpl;
+import project.daoimpl.ControllerDaoImpl;
+import project.daoimpl.InventoryDaoImpl;
+import project.daoimpl.LocomotiveDaoImpl;
+import project.daoimpl.OrderDaoImpl;
+import project.daoimpl.ProductDaoImpl;
+import project.daoimpl.RollingStockDaoImpl;
+import project.daoimpl.TrackDaoImpl;
+import project.daoimpl.TrainSetDaoImpl;
+import project.model.order.Order;
+import project.model.product.Carriage;
+import project.model.product.Controller;
+import project.model.product.Locomotive;
+import project.model.product.RollingStock;
+import project.model.product.Track;
+import project.model.product.TrainSet;
+import project.model.product.abstractproduct.Product;
+import project.model.product.enums.CarriageType;
+import project.model.product.enums.ControllerType;
+import project.model.product.enums.DCCType;
+import project.model.product.enums.Era;
+import project.model.product.enums.Gauge;
+import project.model.product.enums.TrackType;
+import project.service.MySqlService;
+
+
+/**
+ *
+ * @author thoma
+ */
+public class ProductRemover extends javax.swing.JPanel implements java.beans.Customizer {
+    
+    private Object bean;
+
+    /**
+     * Creates new customizer NewCustomizer
+     */
+    public ProductRemover() {
+        initComponents();
+        //loadData();
+    }
+    
+    public void setObject(Object bean) {
+        this.bean = bean;
+    }
+    
+    
+    private void loadData() {
+
+        ControllerDao ControllerDao = new ControllerDaoImpl();
+        List<Controller> allControllers = ControllerDao.getAllControllers();
+        
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+
+        TrackDao TrackDao = new TrackDaoImpl();
+        List<Track> allTracks = TrackDao.getAllTracks();
+
+        // TODO add your handling code here:
+        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl();
+        List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
+        
+        List<Product> allProducts = new ArrayList<Product>();
+        allProducts.addAll(allControllers);
+        
+        loadProductTabelByTable(allProducts);
+    }                                              
+
+    private void loadProductTabelByTable(List<? extends Product> allProducts) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        // Add column headers
+        model.addColumn("Code");
+        model.addColumn("Name");
+        model.addColumn("Brand");
+        model.addColumn("Price");
+        model.addColumn("Gauge Type");
+        model.addColumn("Quantity");
+        model.addColumn("Edit");
+
+        // Get all the products
+        InventoryDao inventoryDao = new InventoryDaoImpl();
+
+        for (Product product : allProducts) {
+            // Add rows to the model
+            Object[] row = new Object[7];
+            JButton editProduct = new JButton();
+            editProduct.setText("Edit");
+            row[0] = product.getProductCode();
+            row[1] = product.getProductName();
+            row[2] = product.getBrandName();
+            row[3] = product.getRetailPrice();
+            row[4] = product.getGaugeType();
+
+            // Get the quantity from the inventory
+            Integer quantity = inventoryDao.getStock(product.getProductCode());
+            if (quantity != null) {
+                row[5] = quantity.intValue();
+            } else {
+                row[5] = "Product not found in inventory";
+            }
+
+            row[6] = editProduct;
+            model.addRow(row);
+        }
+
+        jTable1.setModel(model);
+
+        jTable1.getColumn("Edit").setCellRenderer(new CheckBoxCell());
+        jTable1.getColumn("Edit").setCellEditor(new CheckBoxCell());
+    }
+
+
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the FormEditor.
+     */
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(0, 105, 0));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Remove Product");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(147, 147, 147)
+                .addComponent(jLabel1)
+                .addContainerGap(165, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    // End of variables declaration//GEN-END:variables
+}

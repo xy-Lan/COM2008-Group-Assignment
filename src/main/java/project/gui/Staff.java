@@ -238,7 +238,7 @@ public class Staff extends javax.swing.JFrame {
                         .addComponent(btnRollingStock)
                         .addGap(11, 11, 11)
                         .addComponent(btnController, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,7 +288,7 @@ public class Staff extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoadConfirmedOrdersActionPerformed
 
     private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
-        AddProduct NewProductFrame = new AddProduct();
+       NewProduct NewProductFrame = new NewProduct();
        NewProductFrame.setVisible(true);
        NewProductFrame.pack();
        NewProductFrame.setLocationRelativeTo(null); 
