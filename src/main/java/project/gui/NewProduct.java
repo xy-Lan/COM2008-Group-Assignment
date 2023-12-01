@@ -11,6 +11,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import java.math.BigDecimal;
 
+import project.service.InventoryService;
 import project.service.MySqlService;
 import project.daoimpl.LocomotiveDaoImpl;
 import project.model.product.Carriage;
@@ -34,6 +35,8 @@ import project.daoimpl.CarriageDaoImpl;
 public class NewProduct extends javax.swing.JFrame implements java.beans.Customizer {
     
     private Object bean;
+
+    private InventoryService inventoryService = new InventoryService();
 
     /**
      * Creates new customizer NewProduct
@@ -80,8 +83,10 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jLabel4 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        priceVal = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
+        quantityVal = new javax.swing.JSpinner();
+        jLabel6 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(0, 105, 0));
 
@@ -117,7 +122,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
@@ -164,7 +169,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addContainerGap())
         );
@@ -196,7 +201,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
                 .addComponent(jButton6)
                 .addContainerGap())
         );
@@ -238,7 +243,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
@@ -273,6 +278,8 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
             }
         });
 
+        jLabel6.setText("Quantity");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -292,8 +299,15 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                         .addComponent(jTextField1)
                         .addComponent(jLabel3)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(priceVal, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(19, 19, 19))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -311,12 +325,16 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
-                .addComponent(jLabel5)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(29, 29, 29))
@@ -395,7 +413,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
 
         // Assuming jSpinner1.getValue() returns a BigDecimal
-        int intValue = (Integer) jSpinner1.getValue();
+        int intValue = (Integer) priceVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
 
         // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
@@ -421,7 +439,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private void addControllerGUI() {
         ControllerDaoImpl controllerDao = new ControllerDaoImpl();
 
-        int intValue = (Integer) jSpinner1.getValue();
+        int intValue = (Integer) priceVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         ControllerType controllerType = ControllerType.valueOf(jComboBox7.getSelectedItem().toString());
@@ -445,7 +463,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private void addRailGUI(){
         TrackDaoImpl trackDao = new TrackDaoImpl();
 
-        int intValue = (Integer) jSpinner1.getValue();
+        int intValue = (Integer) priceVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         String trackType = jComboBox8.getSelectedItem().toString();
@@ -466,7 +484,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private void addCarriageGUI() {
         CarriageDaoImpl carriageDao = new CarriageDaoImpl();
 
-        int intValue = (Integer) jSpinner1.getValue();
+        int intValue = (Integer) priceVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         String carriageType = jComboBox6.getSelectedItem().toString();
@@ -510,14 +528,16 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JSpinner priceVal;
+    private javax.swing.JSpinner quantityVal;
     // End of variables declaration//GEN-END:variables
 }
