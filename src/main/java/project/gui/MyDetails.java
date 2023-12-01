@@ -641,6 +641,7 @@ public class MyDetails extends javax.swing.JFrame {
                 address.setCityName(txtCityName.getText().trim());
                 address.setPostCode(txtPostcode.getText().trim());
                 AddressDao addressDao = new AddressDaoImpl();
+                System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
                 addressDao.updateAddress(address);
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
