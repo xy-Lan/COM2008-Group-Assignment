@@ -9,20 +9,14 @@ import java.sql.*;
 import javax.swing.*;
 import java.math.BigDecimal;
 
-import project.dao.InventoryDao;
+import project.dao.*;
 import project.daoimpl.*;
+import project.model.product.*;
+import project.model.product.abstractproduct.Part;
+import project.model.product.association.PartBoxedSetAssociation;
+import project.model.product.enums.*;
 import project.service.InventoryService;
 import project.service.MySqlService;
-import project.model.product.Carriage;
-import project.model.product.Controller;
-import project.model.product.Locomotive;
-import project.model.product.Track;
-import project.model.product.enums.CarriageType;
-import project.model.product.enums.ControllerType;
-import project.model.product.enums.DCCType;
-import project.model.product.enums.Era;
-import project.model.product.enums.Gauge;
-import project.model.product.enums.TrackType;
 
 /**
  *
@@ -53,6 +47,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel9 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -70,6 +65,24 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jComboBox5 = new javax.swing.JComboBox<>();
         jComboBox6 = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        btnAddTrainSet = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtTrainSetPartProductCode = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        trainSetPartQuantity = new javax.swing.JSpinner();
+        trainSetPartType = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        btnAddTrackPack = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox10 = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        txtTrackPackProductCode = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        trackPackPartQuantity = new javax.swing.JSpinner();
+        jLabel8 = new javax.swing.JLabel();
+        trackPackPartType = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,6 +96,8 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton1 = new javax.swing.JButton();
         quantityVal = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
+
+        jLabel9.setText("jLabel9");
 
         jPanel1.setBackground(new java.awt.Color(0, 105, 0));
 
@@ -122,7 +137,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
@@ -173,7 +188,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addContainerGap())
         );
@@ -209,7 +224,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
                 .addComponent(jButton6)
                 .addContainerGap())
         );
@@ -255,12 +270,157 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                 .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Carriage", jPanel6);
+        jTabbedPane1.addTab("Rolling Stock", jPanel6);
+
+        btnAddTrainSet.setText("Add");
+        btnAddTrainSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    btnAddTrainSetActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        jLabel10.setText("Part product code: ");
+
+        jLabel11.setText("Part quantity: ");
+
+        trainSetPartQuantity.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+
+        trainSetPartType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOCOMOTIVE", "CONTROLLER", "TRACK", "ROLLING STOCK" }));
+
+        jLabel14.setText("Part type: ");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(trainSetPartType, 0, 148, Short.MAX_VALUE)
+                        .addGap(100, 100, 100))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(btnAddTrainSet, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(trainSetPartQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(24, 24, 24)
+                                .addComponent(txtTrainSetPartProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtTrainSetPartProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(trainSetPartQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(trainSetPartType, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(btnAddTrainSet)
+                .addGap(44, 44, 44))
+        );
+
+        jTabbedPane1.addTab("Train sets", jPanel7);
+
+        btnAddTrackPack.setText("Add");
+        btnAddTrackPack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    btnAddTrackPackActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        jLabel7.setText("Pack:");
+
+        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STARTER_OVAL", "EXTENSION_PACK" }));
+
+        jLabel12.setText("Part product code: ");
+
+        jLabel13.setText("Part quantity: ");
+
+        trackPackPartQuantity.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+
+        jLabel8.setText("Part type: ");
+
+        trackPackPartType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOCOMOTIVE", "CONTROLLER", "TRACK", "ROLLING STOCK" }));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTrackPackProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddTrackPack, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(trackPackPartType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel8Layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(trackPackPartQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(74, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(txtTrackPackProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(trackPackPartQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(trackPackPartType, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(btnAddTrackPack)
+                .addGap(43, 43, 43))
+        );
+
+        jTabbedPane1.addTab("Track Pack", jPanel8);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -425,6 +585,99 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         addControllerGUI();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void btnAddTrainSetActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnAddTrainSetActionPerformed
+        TrainSetDaoImpl TrainSetDao = new TrainSetDaoImpl();
+
+        // Assuming jSpinner1.getValue() returns a BigDecimal
+        int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
+        String partProductCode = txtTrainSetPartProductCode.toString();
+        int partQuantity = (Integer) trainSetPartQuantity.getValue();
+        String partType = trainSetPartType.getSelectedItem().toString();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+
+        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+        String gaugeType = jComboBox2.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("TRACK_PACK");
+
+        // Create a Locomotive object
+        TrainSet trainSet = new TrainSet(
+                productCode,
+                jComboBox1.getSelectedItem().toString(),
+                jTextField1.getText(),
+                retailPrice,
+                Gauge.valueOf(gaugeType)
+        );
+
+        Part part = null;
+        if ( partType == "LOCOMOTIVE") {
+            LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
+            part = locomotiveDao.getLocomotive(partProductCode);
+        } else if ( partType == "CONTROLLER") {
+            ControllerDao ControllerDao = new ControllerDaoImpl();
+            part = ControllerDao.getController(partProductCode);
+        } else if ( partType == "TRACK") {
+            TrackDao TrackDao = new TrackDaoImpl();
+            part = TrackDao.getTrack(partProductCode);
+        } else if ( partType == "ROLLING STOCK") {
+            RollingStockDao RollingStockDao = new RollingStockDaoImpl();
+            part = RollingStockDao.getRollingStock(partProductCode);
+        }
+        PartBoxedSetAssociation partBoxedSetAssociation = new PartBoxedSetAssociation(trainSet, part,partQuantity);
+        TrainSetDao.addTrainSet(trainSet);
+        JOptionPane.showMessageDialog(null, "Product successfully added",
+                "Saved", JOptionPane.INFORMATION_MESSAGE);
+        inventoryDao.addInventory(productCode, quantity);
+    }//GEN-LAST:event_btnAddTrainSetActionPerformed
+
+    private void btnAddTrackPackActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnAddTrackPackActionPerformed
+        TrackPackDaoImpl TrackPackDao = new TrackPackDaoImpl();
+
+        // Assuming jSpinner1.getValue() returns a BigDecimal
+        int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
+        int partQuantity = (Integer) trackPackPartQuantity.getValue();
+        String partType = trackPackPartType.getSelectedItem().toString();
+        String partProductCode = txtTrackPackProductCode.toString();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+
+        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+        String gaugeType = jComboBox2.getSelectedItem().toString();
+        String packType = jComboBox10.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("TRACK_PACK");
+
+        // Create a Locomotive object
+        TrackPack trackPack = new TrackPack(
+                productCode,
+                jComboBox1.getSelectedItem().toString(),
+                jTextField1.getText(),
+                retailPrice,
+                Gauge.valueOf(gaugeType),
+                TrackPackType.valueOf(packType)
+        );
+
+        Part part = null;
+        if ( partType == "LOCOMOTIVE") {
+            LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
+            part = locomotiveDao.getLocomotive(partProductCode);
+        } else if ( partType == "CONTROLLER") {
+            ControllerDao ControllerDao = new ControllerDaoImpl();
+            part = ControllerDao.getController(partProductCode);
+        } else if ( partType == "TRACK") {
+            TrackDao TrackDao = new TrackDaoImpl();
+            part = TrackDao.getTrack(partProductCode);
+        } else if ( partType == "ROLLING STOCK") {
+            RollingStockDao RollingStockDao = new RollingStockDaoImpl();
+            part = RollingStockDao.getRollingStock(partProductCode);
+        }
+
+        PartBoxedSetAssociation partBoxedSetAssociation = new PartBoxedSetAssociation(trackPack, part,partQuantity);
+        TrackPackDao.addTrackPack(trackPack);
+        JOptionPane.showMessageDialog(null, "Product successfully added",
+                "Saved", JOptionPane.INFORMATION_MESSAGE);
+        inventoryDao.addInventory(productCode, quantity);
+    }//GEN-LAST:event_btnAddTrackPackActionPerformed
+
     private void addLocomotiveGUI() throws SQLException {
         LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
 
@@ -510,30 +763,34 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     }
 
     private void addCarriageGUI() throws SQLException {
-        CarriageDaoImpl carriageDao = new CarriageDaoImpl();
+        RollingStockDaoImpl rollingStockDao = new RollingStockDaoImpl();
 
         int intValue = (Integer) priceVal.getValue();
         int quantity = (Integer) quantityVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
-        String carriageType = jComboBox6.getSelectedItem().toString();
+        String rollingStockType = jComboBox6.getSelectedItem().toString();
         String era = jComboBox5.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("CARRIAGE");  
+        String productCode = MySqlService.generateProductCode("CARRIAGE");
 
-        Carriage carriage = new Carriage(
+        RollingStock rollingStock = new RollingStock(
             productCode,
             jComboBox1.getSelectedItem().toString(),
             jTextField1.getText(),
             retailPrice,
             Gauge.valueOf(gaugeType),
-            CarriageType.valueOf(carriageType),
+            RollingStockType.valueOf(rollingStockType),
             Era.valueOf(era)
         );
 
-        carriageDao.addCarriage(carriage);
+        rollingStockDao.addRollingStock(rollingStock);
         JOptionPane.showMessageDialog(null, "Product successfully added",
                 "Saved", JOptionPane.INFORMATION_MESSAGE);
         inventoryDao.addInventory(productCode, quantity);
+    }
+
+    private void addTrainSet() {
+
     }
 
 
@@ -541,12 +798,15 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
                            
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddTrackPack;
+    private javax.swing.JButton btnAddTrainSet;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox10;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -556,20 +816,36 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner priceVal;
     private javax.swing.JSpinner quantityVal;
+    private javax.swing.JSpinner trackPackPartQuantity;
+    private javax.swing.JComboBox<String> trackPackPartType;
+    private javax.swing.JSpinner trainSetPartQuantity;
+    private javax.swing.JComboBox<String> trainSetPartType;
+    private javax.swing.JTextField txtTrackPackProductCode;
+    private javax.swing.JTextField txtTrainSetPartProductCode;
     // End of variables declaration//GEN-END:variables
 }

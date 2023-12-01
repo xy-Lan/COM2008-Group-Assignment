@@ -629,13 +629,16 @@ public class MyDetails extends javax.swing.JFrame {
             }
             user.setEmail(txtEmail.getText().trim());
             userDao.updateUser(user);
-            initComponents();
+//            initComponents();
 
             //Update address
             if(isAnyFieldEmpty(txtHouseNum, txtRoadName, txtCityName, txtPostcode)) {
                 JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                         "Invalid Input", JOptionPane.WARNING_MESSAGE);
             } else {
+                System.out.println(txtHouseNum.getText());
+                System.out.println(txtRoadName.getText());
+                System.out.println(txtCityName.getText());
                 address.setHouseNumber(txtHouseNum.getText().trim());
                 address.setRoadName(txtRoadName.getText().trim());
                 address.setCityName(txtCityName.getText().trim());
@@ -645,7 +648,7 @@ public class MyDetails extends javax.swing.JFrame {
                 addressDao.updateAddress(address);
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
-                initComponents();
+//                initComponents();
             }
         }
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
