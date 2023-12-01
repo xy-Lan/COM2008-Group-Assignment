@@ -16,6 +16,7 @@ import project.daoimpl.UserDaoImpl;
 import project.model.address.Address;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
+import project.service.BankCardService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -566,22 +567,27 @@ public class MyDetails extends javax.swing.JFrame {
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }else {
             BankCardDao bankCardDao = new BankCardDaoImpl();
+            BankCardService bankCardService = new BankCardService();
             //Add a new bank card
             BankCard newBankCard = new BankCard(user, txtCardNumber.getText().trim(), Integer.parseInt(txtExpiryMonth.getText()),
                     Integer.parseInt(txtExpiryYear.getText()), txtSecurityCode1.getText().trim(), txtFirstName.getText().trim(),
                     txtLastName.getText().trim(), txtBankCardName.getText().trim());
-            newBankCard.setCardName(txtBankCardName.getText().trim());
-            if (bankCardDao.userHasBankCard(user.getUserID())) {
-                bankCardDao.deleteBankCard(user.getUserID());
-                bankCardDao.addBankCard(newBankCard);
-                JOptionPane.showMessageDialog(null, "Bank card successfully updated",
-                        "Saved", JOptionPane.INFORMATION_MESSAGE);
-                initComponents();
+            if ( bankCardService.isValidBankCard(newBankCard)) {
+                if (bankCardDao.userHasBankCard(user.getUserID())) {
+                    bankCardDao.deleteBankCard(user.getUserID());
+                    bankCardDao.addBankCard(newBankCard);
+                    JOptionPane.showMessageDialog(null, "Bank card successfully updated",
+                            "Saved", JOptionPane.INFORMATION_MESSAGE);
+                    initComponents();
+                } else {
+                    bankCardDao.addBankCard(newBankCard);
+                    JOptionPane.showMessageDialog(null, "Bank card added",
+                            "Saved", JOptionPane.INFORMATION_MESSAGE);
+                    initComponents();
+                }
             } else {
-                bankCardDao.addBankCard(newBankCard);
-                JOptionPane.showMessageDialog(null, "Bank card added",
-                        "Saved", JOptionPane.INFORMATION_MESSAGE);
-                initComponents();
+                JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                        "Invalid Input", JOptionPane.WARNING_MESSAGE);
             }
 
         }

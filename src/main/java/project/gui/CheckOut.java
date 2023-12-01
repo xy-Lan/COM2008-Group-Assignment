@@ -11,6 +11,7 @@ import project.daoimpl.InventoryDaoImpl;
 import project.model.bankcard.BankCard;
 import project.model.order.Order;
 import project.model.user.User;
+import project.service.BankCardService;
 import project.service.InventoryService;
 import project.service.MySqlService;
 import project.utils.UserSessionManager;
@@ -249,18 +250,24 @@ public class CheckOut extends javax.swing.JFrame {
         String lastName = txtLastName.getText();
         String cardName = txtBankCardName.getText();
         BankCardDao bankCardDao = new BankCardDaoImpl();
+        BankCardService bankCardService = new BankCardService();
         BankCard bankCard = new BankCard(currentUser, cardNumber, expiryMonth, expiryYear, securityCode,
                             firstName, lastName,cardName);
         if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth)){
             JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            bankCardDao.addBankCard(bankCard);
-            InventoryService inventoryService = new InventoryService();
-            inventoryService.updateInventoryForOrder(order);
-            JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
-                    "Order Placed", INFORMATION_MESSAGE);
-            this.dispose();
+            if (bankCardService.isValidBankCard(bankCard)){
+                bankCardDao.addBankCard(bankCard);
+                InventoryService inventoryService = new InventoryService();
+                inventoryService.updateInventoryForOrder(order);
+                JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
+                        "Order Placed", INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                        "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            }
         }
 
     }//GEN-LAST:event_btnConfirmActionPerformed
