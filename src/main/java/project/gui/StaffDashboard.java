@@ -268,15 +268,14 @@ public class StaffDashboard extends javax.swing.JFrame {
         jButton1.setBounds(570, 250, 110, 23);
 
         jButton2.setBackground(new java.awt.Color(0, 102, 0));
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("New Product");
-        jPanel1.add(jButton2);
-        jButton2.setBounds(760, 247, 140, 30);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newProduct(evt);
+                jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(760, 247, 140, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -507,6 +506,13 @@ public class StaffDashboard extends javax.swing.JFrame {
         MyDetailsFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnMyDetailsActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        AddProduct NewProductFrame = new AddProduct();
+       NewProductFrame.setVisible(true);
+       NewProductFrame.pack();
+       NewProductFrame.setLocationRelativeTo(null);  
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
 

@@ -295,9 +295,9 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button1.setActionCommand("Confirm");
         button1.setBackground(new java.awt.Color(0, 102, 0));
         button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setLabel("Add/Remove");
+        button1.setLabel("Confirm");
         jPanel1.add(button1);
-        button1.setBounds(790, 720, 80, 24);
+        button1.setBounds(790, 720, 60, 24);
 
         button2.setActionCommand("Confirm");
         button2.setBackground(new java.awt.Color(0, 102, 0));
@@ -305,11 +305,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button2.setLabel("All");
         jPanel1.add(button2);
         button2.setBounds(340, 250, 50, 20);
-        button2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1(evt);
-            }
-        });
 
         button3.setActionCommand("Confirm");
         button3.setBackground(new java.awt.Color(0, 102, 0));
