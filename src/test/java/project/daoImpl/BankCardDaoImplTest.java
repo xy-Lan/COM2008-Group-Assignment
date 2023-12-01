@@ -74,6 +74,8 @@ public class BankCardDaoImplTest {
 
         // 验证结果
         assertNotNull(result, "Bank card should not be null");
+        System.out.println(result.getCardNumber());
+        System.out.println(result.getSecurityCode());
 //        assertEquals("UserID should match", userId, result.getCustomer().getUserID());
         // 添加更多的验证...
     }

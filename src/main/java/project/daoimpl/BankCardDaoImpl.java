@@ -18,14 +18,21 @@ public class BankCardDaoImpl implements BankCardDao {
 
     @Override
     public void addBankCard(BankCard bankCard) {
+
         String sql = "INSERT INTO bank_card (user_id, card_number, expiry_month, expiry_year, security_code, first_name, last_name, card_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String encryptedCardNumber = null;
+        String encryptedSecurityCode = null;
         // SQL query to insert a BankCard into the database
+        try {
+            encryptedCardNumber = EncryptionUtils.encrypt(bankCard.getCardNumber());
+            encryptedSecurityCode = EncryptionUtils.encrypt(bankCard.getSecurityCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            String encryptedCardNumber = EncryptionUtils.encrypt(bankCard.getCardNumber());
-            String encryptedSecurityCode = EncryptionUtils.encrypt(bankCard.getSecurityCode());
 
             // Using BankCard object to set parameters of the PreparedStatement
             stmt.setInt(1, bankCard.getCustomer().getUserID());
@@ -52,31 +59,31 @@ public class BankCardDaoImpl implements BankCardDao {
 
 
 
-    @Override
-    public BankCard getBankCardByNumber(String cardNumber) {
-        String sql = "SELECT * FROM bank_card WHERE card_number = ?";
-        // SQL query to retrieve a BankCard by its encrypted card number
-
-        try (Connection conn = MySqlService.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // Encrypt the card number before querying the database
-            String encryptedCardNumber = EncryptionUtils.encrypt(cardNumber);
-            stmt.setString(1, encryptedCardNumber);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    BankCard bankCard = BankCard.fromResultSet(rs);
-                    return bankCard;
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving bank card from the database", e);
-            // Handle exceptions and possibly throw a runtime exception
-            throw new RuntimeException("Database operation failed", e);
-        }
-        return null;
-    }
+//    @Override
+//    public BankCard getBankCardByNumber(String cardNumber) {
+//        String sql = "SELECT * FROM bank_card WHERE card_number = ?";
+//        // SQL query to retrieve a BankCard by its encrypted card number
+//
+//        try (Connection conn = MySqlService.getConnection();
+//             PreparedStatement stmt = conn.prepareStatement(sql)) {
+//
+//            // Encrypt the card number before querying the database
+//            String encryptedCardNumber = EncryptionUtils.encrypt(cardNumber);
+//            stmt.setString(1, encryptedCardNumber);
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                if (rs.next()) {
+//                    BankCard bankCard = BankCard.fromResultSet(rs);
+//                    return bankCard;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            LOGGER.log(Level.SEVERE, "Error retrieving bank card from the database", e);
+//            // Handle exceptions and possibly throw a runtime exception
+//            throw new RuntimeException("Database operation failed", e);
+//        }
+//        return null;
+//    }
 
     @Override
     public BankCard getBankCardByUserID(int userId) {
