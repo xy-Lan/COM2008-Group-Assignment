@@ -11,6 +11,7 @@ import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MySqlService;
 import project.service.OrderService;
+import project.service.UserService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -27,6 +28,9 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
  * @author linyu
  */
 public class Default extends javax.swing.JFrame {
+
+   private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserService(userDao);
 
     /**
      * Creates new form Default
@@ -63,7 +67,6 @@ public class Default extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         scrollPanel = new javax.swing.JScrollPane();
         productContainer = new javax.swing.JPanel();
-        btnStaffDashboard = new javax.swing.JButton();
         btnManagerDashboard = new javax.swing.JButton();
         btnBasket = new javax.swing.JButton();
         btnStaffDashboard1 = new javax.swing.JButton();
@@ -296,18 +299,6 @@ public class Default extends javax.swing.JFrame {
         jPanel1.add(scrollPanel);
         scrollPanel.setBounds(300, 220, 660, 450);
 
-        btnStaffDashboard.setBackground(new java.awt.Color(0, 102, 0));
-        btnStaffDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnStaffDashboard.setText("Staff interface");
-        btnStaffDashboard.setBorder(null);
-        btnStaffDashboard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffDashboardActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnStaffDashboard);
-        btnStaffDashboard.setBounds(680, 10, 130, 17);
-
         btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
         btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
         btnManagerDashboard.setText("Manager interface");
@@ -410,15 +401,6 @@ public class Default extends javax.swing.JFrame {
         List<RollingStock> allRollingStocks = rollingStockDao.getAllRollingStock();
         loadProductsByType(allRollingStocks);
     }//GEN-LAST:event_btnRollingStockActionPerformed
-
-    private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed
-        //
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnStaffDashboardActionPerformed
 
     private void btnManagerDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerDashboardActionPerformed
         ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
@@ -567,7 +549,6 @@ public class Default extends javax.swing.JFrame {
     private javax.swing.JButton btnMyDetails;
     private javax.swing.JButton btnRecentOrders;
     private javax.swing.JButton btnRollingStock;
-    private javax.swing.JButton btnStaffDashboard;
     private javax.swing.JButton btnStaffDashboard1;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPacks;

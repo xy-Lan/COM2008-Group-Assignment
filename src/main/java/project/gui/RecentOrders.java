@@ -52,7 +52,6 @@ public class RecentOrders extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         btnBack = new javax.swing.JButton();
         btnMyDetails = new javax.swing.JButton();
-        btnRecentOrders = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -93,16 +92,6 @@ public class RecentOrders extends javax.swing.JFrame {
             }
         });
 
-        btnRecentOrders.setBackground(new java.awt.Color(0, 102, 0));
-        btnRecentOrders.setForeground(new java.awt.Color(204, 204, 204));
-        btnRecentOrders.setText("Recent Orders");
-        btnRecentOrders.setBorder(null);
-        btnRecentOrders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRecentOrdersActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -112,11 +101,7 @@ public class RecentOrders extends javax.swing.JFrame {
                     .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnRecentOrders))
-                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 33, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -125,9 +110,7 @@ public class RecentOrders extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(btnMyDetails)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRecentOrders)
-                .addGap(225, 225, 225)
+                .addGap(248, 248, 248)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(474, Short.MAX_VALUE))
         );
@@ -192,12 +175,12 @@ public class RecentOrders extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
-        // TODO add your handling code here:
+        MyDetails MyDetailsFrame = new MyDetails();
+        MyDetailsFrame.setVisible(true);
+        MyDetailsFrame.pack();
+        MyDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnMyDetailsActionPerformed
-
-    private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void loadRecentOrders(){
         User currentUser = UserSessionManager.getInstance().getLoggedInUser();
@@ -282,7 +265,6 @@ public class RecentOrders extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnMyDetails;
-    private javax.swing.JButton btnRecentOrders;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
