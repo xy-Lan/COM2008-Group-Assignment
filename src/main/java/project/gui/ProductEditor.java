@@ -258,7 +258,11 @@ public class ProductEditor extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         // I have become Death
-        InventoryService.deleteProduct(product.getProductCode());
+        int response = JOptionPane.showConfirmDialog(null, "Please click confirm to delete this product", "Delete",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            InventoryService.deleteProduct(product.getProductCode());
+        }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

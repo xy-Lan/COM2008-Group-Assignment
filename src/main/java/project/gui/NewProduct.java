@@ -11,9 +11,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import java.math.BigDecimal;
 
+import project.dao.InventoryDao;
+import project.daoimpl.*;
 import project.service.InventoryService;
 import project.service.MySqlService;
-import project.daoimpl.LocomotiveDaoImpl;
 import project.model.product.Carriage;
 import project.model.product.Controller;
 import project.model.product.Locomotive;
@@ -24,9 +25,6 @@ import project.model.product.enums.DCCType;
 import project.model.product.enums.Era;
 import project.model.product.enums.Gauge;
 import project.model.product.enums.TrackType;
-import project.daoimpl.ControllerDaoImpl;
-import project.daoimpl.TrackDaoImpl;
-import project.daoimpl.CarriageDaoImpl;
 
 /**
  *
@@ -36,7 +34,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     
     private Object bean;
 
-    private InventoryService inventoryService = new InventoryService();
+    private InventoryDao inventoryDao = new InventoryDaoImpl();
 
     /**
      * Creates new customizer NewProduct
@@ -99,7 +97,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton3.setText("Add");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                try {
+                    jButton3ActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -139,7 +141,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton5.setText("Add");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                try {
+                    jButton5ActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -181,7 +187,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                try {
+                    jButton6ActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -220,7 +230,11 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton4.setText("Add");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                try {
+                    jButton4ActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -378,7 +392,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         addCarriageGUI();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -387,7 +401,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         addRailGUI();
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -400,20 +414,21 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox7ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton3ActionPerformed
         addLocomotiveGUI();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         addControllerGUI();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void addLocomotiveGUI() {
+    private void addLocomotiveGUI() throws SQLException {
         LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
 
         // Assuming jSpinner1.getValue() returns a BigDecimal
         int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
 
         // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
@@ -434,12 +449,14 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         );
 
         locomotiveDao.addLocomotive(locomotive);
+        inventoryDao.addInventory(productCode, quantity);
     }
 
-    private void addControllerGUI() {
+    private void addControllerGUI() throws SQLException {
         ControllerDaoImpl controllerDao = new ControllerDaoImpl();
 
         int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         ControllerType controllerType = ControllerType.valueOf(jComboBox7.getSelectedItem().toString());
@@ -458,12 +475,15 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         );
 
         controllerDao.addController(controller);
+//        System.out.println("Add Inventory : " + productCode + "quantity: " + quantity);
+        inventoryDao.addInventory(productCode, quantity);
     }
 
-    private void addRailGUI(){
+    private void addRailGUI() throws SQLException {
         TrackDaoImpl trackDao = new TrackDaoImpl();
 
         int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         String trackType = jComboBox8.getSelectedItem().toString();
@@ -479,12 +499,14 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         );
         
         trackDao.addTrack(track);
+        inventoryDao.addInventory(productCode, quantity);
     }
 
-    private void addCarriageGUI() {
+    private void addCarriageGUI() throws SQLException {
         CarriageDaoImpl carriageDao = new CarriageDaoImpl();
 
         int intValue = (Integer) priceVal.getValue();
+        int quantity = (Integer) quantityVal.getValue();
         BigDecimal retailPrice = new BigDecimal(intValue);
         String gaugeType = jComboBox2.getSelectedItem().toString();
         String carriageType = jComboBox6.getSelectedItem().toString();
@@ -502,6 +524,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         );
 
         carriageDao.addCarriage(carriage);
+        inventoryDao.addInventory(productCode, quantity);
     }
 
 
