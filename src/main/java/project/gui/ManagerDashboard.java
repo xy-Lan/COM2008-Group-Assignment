@@ -10,6 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import project.dao.UserDao;
 import project.daoimpl.UserDaoImpl;
 import project.model.user.Role;
+import project.model.user.User;
+import project.service.UserService;
+import project.utils.UserSessionManager;
 
 import java.sql.*;
 
@@ -27,13 +30,20 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     private UserDao userDao = new UserDaoImpl();
 
+    private UserService userService = new UserService(userDao);
+
     /**
      * Creates new form Default
      */
     public ManagerDashboard() {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         initComponents();
         loadManagerData();
         populateRoleChoice();
+        btnStaff.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnStaff.setVisible(true);
+        }
     }
 
     private static final Map<String, Integer> roleMap = new HashMap<>();
@@ -106,8 +116,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnMyDetails = new javax.swing.JButton();
-        btnRecentOrders = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
@@ -143,26 +151,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
 
-        btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
-        btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
-        btnMyDetails.setText("My Details");
-        btnMyDetails.setBorder(null);
-        btnMyDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMyDetailsActionPerformed(evt);
-            }
-        });
-
-        btnRecentOrders.setBackground(new java.awt.Color(0, 102, 0));
-        btnRecentOrders.setForeground(new java.awt.Color(204, 204, 204));
-        btnRecentOrders.setText("Recent Orders");
-        btnRecentOrders.setBorder(null);
-        btnRecentOrders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRecentOrdersActionPerformed(evt);
-            }
-        });
-
         btnLogOut.setBackground(new java.awt.Color(0, 102, 0));
         btnLogOut.setForeground(new java.awt.Color(204, 204, 204));
         btnLogOut.setText("Log out");
@@ -178,27 +166,14 @@ public class ManagerDashboard extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnRecentOrders))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(129, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(btnMyDetails)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRecentOrders)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 667, Short.MAX_VALUE)
+                .addContainerGap(722, Short.MAX_VALUE)
                 .addComponent(btnLogOut)
                 .addGap(61, 61, 61))
         );
@@ -312,14 +287,14 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAddRole);
-        btnAddRole.setBounds(790, 720, 37, 24);
+        btnAddRole.setBounds(790, 720, 50, 30);
 
         button2.setActionCommand("Confirm");
         button2.setBackground(new java.awt.Color(0, 102, 0));
         button2.setForeground(new java.awt.Color(255, 255, 255));
         button2.setLabel("All");
         jPanel1.add(button2);
-        button2.setBounds(340, 250, 50, 20);
+        button2.setBounds(300, 220, 70, 30);
 
         button3.setActionCommand("Confirm");
         button3.setBackground(new java.awt.Color(0, 102, 0));
@@ -331,7 +306,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(button3);
-        button3.setBounds(410, 250, 50, 20);
+        button3.setBounds(410, 220, 80, 30);
 
         button4.setActionCommand("Confirm");
         button4.setBackground(new java.awt.Color(0, 102, 0));
@@ -343,7 +318,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(button4);
-        button4.setBounds(480, 250, 60, 20);
+        button4.setBounds(520, 220, 80, 30);
 
         btnRemoveRole.setActionCommand("Confirm");
         btnRemoveRole.setBackground(new java.awt.Color(0, 102, 0));
@@ -355,7 +330,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRemoveRole);
-        btnRemoveRole.setBounds(860, 720, 60, 24);
+        btnRemoveRole.setBounds(860, 720, 70, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -363,25 +338,12 @@ public class ManagerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
-        // Jump to My Details page:
-        MyDetails MyDetailsFrame = new MyDetails();
-        MyDetailsFrame.setVisible(true);
-        MyDetailsFrame.pack();
-        MyDetailsFrame.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnMyDetailsActionPerformed
-
-    private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRecentOrdersActionPerformed
-
     private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
         // log out
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
+        Staff StaffFrame = new Staff();
+        StaffFrame.setVisible(true);
+        StaffFrame.pack();
+        StaffFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnStaffActionPerformed
 
@@ -604,8 +566,6 @@ public class ManagerDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button btnAddRole;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnMyDetails;
-    private javax.swing.JButton btnRecentOrders;
     private java.awt.Button btnRemoveRole;
     private javax.swing.JButton btnStaff;
     private javax.swing.JButton btnUser;

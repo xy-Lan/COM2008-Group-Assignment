@@ -208,6 +208,7 @@ public class AddressDaoImpl implements AddressDao{
 
             // Executing the update statement
             int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected);
             if (rowsAffected == 0) {
                 // Handle the situation when no rows are affected
                 throw new SQLException("Updating address failed, no rows affected.");

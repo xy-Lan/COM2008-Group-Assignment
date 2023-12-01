@@ -560,7 +560,7 @@ public class MyDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangePasswordActionPerformed
 
     private void btnUpdateBankCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBankCardActionPerformed
-        // TODO add your handling code here:
+        //
         if (isAnyFieldEmpty(txtCardNumber, txtExpiryMonth, txtExpiryYear,
                 txtSecurityCode1, txtFirstName, txtLastName, txtBankCardName)){
             JOptionPane.showMessageDialog(null, "Please enter valid inputs",

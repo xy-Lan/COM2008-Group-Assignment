@@ -9,6 +9,9 @@ import project.daoimpl.*;
 import project.model.order.Order;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
+import project.model.user.User;
+import project.service.UserService;
+import project.utils.UserSessionManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,12 +23,19 @@ import java.util.List;
  */
 public class Staff extends javax.swing.JFrame {
 //    private ButtonCell buttonCell = new ButtonCell();
+    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserService(userDao);
 
     /**
      * Creates new form Default
      */
     public Staff() {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         initComponents();
+        btnManagerDashboard.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnManagerDashboard.setVisible(true);
+        }
     }
     
     
@@ -56,6 +66,8 @@ public class Staff extends javax.swing.JFrame {
         btnLocomotives = new javax.swing.JButton();
         btnRollingStock = new javax.swing.JButton();
         btnController = new javax.swing.JButton();
+        btnUser = new javax.swing.JButton();
+        btnManagerDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Category");
@@ -264,6 +276,30 @@ public class Staff extends javax.swing.JFrame {
         jPanel1.add(jPanel4);
         jPanel4.setBounds(120, 190, 880, 610);
 
+        btnUser.setBackground(new java.awt.Color(0, 102, 0));
+        btnUser.setForeground(new java.awt.Color(204, 204, 204));
+        btnUser.setText("User interface");
+        btnUser.setBorder(null);
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUserActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnUser);
+        btnUser.setBounds(840, 50, 150, 17);
+
+        btnManagerDashboard.setBackground(new java.awt.Color(0, 102, 0));
+        btnManagerDashboard.setForeground(new java.awt.Color(204, 204, 204));
+        btnManagerDashboard.setText("Manager interface");
+        btnManagerDashboard.setBorder(null);
+        btnManagerDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManagerDashboardActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnManagerDashboard);
+        btnManagerDashboard.setBounds(840, 20, 150, 17);
+
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
 
@@ -337,6 +373,22 @@ public class Staff extends javax.swing.JFrame {
             DefaultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        Default DefaultFrame = new Default();
+        DefaultFrame.setVisible(true);
+        DefaultFrame.pack();
+        DefaultFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnUserActionPerformed
+
+    private void btnManagerDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerDashboardActionPerformed
+        ManagerDashboard ManagerDashboardFrame = new ManagerDashboard();
+        ManagerDashboardFrame.setVisible(true);
+        ManagerDashboardFrame.pack();
+        ManagerDashboardFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnManagerDashboardActionPerformed
 
     private void loadProductTabelByTable(List<? extends Product> allProducts) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -470,11 +522,13 @@ public class Staff extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadAllOrders;
     private javax.swing.JButton btnLoadConfirmedOrders;
     private javax.swing.JButton btnLocomotives;
+    private javax.swing.JButton btnManagerDashboard;
     private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnRollingStock;
     private javax.swing.JButton btnTrack;
     private javax.swing.JButton btnTrackPack;
     private javax.swing.JButton btnTrainSets;
+    private javax.swing.JButton btnUser;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
