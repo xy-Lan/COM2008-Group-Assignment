@@ -6,12 +6,15 @@ package project.gui;
 
 import java.math.BigDecimal;
 import javax.swing.JOptionPane;
+import project.daoimpl.CarriageDaoImpl;
 import project.daoimpl.ControllerDaoImpl;
 import project.daoimpl.LocomotiveDaoImpl;
 import project.daoimpl.TrackDaoImpl;
+import project.model.product.Carriage;
 import project.model.product.Controller;
 import project.model.product.Locomotive;
 import project.model.product.Track;
+import project.model.product.enums.CarriageType;
 import project.model.product.enums.ControllerType;
 import project.model.product.enums.DCCType;
 import project.model.product.enums.Era;
@@ -58,9 +61,11 @@ public class AddProduct extends javax.swing.JFrame {
         addTrackButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         carriagePanel = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jButton4 = new javax.swing.JButton();
+        carriageEraBox = new javax.swing.JComboBox<>();
+        carriageTypeBox = new javax.swing.JComboBox<>();
+        addCarriageButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         trackPackPanel = new javax.swing.JPanel();
         jComboBox10 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -215,21 +220,25 @@ public class AddProduct extends javax.swing.JFrame {
 
         partTypeTabbedPane.addTab("Track", trackPanel);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+        carriageEraBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
+        carriageEraBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
+                carriageEraBoxActionPerformed(evt);
             }
         });
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARRIAGE", "WAGON" }));
+        carriageTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARRIAGE", "WAGON" }));
 
-        jButton4.setText("Add");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addCarriageButton.setText("Add");
+        addCarriageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addCarriageButtonActionPerformed(evt);
             }
         });
+
+        jLabel4.setText("Carriage Type");
+
+        jLabel5.setText("Carriage Era");
 
         javax.swing.GroupLayout carriagePanelLayout = new javax.swing.GroupLayout(carriagePanel);
         carriagePanel.setLayout(carriagePanelLayout);
@@ -238,20 +247,26 @@ public class AddProduct extends javax.swing.JFrame {
             .addGroup(carriagePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(carriagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addCarriageButton)
+                    .addComponent(carriageEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(carriageTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
         carriagePanelLayout.setVerticalGroup(
             carriagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(carriagePanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(carriageTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addGap(3, 3, 3)
+                .addComponent(carriageEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(addCarriageButton)
                 .addContainerGap())
         );
 
@@ -370,7 +385,7 @@ public class AddProduct extends javax.swing.JFrame {
                 .addComponent(priceLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addGap(29, 29, 29))
         );
@@ -418,13 +433,33 @@ public class AddProduct extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameTextBoxActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void addCarriageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCarriageButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_addCarriageButtonActionPerformed
 
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox5ActionPerformed
+    private void carriageEraBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carriageEraBoxActionPerformed
+        CarriageDaoImpl carriageDao = new CarriageDaoImpl();
+
+        int intValue = (Integer) priceSpinner.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+        String gaugeType = gaugeBox.getSelectedItem().toString();
+        String carriageType = carriageTypeBox.getSelectedItem().toString();
+        String era = carriageEraBox.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("CARRIAGE");  
+
+        Carriage carriage = new Carriage(
+            productCode,
+            brandBox.getSelectedItem().toString(),
+            nameTextBox.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            CarriageType.valueOf(carriageType),
+            Era.valueOf(era)
+        );
+
+        carriageDao.addCarriage(carriage);
+        JOptionPane.showMessageDialog(this, "Added Carriage with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_carriageEraBoxActionPerformed
 
     private void addTrackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTrackButtonActionPerformed
 
@@ -511,26 +546,28 @@ public class AddProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_locomotiveAddButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addCarriageButton;
     private javax.swing.JButton addControllerButton;
     private javax.swing.JButton addTrackButton;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> brandBox;
     private javax.swing.JLabel brandLabel;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> carriageEraBox;
     private javax.swing.JPanel carriagePanel;
+    private javax.swing.JComboBox<String> carriageTypeBox;
     private javax.swing.JPanel controllerPanel;
     private javax.swing.JComboBox<String> controllerTypeBox;
     private javax.swing.JComboBox<String> gaugeBox;
     private javax.swing.JLabel gaugeLabel;
     private javax.swing.JPanel generalDetailsPanel;
     private javax.swing.JComboBox<String> isDigitalBox;
-    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JButton locomotiveAddButton;
