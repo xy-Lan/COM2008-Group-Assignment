@@ -38,7 +38,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUserPasswordHash(int userId, String password) {
-
+        String hashedPassword = PasswordUtils.hashPassword(password);
+        System.out.println("hashed password is" + hashedPassword);
         System.out.println("user password is " + password);
         String sql = "INSERT INTO hashed_passwords (user_id, password_hash) VALUES (?, ?)";
 
@@ -46,7 +47,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(2, hashedPassword);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

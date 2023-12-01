@@ -116,9 +116,6 @@ public class ButtonCell extends AbstractCellEditor implements TableCellRenderer,
                 }
             }
 
-
-
-
         } else {
             System.out.println("Table is null");
         }

@@ -316,7 +316,8 @@ public class SignUp extends javax.swing.JFrame {
 //                    System.out.println("insert a user to the database");
                     userDao.addUser(user);
                     User newUser = userDao.getUserByEmail(user.getEmail());
-                    userDao.addUserPasswordHash(newUser.getUserID(), txtPassword.getPassword().toString());
+//                    System.out.println("String.valueOf(txtPassword.getPassword()) is " + String.valueOf(txtPassword.getPassword()));
+                    userDao.addUserPasswordHash(newUser.getUserID(), String.valueOf(txtPassword.getPassword()));
                     JOptionPane.showMessageDialog(null, "Successfully registered",
                             "", JOptionPane.INFORMATION_MESSAGE);
                 }

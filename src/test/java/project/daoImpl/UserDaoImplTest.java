@@ -25,7 +25,7 @@ public class UserDaoImplTest {
 
     @Test
     public void testUpdateUserPasswordHash() {
-        int userId = 123;
+        int userId = 128;
         String newPassword = "newPassword123";
 
         Boolean updateResult = userDao.updateUserPasswordHash(userId, newPassword);
@@ -34,7 +34,7 @@ public class UserDaoImplTest {
 
     @Test
     public void testAddUserPasswordHash()  {
-        int userId = 1;
+        int userId = 128;
         String password = "testPassword"; // 测试用的密码
 
         userDao.addUserPasswordHash(userId,password);
