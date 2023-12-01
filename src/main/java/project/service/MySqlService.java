@@ -147,25 +147,71 @@ public class MySqlService {
     }
 
 
+//    public static boolean login(String username, String password) {
+//
+//        Connection connection = getConnection();
+//
+//        String sql = "SELECT u.user_id, u.email, u.address_id FROM users u " +
+//                "JOIN hashed_passwords p ON u.user_id = p.user_id " +
+//                "WHERE u.email = ? AND p.password_hash = ?";
+//
+//        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//            preparedStatement.setString(1, username);
+//            preparedStatement.setString(2, password);
+//
+//            System.out.println(preparedStatement.toString());
+//
+//            ResultSet resultSet =  preparedStatement.executeQuery();
+//
+//            if (resultSet != null) {
+//                try {
+//                    while (resultSet.next()) {
+//                        int id = resultSet.getInt("user_id");
+//                        int address_id = resultSet.getInt("address_id");
+//                        String email = resultSet.getString("email");
+//                        System.out.println("Found user with id: " + id);
+//                        User user = new User(email);
+//                        user.setUserID(id);
+//                        user.setAddressId(address_id);
+//                        UserSessionManager.getInstance().setLoggedInUser(user);
+//                        return true;
+//                    }
+//                    connection.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    try {
+//                        resultSet.close();
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return false;
+//    }
+
     public static boolean login(String username, String password) {
 
         Connection connection = getConnection();
 
-        String sql = "SELECT u.user_id, u.email, u.address_id FROM users u " +
+        String sql = "SELECT u.user_id, u.email, u.address_id, p.password_hash FROM users u " +
                 "JOIN hashed_passwords p ON u.user_id = p.user_id " +
-                "WHERE u.email = ? AND p.password_hash = ?";
+                "WHERE u.email = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
 
-            System.out.println(preparedStatement.toString());
-
-            ResultSet resultSet =  preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet != null) {
-                try {
-                    while (resultSet.next()) {
+                while (resultSet.next()) {
+                    String hashedPassword = resultSet.getString("password_hash");
+                    if (PasswordUtils.checkPassword(password, hashedPassword)) {
                         int id = resultSet.getInt("user_id");
                         int address_id = resultSet.getInt("address_id");
                         String email = resultSet.getString("email");
@@ -176,24 +222,17 @@ public class MySqlService {
                         UserSessionManager.getInstance().setLoggedInUser(user);
                         return true;
                     }
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        resultSet.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
                 }
+                resultSet.close();
             }
-        }
-        catch (Exception e) {
+            connection.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return false;
     }
+
 
 
     public static String generateProductCode(String productType) {

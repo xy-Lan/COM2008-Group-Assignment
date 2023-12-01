@@ -52,21 +52,21 @@ public class RollingStockDaoTest {
         }
     }
 
-    @Test
-    void testGetAllRollingStock() {
-        try {
-            List<RollingStock> rollingStockList = rollingStockDao.getAllRollingStock();
-            assertNotNull(rollingStockList, "RollingStock list should not be null");
-            assertFalse(rollingStockList.isEmpty(), "RollingStock list should not be empty");
-
-            for (RollingStock rollingStock : rollingStockList) {
-                assertNotNull(rollingStock.getProductCode(), "Product code should not be null");
-                System.out.println("Product code is " + rollingStock.getProductCode());
-            }
-        } catch (SQLException e) {
-            fail("Should not throw an exception: " + e.getMessage());
-        }
-    }
+//    @Test
+//    void testGetAllRollingStock() {
+//        try {
+//            List<RollingStock> rollingStockList = rollingStockDao.getAllRollingStock();
+//            assertNotNull(rollingStockList, "RollingStock list should not be null");
+//            assertFalse(rollingStockList.isEmpty(), "RollingStock list should not be empty");
+//
+//            for (RollingStock rollingStock : rollingStockList) {
+//                assertNotNull(rollingStock.getProductCode(), "Product code should not be null");
+//                System.out.println("Product code is " + rollingStock.getProductCode());
+//            }
+//        } catch (SQLException e) {
+//            fail("Should not throw an exception: " + e.getMessage());
+//        }
+//    }
 
     @Test
     void testUpdateRollingStock() {

@@ -43,10 +43,13 @@ public class BankCardDaoImplTest {
         // Create a BankCard instance with test data
         BankCard bankCard = new BankCard();
         bankCard.setCustomer(new User(123)); // Replace with test data
-        bankCard.setCardNumber("1234567890123456"); // Replace with test data
+        bankCard.setCardNumber("1234567890123457"); // Replace with test data
         bankCard.setExpiryMonth(12); // Replace with test data
         bankCard.setExpiryYear(2025); // Replace with test data
         bankCard.setSecurityCode("123"); // Replace with test data
+        bankCard.setFirstName("Xy");
+        bankCard.setLastName("Lan");
+        bankCard.setCardName("Visa");
 
         // Call addBankCard method
         bankCardDao.addBankCard(bankCard);
@@ -61,19 +64,19 @@ public class BankCardDaoImplTest {
 //        assertEquals("123", retrievedCard.getSecurityCode());
     }
 
-//    @Test
-//    public void testGetBankCardByUserID_ExistingUser() {
-//        // 假设存在的用户ID
-//        int userId = 2;
-//
-//        // 执行测试
-//        BankCard result = bankCardDao.getBankCardByUserID(userId);
-//
-//        // 验证结果
-//        assertNotNull(result, "Bank card should not be null");
-////        assertEquals("UserID should match", userId, result.getCustomer().getUserID());
-//        // 添加更多的验证...
-//    }
+    @Test
+    public void testGetBankCardByUserID_ExistingUser() {
+        // 假设存在的用户ID
+        int userId = 123;
+
+        // 执行测试
+        BankCard result = bankCardDao.getBankCardByUserID(userId);
+
+        // 验证结果
+        assertNotNull(result, "Bank card should not be null");
+//        assertEquals("UserID should match", userId, result.getCustomer().getUserID());
+        // 添加更多的验证...
+    }
 
 //    @AfterEach
 //    public void tearDown() {

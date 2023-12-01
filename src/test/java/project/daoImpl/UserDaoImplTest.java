@@ -8,6 +8,9 @@ import project.model.user.Role;
 import project.model.user.User;
 import project.utils.PasswordUtils;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,12 +25,19 @@ public class UserDaoImplTest {
 
     @Test
     public void testUpdateUserPasswordHash() {
-        int userId = 123;
+        int userId = 128;
         String newPassword = "newPassword123";
 
         Boolean updateResult = userDao.updateUserPasswordHash(userId, newPassword);
         assertTrue(updateResult, "Password hash should be updated successfully");
+    }
 
+    @Test
+    public void testAddUserPasswordHash()  {
+        int userId = 128;
+        String password = "testPassword"; // 测试用的密码
+
+        userDao.addUserPasswordHash(userId,password);
     }
 
 //    @Test
@@ -70,15 +80,15 @@ public class UserDaoImplTest {
         userDao.addUser(user);
 
     }
-    @Test
-    public void testAddUserPasswordHash() {
-        int userId = 129;
-        String password = "TestPassword123";
-
-        // 调用方法以添加密码哈希
-        userDao.addUserPasswordHash(userId, password);
-
-    }
+//    @Test
+//    public void testAddUserPasswordHash() {
+//        int userId = 129;
+//        String password = "TestPassword123";
+//
+//        // 调用方法以添加密码哈希
+//        userDao.addUserPasswordHash(userId, password);
+//
+//    }
 
 //    @Test
 //    public void testGetUserPasswordHash() {
