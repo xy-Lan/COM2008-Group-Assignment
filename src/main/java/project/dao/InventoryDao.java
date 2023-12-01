@@ -11,6 +11,8 @@ public interface InventoryDao {
     // Method to decrease the stock of a product
     void decreaseStock(String productCode, int quantityDecrease);
 
+    void updateStockLevel(String productCode, int newQuantity);
+
     // Method to check the current stock of all products
     List<Inventory> checkStock();
     public Integer getStock (String productCode);

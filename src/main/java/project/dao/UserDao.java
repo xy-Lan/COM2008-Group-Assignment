@@ -6,7 +6,6 @@ import java.util.Optional;
 import project.model.address.Address;
 import project.model.inventory.Inventory;
 import project.model.order.*;
-import project.model.payment.Payment;
 import project.model.user.*;
 
 public interface UserDao {
@@ -38,8 +37,7 @@ public interface UserDao {
     void removeInventoryFromUser(int userID, Inventory inventory);
 
     // Methods for handling payment information for customer users
-    List<Payment> getUserPayments(int userID);
-    void addPaymentToUser(int userID, Payment payment);
+
     void removePaymentFromUser(int userID, String paymentId);
 
     // Methods for handling user orders

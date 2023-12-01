@@ -3,7 +3,6 @@ package project.daoimpl;
 import project.model.user.*;
 import project.service.MySqlService;
 import project.model.inventory.*;
-import project.model.payment.*;
 import project.model.order.*;
 import project.model.address.*;
 import project.dao.UserDao;
@@ -307,14 +306,6 @@ public class UserDaoImpl implements UserDao {
     public void removeInventoryFromUser(int userID, Inventory inventory) {
     }
 
-    @Override
-    public List<Payment> getUserPayments(int userID) {
-        return null;
-    }
-
-    @Override
-    public void addPaymentToUser(int userID, Payment payment) {
-    }
 
     @Override
     public void removePaymentFromUser(int userID, String paymentId) {
