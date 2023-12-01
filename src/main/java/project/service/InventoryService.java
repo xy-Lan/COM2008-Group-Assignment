@@ -1,6 +1,7 @@
 package project.service;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +15,6 @@ import project.model.user.*;
 
 import project.dao.InventoryDao;
 import project.model.inventory.Inventory;
-import project.model.user.Role;
 
 public class InventoryService {
 
@@ -52,7 +52,9 @@ public class InventoryService {
         }
     }
 
-    public void updateInventoryForOrder(Order order) {
+
+    public void updateInventoryForOrder(Order order)  {
+
         List<OrderLine> orderLines = orderLineDao.getAllOrderLines(order.getOrderNumber());
 
         for (OrderLine orderLine : orderLines) {
@@ -67,7 +69,6 @@ public class InventoryService {
         checkStaffRole();
 
     }
-
 
 
 }

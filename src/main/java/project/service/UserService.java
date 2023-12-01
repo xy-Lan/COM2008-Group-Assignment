@@ -2,7 +2,9 @@ package project.service;
 
 import java.util.List;
 
+import project.dao.BankCardDao;
 import project.dao.UserDao;
+import project.daoimpl.BankCardDaoImpl;
 import project.model.user.Role;
 import project.model.user.User;
 import project.security.PasswordEncryption;
@@ -13,7 +15,7 @@ import java.util.Optional;
 public class UserService {
     
     private UserDao userDao;
-
+	private BankCardDao bankCardDao = new BankCardDaoImpl();
     private List<User> users;
 
 	public UserService(UserDao userDao) {
@@ -57,6 +59,10 @@ public class UserService {
         // For example, check if the email and password match
         return false; // Return whether the login was successful
     }
+
+	public boolean checkUserHasBankCard(int userId) {
+		return bankCardDao.userHasBankCard(userId);
+	}
 
     // Update user information
     public void updateUserDetails(User user) {

@@ -13,8 +13,9 @@ public interface BankCardDao {
 
     BankCard getBankCardByUserID(int userId);
 
-
     // Method to delete a BankCard from the data source
     void deleteBankCard(int userID);
+
+    boolean userHasBankCard(int userId);
 
 }

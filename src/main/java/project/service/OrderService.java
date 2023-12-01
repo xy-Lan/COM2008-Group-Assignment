@@ -3,6 +3,7 @@ package project.service;
 import project.dao.*;
 import project.daoimpl.*;
 import project.exceptions.OrderCreationException;
+import project.exceptions.StaffOrderException;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.order.OrderStatus;
@@ -31,6 +32,7 @@ public class OrderService {
 	public OrderService(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
+	private static final Logger LOGGER = Logger.getLogger(OrderService.class.getName());
 
 
 	/**
@@ -143,6 +145,8 @@ public class OrderService {
 	}
 
 
+
+
 	/**
 	 * Removes an order line from an existing order.
 	 *
@@ -214,14 +218,43 @@ public class OrderService {
 		}
     }
 
-	public void fulfillOrder(Order order) {
-		if (!order.getUser().hasRole(Role.STAFF)) {
-			throw new UnsupportedOperationException("Only staff can fulfill orders.");
+	public Boolean fulfillOrder(Order order) throws StaffOrderException {
+		if (order.getOrderStatus() == OrderStatus.CONFIRMED) {
+			try {
+				order.setOrderStatus(OrderStatus.FULFILLED);
+				orderDao.updateOrderStatus(order);
+				return true;
+			} catch (RuntimeException e) {
+				LOGGER.log(Level.SEVERE, "Error fulfilling order: " + order.getOrderNumber(), e);
+				throw new StaffOrderException("Error fulfilling order: " + order.getOrderNumber(), e);
+			}
+		} else {
+			String message = "Order status is not confirmed. Cannot fulfill order: " + order.getOrderNumber();
+			LOGGER.log(Level.WARNING, message);
+			throw new StaffOrderException(message);
 		}
-
-		// Implement order fulfilment logic
-		//
 	}
 
-    // Additional methods as needed...
+
+	public Boolean refuseOrder(Order order) throws StaffOrderException {
+		if (order.getOrderStatus() == OrderStatus.CONFIRMED) {
+			try {
+				order.setOrderStatus(OrderStatus.REFUSED);
+				orderDao.updateOrderStatus(order);
+				return true;
+			} catch (RuntimeException e) {
+				LOGGER.log(Level.SEVERE, "Error refusing order: " + order.getOrderNumber(), e);
+				throw new StaffOrderException("Error refusing order: " + order.getOrderNumber(), e);
+			}
+		} else {
+			String message = "Order status is not confirmed. Cannot refuse order: " + order.getOrderNumber();
+			LOGGER.log(Level.WARNING, message);
+			throw new StaffOrderException(message);
+		}
+	}
+
+
+
 }
+
+

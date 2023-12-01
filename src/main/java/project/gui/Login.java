@@ -195,6 +195,7 @@ public class Login extends javax.swing.JFrame {
 //        this.dispose();
 
         if (MySqlService.getInstance().login(jTextField1.getText(), String.valueOf(jPasswordField1.getPassword()))) {
+
             Default DefaultFrame = new Default();
             DefaultFrame.setVisible(true);
             DefaultFrame.pack();
@@ -215,6 +216,7 @@ public class Login extends javax.swing.JFrame {
                 }
             });
             this.dispose();
+
         }
 
         

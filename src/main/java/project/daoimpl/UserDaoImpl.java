@@ -39,14 +39,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUserPasswordHash(int userId, String password) {
-        String passwordHash = PasswordUtils.hashPassword(password);
+
+        System.out.println("user password is " + password);
         String sql = "INSERT INTO hashed_passwords (user_id, password_hash) VALUES (?, ?)";
 
         try (Connection connection = MySqlService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, passwordHash);
+            preparedStatement.setString(2, password);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
