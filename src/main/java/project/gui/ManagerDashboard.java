@@ -10,6 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import project.dao.UserDao;
 import project.daoimpl.UserDaoImpl;
 import project.model.user.Role;
+import project.model.user.User;
+import project.service.UserService;
+import project.utils.UserSessionManager;
 
 import java.sql.*;
 
@@ -27,13 +30,20 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
     private UserDao userDao = new UserDaoImpl();
 
+    private UserService userService = new UserService(userDao);
+
     /**
      * Creates new form Default
      */
     public ManagerDashboard() {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         initComponents();
         loadManagerData();
         populateRoleChoice();
+        btnStaff.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnStaff.setVisible(true);
+        }
     }
 
     private static final Map<String, Integer> roleMap = new HashMap<>();

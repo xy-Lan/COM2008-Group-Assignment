@@ -9,6 +9,9 @@ import project.daoimpl.*;
 import project.model.order.Order;
 import project.model.product.*;
 import project.model.product.abstractproduct.Product;
+import project.model.user.User;
+import project.service.UserService;
+import project.utils.UserSessionManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,12 +23,19 @@ import java.util.List;
  */
 public class Staff extends javax.swing.JFrame {
 //    private ButtonCell buttonCell = new ButtonCell();
+    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserService(userDao);
 
     /**
      * Creates new form Default
      */
     public Staff() {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         initComponents();
+        btnManagerDashboard.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnManagerDashboard.setVisible(true);
+        }
     }
     
     

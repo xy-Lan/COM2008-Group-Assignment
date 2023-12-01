@@ -9,6 +9,7 @@ import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MySqlService;
 import project.service.OrderService;
+import project.service.UserService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -27,10 +28,21 @@ public class ProductDetails extends javax.swing.JFrame {
      * Creates new form Default
      */
     private Product product;
+    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserService(userDao);
 
     public ProductDetails(Product product) {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         this.product = product;
         initComponents();
+        btnManagerInterface.setVisible(false);
+        btnStaffInterface.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnManagerInterface.setVisible(true);
+        }
+        if (userService.isUserStaff(user.getUserID())) {
+            btnStaffInterface.setVisible(true);
+        }
     }
     
     

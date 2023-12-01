@@ -36,8 +36,19 @@ public class Default extends javax.swing.JFrame {
      * Creates new form Default
      */
     public Default() {
+        User user = UserSessionManager.getInstance().getLoggedInUser();
         System.out.println("User: " + UserSessionManager.getInstance().getLoggedInUser().toMap());
+
         initComponents();
+        btnManagerDashboard.setVisible(false);
+        btnStaffDashboard1.setVisible(false);
+        if (userService.isUserManager(user.getUserID())){
+            btnManagerDashboard.setVisible(true);
+        }
+        if (userService.isUserStaff(user.getUserID())) {
+            btnStaffDashboard1.setVisible(true);
+        }
+
     }
 
     /**
