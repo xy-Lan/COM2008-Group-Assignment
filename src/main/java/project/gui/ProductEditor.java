@@ -208,7 +208,7 @@ public class ProductEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -237,6 +237,7 @@ public class ProductEditor extends javax.swing.JFrame {
             productDao.updateProduct(product, MySqlService.getConnection());
             int quantity = (Integer) quantityVal.getValue();
             InventoryService inventoryService = new InventoryService();
+            inventoryService.updateStockLevel(product.getProductCode(), quantity);
             JOptionPane.showMessageDialog(null, "Details updated",
                     "", JOptionPane.INFORMATION_MESSAGE);
         }

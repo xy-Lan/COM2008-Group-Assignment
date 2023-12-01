@@ -2,14 +2,8 @@
 package project.gui;
 
 
-import project.dao.InventoryDao;
-import project.dao.OrderDao;
-import project.dao.OrderLineDao;
-import project.dao.ProductDao;
-import project.daoimpl.InventoryDaoImpl;
-import project.daoimpl.OrderDaoImpl;
-import project.daoimpl.OrderLineDaoImpl;
-import project.daoimpl.ProductDaoImpl;
+import project.dao.*;
+import project.daoimpl.*;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.product.*;
@@ -40,6 +34,8 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
 public class OrderLines extends javax.swing.JFrame {
     private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
     private OrderDao orderDao = new OrderDaoImpl();
+
+    private BankCardDao bankCardDao = new BankCardDaoImpl();
     private OrderLineDao orderLineDao = new OrderLineDaoImpl();
     private OrderService orderService = new OrderService(orderDao);
 
@@ -164,7 +160,7 @@ public class OrderLines extends javax.swing.JFrame {
                 int response = JOptionPane.showConfirmDialog(null, "Please confirm your payment of " +
                         total + " £", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION){
-                    if (orderDao.hasOrderedBefore(currentUser.getUserID())){
+                    if (bankCardDao.getBankCardByUserID(currentUser.getUserID()) != null){
                         JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
                                 "Order Placed", INFORMATION_MESSAGE);
                         inventoryService.updateInventoryForOrder(order);

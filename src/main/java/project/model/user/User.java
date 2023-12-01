@@ -9,7 +9,10 @@ import java.util.Map;
 import project.model.address.*;
 import project.model.inventory.Inventory;
 import project.model.order.*;
+<<<<<<< HEAD
 
+=======
+>>>>>>> a55ec933c6db073c414cbf6b13cedbfd2e676f10
 import project.service.MySqlService;
 
 public class User {
