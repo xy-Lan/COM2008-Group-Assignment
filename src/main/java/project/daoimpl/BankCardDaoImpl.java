@@ -24,12 +24,15 @@ public class BankCardDaoImpl implements BankCardDao {
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            String encryptedCardNumber = EncryptionUtils.encrypt(bankCard.getCardNumber());
+            String encryptedSecurityCode = EncryptionUtils.encrypt(bankCard.getSecurityCode());
+
             // Using BankCard object to set parameters of the PreparedStatement
             stmt.setInt(1, bankCard.getCustomer().getUserID());
-            stmt.setString(2, bankCard.getCardNumber());
+            stmt.setString(2, encryptedCardNumber);
             stmt.setInt(3, bankCard.getExpiryMonth());
             stmt.setInt(4, bankCard.getExpiryYear());
-            stmt.setString(5, bankCard.getSecurityCode());
+            stmt.setString(5, encryptedSecurityCode);
             stmt.setString(6, bankCard.getFirstName());
             stmt.setString(7, bankCard.getLastName());
             stmt.setString(8, bankCard.getCardName());
@@ -101,14 +104,25 @@ public class BankCardDaoImpl implements BankCardDao {
         BankCard bankCard = new BankCard();
         int userId = rs.getInt("user_id");
         bankCard.setCustomer(new User(userId));
-        bankCard.setCardNumber(rs.getString("card_number"));
+        String encryptedCardNumber = rs.getString("card_number");
+        String encryptedSecurityCode = rs.getString("security_code");
+
+        try {
+            String decryptedCardNumber = EncryptionUtils.decrypt(encryptedCardNumber);
+            String decryptedSecurityCode = EncryptionUtils.decrypt(encryptedSecurityCode);
+
+            bankCard.setCardNumber(decryptedCardNumber);
+            bankCard.setSecurityCode(decryptedSecurityCode);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error decrypting bank card information", e);
+            throw new RuntimeException("Error decrypting bank card information", e);
+        }
+
         bankCard.setExpiryMonth(rs.getInt("expiry_month"));
         bankCard.setExpiryYear(rs.getInt("expiry_year"));
-        bankCard.setSecurityCode(rs.getString("security_code"));
         bankCard.setFirstName(rs.getString("first_name"));
         bankCard.setLastName(rs.getString("last_name"));
         bankCard.setCardName(rs.getString("card_name"));
-
         return bankCard;
     }
 

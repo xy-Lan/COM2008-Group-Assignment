@@ -4,6 +4,24 @@
  */
 package project.gui;
 
+import java.math.BigDecimal;
+import javax.swing.JOptionPane;
+import project.daoimpl.CarriageDaoImpl;
+import project.daoimpl.ControllerDaoImpl;
+import project.daoimpl.LocomotiveDaoImpl;
+import project.daoimpl.TrackDaoImpl;
+import project.model.product.Carriage;
+import project.model.product.Controller;
+import project.model.product.Locomotive;
+import project.model.product.Track;
+import project.model.product.enums.CarriageType;
+import project.model.product.enums.ControllerType;
+import project.model.product.enums.DCCType;
+import project.model.product.enums.Era;
+import project.model.product.enums.Gauge;
+import project.model.product.enums.TrackType;
+import project.service.MySqlService;
+
 /**
  *
  * @author laist
@@ -26,29 +44,33 @@ public class AddProduct extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
+        backgroundPanel = new javax.swing.JPanel();
+        partTypeTabbedPane = new javax.swing.JTabbedPane();
+        locomotivePanel = new javax.swing.JPanel();
         locomotiveTypeBox = new javax.swing.JComboBox<>();
         locomotiveEraBox = new javax.swing.JComboBox<>();
         locomotiveAddButton = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jComboBox7 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jComboBox9 = new javax.swing.JComboBox<>();
-        jPanel6 = new javax.swing.JPanel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jButton6 = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jButton4 = new javax.swing.JButton();
-        jPanel8 = new javax.swing.JPanel();
+        controllerPanel = new javax.swing.JPanel();
+        controllerTypeBox = new javax.swing.JComboBox<>();
+        addControllerButton = new javax.swing.JButton();
+        isDigitalBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        trackPanel = new javax.swing.JPanel();
+        trackTypeBox = new javax.swing.JComboBox<>();
+        addTrackButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        carriagePanel = new javax.swing.JPanel();
+        carriageEraBox = new javax.swing.JComboBox<>();
+        carriageTypeBox = new javax.swing.JComboBox<>();
+        addCarriageButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        trackPackPanel = new javax.swing.JPanel();
         jComboBox10 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jPanel10 = new javax.swing.JPanel();
+        trainSetPanel = new javax.swing.JPanel();
+        generalDetailsPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         brandLabel = new javax.swing.JLabel();
         brandBox = new javax.swing.JComboBox<>();
@@ -63,12 +85,9 @@ public class AddProduct extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 105, 0));
 
-        jPanel1.setBackground(new java.awt.Color(0, 105, 0));
-        jPanel1.setForeground(new java.awt.Color(0, 105, 0));
+        backgroundPanel.setBackground(new java.awt.Color(0, 105, 0));
 
-        jPanel2.setBackground(new java.awt.Color(0, 105, 0));
-
-        jPanel3.setToolTipText("");
+        locomotivePanel.setToolTipText("");
 
         locomotiveTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ANALOGUE", "DCC_READY", "DCC_FITTED", "DCC_SOUND" }));
 
@@ -81,189 +100,219 @@ public class AddProduct extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout locomotivePanelLayout = new javax.swing.GroupLayout(locomotivePanel);
+        locomotivePanel.setLayout(locomotivePanelLayout);
+        locomotivePanelLayout.setHorizontalGroup(
+            locomotivePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locomotivePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(locomotivePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(locomotiveAddButton)
                     .addComponent(locomotiveEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(locomotiveTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        locomotivePanelLayout.setVerticalGroup(
+            locomotivePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locomotivePanelLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(locomotiveTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(locomotiveEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                 .addComponent(locomotiveAddButton)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Locomotive", jPanel3);
+        partTypeTabbedPane.addTab("Locomotive", locomotivePanel);
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STANDARD_CONTROLLER", "DCC_CONTROLLER", "DCC_EDIT_CONTROLLER" }));
-        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
+        controllerTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STANDARD_CONTROLLER", "DCC_CONTROLLER", "DCC_EDIT_CONTROLLER" }));
+        controllerTypeBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox7ActionPerformed(evt);
+                controllerTypeBoxActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Add");
-
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "true", "false" }));
-        jComboBox9.addActionListener(new java.awt.event.ActionListener() {
+        addControllerButton.setText("Add");
+        addControllerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox9ActionPerformed(evt);
+                addControllerButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        isDigitalBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "true", "false" }));
+        isDigitalBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isDigitalBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Controller Type");
+
+        jLabel2.setText("Is Digital");
+
+        javax.swing.GroupLayout controllerPanelLayout = new javax.swing.GroupLayout(controllerPanel);
+        controllerPanel.setLayout(controllerPanelLayout);
+        controllerPanelLayout.setHorizontalGroup(
+            controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controllerPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addControllerButton)
+                    .addComponent(controllerTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(isDigitalBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addContainerGap(138, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
-                .addComponent(jButton5)
+        controllerPanelLayout.setVerticalGroup(
+            controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controllerPanelLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(controllerTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(4, 4, 4)
+                .addComponent(isDigitalBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addComponent(addControllerButton)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Controller", jPanel5);
+        partTypeTabbedPane.addTab("Controller", controllerPanel);
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STRAIGHT", "CURVE", "POINT", "CROSSOVER" }));
+        trackTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STRAIGHT", "CURVE", "POINT", "CROSSOVER" }));
 
-        jButton6.setText("Add");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        addTrackButton.setText("Add");
+        addTrackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                addTrackButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        jLabel3.setText("Track Type");
+
+        javax.swing.GroupLayout trackPanelLayout = new javax.swing.GroupLayout(trackPanel);
+        trackPanel.setLayout(trackPanelLayout);
+        trackPanelLayout.setHorizontalGroup(
+            trackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6))
+                .addGroup(trackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(trackTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addTrackButton)
+                    .addComponent(jLabel3))
                 .addContainerGap(227, Short.MAX_VALUE))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
-                .addComponent(jButton6)
+        trackPanelLayout.setVerticalGroup(
+            trackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackPanelLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(trackTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                .addComponent(addTrackButton)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Track", jPanel6);
+        partTypeTabbedPane.addTab("Track", trackPanel);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+        carriageEraBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
+        carriageEraBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
+                carriageEraBoxActionPerformed(evt);
             }
         });
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARRIAGE", "WAGON" }));
+        carriageTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARRIAGE", "WAGON" }));
 
-        jButton4.setText("Add");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addCarriageButton.setText("Add");
+        addCarriageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addCarriageButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        jLabel4.setText("Carriage Type");
+
+        jLabel5.setText("Carriage Era");
+
+        javax.swing.GroupLayout carriagePanelLayout = new javax.swing.GroupLayout(carriagePanel);
+        carriagePanel.setLayout(carriagePanelLayout);
+        carriagePanelLayout.setHorizontalGroup(
+            carriagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(carriagePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(carriagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addCarriageButton)
+                    .addComponent(carriageEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(carriageTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-                .addComponent(jButton4)
+        carriagePanelLayout.setVerticalGroup(
+            carriagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(carriagePanelLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(carriageTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addGap(3, 3, 3)
+                .addComponent(carriageEraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addComponent(addCarriageButton)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Carriage", jPanel7);
+        partTypeTabbedPane.addTab("Carriage", carriagePanel);
 
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STARTER_OVAL", "EXTENSION_PACK" }));
 
         jLabel6.setText("Type of Track Pack");
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+        javax.swing.GroupLayout trackPackPanelLayout = new javax.swing.GroupLayout(trackPackPanel);
+        trackPackPanel.setLayout(trackPackPanelLayout);
+        trackPackPanelLayout.setHorizontalGroup(
+            trackPackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackPackPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(trackPackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addContainerGap(179, Short.MAX_VALUE))
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+        trackPackPanelLayout.setVerticalGroup(
+            trackPackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackPackPanelLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(265, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Track_Pack", jPanel8);
+        partTypeTabbedPane.addTab("Track_Pack", trackPackPanel);
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout trainSetPanelLayout = new javax.swing.GroupLayout(trainSetPanel);
+        trainSetPanel.setLayout(trainSetPanelLayout);
+        trainSetPanelLayout.setHorizontalGroup(
+            trainSetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 348, Short.MAX_VALUE)
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
+        trainSetPanelLayout.setVerticalGroup(
+            trainSetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 320, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Train Set", jPanel9);
+        partTypeTabbedPane.addTab("Train Set", trainSetPanel);
 
-        jPanel10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        generalDetailsPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel7.setText("General Details");
 
@@ -292,19 +341,19 @@ public class AddProduct extends javax.swing.JFrame {
 
         cancelButton.setText("Cancel");
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+        javax.swing.GroupLayout generalDetailsPanelLayout = new javax.swing.GroupLayout(generalDetailsPanel);
+        generalDetailsPanel.setLayout(generalDetailsPanelLayout);
+        generalDetailsPanelLayout.setHorizontalGroup(
+            generalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalDetailsPanelLayout.createSequentialGroup()
                 .addGap(89, 89, 89)
                 .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(generalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelButton)
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(generalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(gaugeLabel)
                         .addComponent(brandLabel)
                         .addComponent(brandBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -315,9 +364,9 @@ public class AddProduct extends javax.swing.JFrame {
                         .addComponent(priceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+        generalDetailsPanelLayout.setVerticalGroup(
+            generalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -341,81 +390,40 @@ public class AddProduct extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
+        backgroundPanel.setLayout(backgroundPanelLayout);
+        backgroundPanelLayout.setHorizontalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(generalDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addComponent(partTypeTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(245, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        backgroundPanelLayout.setVerticalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1))
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(generalDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(partTypeTabbedPane))
                 .addGap(16, 16, 16))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 43, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 44, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 32, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void locomotiveAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locomotiveAddButtonActionPerformed
-        
-    }//GEN-LAST:event_locomotiveAddButtonActionPerformed
-
-    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox7ActionPerformed
-
-    private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox9ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox5ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void gaugeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaugeBoxActionPerformed
         // TODO add your handling code here:
@@ -425,74 +433,155 @@ public class AddProduct extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameTextBoxActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void addCarriageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCarriageButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addCarriageButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddProduct().setVisible(true);
-            }
-        });
-    }
+    private void carriageEraBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carriageEraBoxActionPerformed
+        CarriageDaoImpl carriageDao = new CarriageDaoImpl();
+
+        int intValue = (Integer) priceSpinner.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+        String gaugeType = gaugeBox.getSelectedItem().toString();
+        String carriageType = carriageTypeBox.getSelectedItem().toString();
+        String era = carriageEraBox.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("CARRIAGE");  
+
+        Carriage carriage = new Carriage(
+            productCode,
+            brandBox.getSelectedItem().toString(),
+            nameTextBox.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            CarriageType.valueOf(carriageType),
+            Era.valueOf(era)
+        );
+
+        carriageDao.addCarriage(carriage);
+        JOptionPane.showMessageDialog(this, "Added Carriage with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_carriageEraBoxActionPerformed
+
+    private void addTrackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTrackButtonActionPerformed
+
+        TrackDaoImpl trackDao = new TrackDaoImpl();
+
+        int intValue = (Integer) priceSpinner.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+        String gaugeType = gaugeBox.getSelectedItem().toString();
+        String trackType = trackTypeBox.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("TRACK");
+
+        Track track = new Track(
+            productCode,
+            brandBox.getSelectedItem().toString(),
+            nameTextBox.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            TrackType.valueOf(trackType)
+        );
+
+        trackDao.addTrack(track);
+        JOptionPane.showMessageDialog(this, "Added Track with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_addTrackButtonActionPerformed
+
+    private void isDigitalBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isDigitalBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_isDigitalBoxActionPerformed
+
+    private void addControllerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addControllerButtonActionPerformed
+        ControllerDaoImpl controllerDao = new ControllerDaoImpl();
+
+        int intValue = (Integer) priceSpinner.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+        String gaugeType = gaugeBox.getSelectedItem().toString();
+        ControllerType controllerType = ControllerType.valueOf(controllerTypeBox.getSelectedItem().toString());
+        Boolean isDigital = Boolean.valueOf(isDigitalBox.getSelectedItem().toString());
+        String productCode = MySqlService.generateProductCode("CONTROLLER");
+
+        // Create a Controller object
+        Controller controller = new Controller(
+            productCode,
+            brandBox.getSelectedItem().toString(),
+            nameTextBox.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            controllerType,
+            isDigital
+        );
+
+        controllerDao.addController(controller);
+        JOptionPane.showMessageDialog(this, "Added Controller with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_addControllerButtonActionPerformed
+
+    private void controllerTypeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controllerTypeBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_controllerTypeBoxActionPerformed
+
+    private void locomotiveAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locomotiveAddButtonActionPerformed
+        LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
+
+        // Assuming jSpinner1.getValue() returns a BigDecimal
+        int intValue = (Integer) priceSpinner.getValue();
+        BigDecimal retailPrice = new BigDecimal(intValue);
+
+        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+        String gaugeType = gaugeBox.getSelectedItem().toString();
+        String dccType = locomotiveTypeBox.getSelectedItem().toString();
+        String era = locomotiveEraBox.getSelectedItem().toString();
+        String productCode = MySqlService.generateProductCode("LOCOMOTIVE");
+
+        // Create a Locomotive object
+        Locomotive locomotive = new Locomotive(
+            productCode,
+            brandBox.getSelectedItem().toString(),
+            nameTextBox.getText(),
+            retailPrice,
+            Gauge.valueOf(gaugeType),
+            DCCType.valueOf(dccType), // Assuming DCCType is an enum
+            Era.valueOf(era) // Assuming Era is an enum
+        );
+
+        locomotiveDao.addLocomotive(locomotive);
+        JOptionPane.showMessageDialog(this, "Added Locomotive with ID: " + productCode, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_locomotiveAddButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addCarriageButton;
+    private javax.swing.JButton addControllerButton;
+    private javax.swing.JButton addTrackButton;
+    private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> brandBox;
     private javax.swing.JLabel brandLabel;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> carriageEraBox;
+    private javax.swing.JPanel carriagePanel;
+    private javax.swing.JComboBox<String> carriageTypeBox;
+    private javax.swing.JPanel controllerPanel;
+    private javax.swing.JComboBox<String> controllerTypeBox;
     private javax.swing.JComboBox<String> gaugeBox;
     private javax.swing.JLabel gaugeLabel;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JPanel generalDetailsPanel;
+    private javax.swing.JComboBox<String> isDigitalBox;
     private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton locomotiveAddButton;
     private javax.swing.JComboBox<String> locomotiveEraBox;
+    private javax.swing.JPanel locomotivePanel;
     private javax.swing.JComboBox<String> locomotiveTypeBox;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextBox;
+    private javax.swing.JTabbedPane partTypeTabbedPane;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JSpinner priceSpinner;
+    private javax.swing.JPanel trackPackPanel;
+    private javax.swing.JPanel trackPanel;
+    private javax.swing.JComboBox<String> trackTypeBox;
+    private javax.swing.JPanel trainSetPanel;
     // End of variables declaration//GEN-END:variables
 }
