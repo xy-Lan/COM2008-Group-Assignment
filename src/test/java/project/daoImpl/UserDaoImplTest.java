@@ -162,19 +162,20 @@ public class UserDaoImplTest {
 //    Optional<User> user = userDao.getUserById(userId);
 //    assertFalse(user.isPresent(), "User should not be present after deletion");
 //}
-//@Test
-//public void testGetUserRoles() {
-//    int userId = 2; // 插入一个测试用户并设置其角色，返回用户 ID
-//
-//    // 调用方法获取用户角色列表
-//    List<Role> roles = userDao.getUserRoles(userId);
-//
-//    assertNotNull(roles, "Roles list should not be null");
-//    assertFalse(roles.isEmpty(), "Roles list should not be empty");
-//
-//    // 验证返回的角色列表是否包含预期的角色
-//    assertTrue(roles.contains(Role.CUSTOMER), "User should have CUSTOMER role");
-//    assertTrue(roles.contains(Role.STAFF), "User should have STAFF role");
-//    // 验证其他预期的角色...
-//}
+@Test
+public void testGetUserRoles() {
+    int userId = 2; // 插入一个测试用户并设置其角色，返回用户 ID
+
+    // 调用方法获取用户角色列表
+    List<Role> roles = userDao.getUserRoles(userId);
+
+    assertNotNull(roles, "Roles list should not be null");
+    assertFalse(roles.isEmpty(), "Roles list should not be empty");
+
+    // 验证返回的角色列表是否包含预期的角色
+    assertTrue(roles.contains(Role.CUSTOMER), "User should have CUSTOMER role");
+    assertTrue(roles.contains(Role.STAFF), "User should have STAFF role");
+    assertTrue(roles.contains(Role.MANAGER), "User should have STAFF role");
+    // 验证其他预期的角色...
+}
 }
