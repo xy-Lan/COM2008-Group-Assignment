@@ -107,9 +107,10 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM product";
-        try (Connection conn = MySqlService.getConnection();
+        try {
+            Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String productCode = rs.getString("product_code");
