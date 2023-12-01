@@ -6,6 +6,7 @@ package project.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import project.service.InventoryService;
 
 /**
  *
@@ -52,6 +53,8 @@ public class StaffDashboard extends javax.swing.JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         jPopupMenu1.setPreferredSize(new java.awt.Dimension(20, 50));
 
@@ -276,6 +279,19 @@ public class StaffDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2);
         jButton2.setBounds(760, 247, 140, 30);
+
+        jTextField2.setText("jTextField2");
+        jPanel1.add(jTextField2);
+        jTextField2.setBounds(450, 40, 70, 22);
+
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3);
+        jButton3.setBounds(540, 40, 75, 23);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -514,6 +530,12 @@ public class StaffDashboard extends javax.swing.JFrame {
        NewProductFrame.setLocationRelativeTo(null);  
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // I have become Death
+        String product = jTextField2.getText();
+        InventoryService.deleteProduct(product);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     
 
 
@@ -529,6 +551,7 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnUser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -539,6 +562,7 @@ public class StaffDashboard extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
