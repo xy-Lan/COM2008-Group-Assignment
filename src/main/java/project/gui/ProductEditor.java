@@ -4,9 +4,17 @@
  */
 package project.gui;
 
+import project.dao.InventoryDao;
+import project.dao.ProductDao;
+import project.daoimpl.InventoryDaoImpl;
+import project.daoimpl.ProductDaoImpl;
 import project.model.product.abstractproduct.Product;
+import project.model.product.enums.Gauge;
+import project.service.InventoryService;
+import project.service.MySqlService;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 
 /**
  *
@@ -213,8 +221,24 @@ public class ProductEditor extends javax.swing.JFrame {
             product.setProductCode(txtProductCode.getText().trim());
             product.setProductName(txtProductName.getText().trim());
             product.setBrandName(brandComboBox.getName());
-//            product.setGaugeType(gaugeTypeCombo.getSelectedItem());
-//            product.setRetailPrice(priceSpinner.getValue());
+            product.setGaugeType((Gauge) gaugeTypeCombo.getSelectedItem());
+            Object value = priceSpinner.getValue();
+
+            BigDecimal price;
+            if (value instanceof Double) {
+                price = BigDecimal.valueOf((Double) value);
+            } else if (value instanceof Integer) {
+                price = BigDecimal.valueOf((Integer) value);
+            } else {
+                throw new IllegalArgumentException("Unexpected value type");
+            }
+            product.setRetailPrice(price);
+            ProductDao productDao = new ProductDaoImpl();
+            productDao.updateProduct(product, MySqlService.getConnection());
+            int quantity = (Integer) quantityVal.getValue();
+            InventoryService inventoryService = new InventoryService();
+            JOptionPane.showMessageDialog(null, "Details updated",
+                    "", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 

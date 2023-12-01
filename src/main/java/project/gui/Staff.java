@@ -19,7 +19,7 @@ import java.util.List;
  * @author linyu
  */
 public class Staff extends javax.swing.JFrame {
-    private ButtonCell buttonCell = new ButtonCell();
+//    private ButtonCell buttonCell = new ButtonCell();
 
     /**
      * Creates new form Default
@@ -325,7 +325,7 @@ public class Staff extends javax.swing.JFrame {
         model.addColumn("Quantity");
         model.addColumn("Edit");
 
-        jTable1.getColumn("Edit").setCellRenderer(buttonCell);
+
 
         //Get all the products
         InventoryDao inventoryDao = new InventoryDaoImpl();
@@ -345,6 +345,9 @@ public class Staff extends javax.swing.JFrame {
             model.addRow(row);
         }
         jTable1.setModel(model);
+        ButtonCell buttonCell = new ButtonCell();
+        jTable1.getColumn("Edit").setCellRenderer(buttonCell);
+        jTable1.getColumn("Edit").setCellEditor(buttonCell);
     }
 
     private void loadAllOrderTable(){
@@ -382,6 +385,11 @@ public class Staff extends javax.swing.JFrame {
             model.addRow(row);
         }
         jTable1.setModel(model);
+        ButtonCell buttonCell = new ButtonCell();
+        jTable1.getColumn("Fulfil").setCellRenderer(buttonCell);
+        jTable1.getColumn("Fulfil").setCellEditor(buttonCell);
+        jTable1.getColumn("Refuse").setCellRenderer(buttonCell);
+        jTable1.getColumn("Refuse").setCellEditor(buttonCell);
     }
 
     private void loadConfirmedOrderTable(){
@@ -398,8 +406,7 @@ public class Staff extends javax.swing.JFrame {
         model.addColumn("Fulfil");
         model.addColumn("Refuse");
 
-        jTable1.getColumn("Fulfil").setCellRenderer(buttonCell);
-        jTable1.getColumn("Refuse").setCellRenderer(buttonCell);
+
 
         //Get all the products
         OrderDao orderDao = new OrderDaoImpl();
@@ -421,6 +428,11 @@ public class Staff extends javax.swing.JFrame {
             model.addRow(row);
         }
         jTable1.setModel(model);
+        ButtonCell buttonCell = new ButtonCell();
+        jTable1.getColumn("Fulfil").setCellRenderer(buttonCell);
+        jTable1.getColumn("Fulfil").setCellEditor(buttonCell);
+        jTable1.getColumn("Refuse").setCellRenderer(buttonCell);
+        jTable1.getColumn("Refuse").setCellEditor(buttonCell);
     }
 
 
