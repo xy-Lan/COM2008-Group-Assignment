@@ -21,5 +21,4 @@ public class UserServiceTest {
 //        System.out.println("it is "+userService.isUserStaff(148));
 //    }
 
-
 }
