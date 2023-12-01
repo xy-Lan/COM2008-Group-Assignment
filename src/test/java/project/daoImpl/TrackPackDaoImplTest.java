@@ -33,13 +33,12 @@ public class TrackPackDaoImplTest {
 //
 //    }
 //
-//    @Test
-//    public void testAddTrackPack() {
-//        TrackPack trackPack = new TrackPack("P2235", "TestBrand", "TestName", new BigDecimal("10.99"), Gauge.OO_GAUGE, TrackPackType.EXTENSION_PACK);
-//
-//        trackPackDao.addTrackPack(trackPack);
-//
-//    }
+    @Test
+    public void testAddTrackPack() {
+        TrackPack trackPack = new TrackPack("P2706", "Hornby", "Track Pack A", new BigDecimal("150"), Gauge.TT_GAUGE, TrackPackType.EXTENSION_PACK);
+
+        trackPackDao.addTrackPack(trackPack);
+    }
 
 //    @Test
 //    public void testUpdateTrackPack()  {

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrackDaoImplTest {
     private TrackDao trackDao;
-    private final String testProductCode = "R223";
+    private final String testProductCode = "R337";
 
     @BeforeEach
     public void setUp() {
@@ -28,7 +28,7 @@ public class TrackDaoImplTest {
 
     @Test
     void testAddTrack()  {
-        Track testTrack = new Track(testProductCode, "Test Brand", "Test Product", BigDecimal.valueOf(100.0), Gauge.OO_GAUGE, TrackType.STRAIGHT);
+        Track testTrack = new Track(testProductCode, "Hornby", "Double Curve", BigDecimal.valueOf(160.0), Gauge.OO_GAUGE, TrackType.CURVE);
         trackDao.addTrack(testTrack);
     }
 

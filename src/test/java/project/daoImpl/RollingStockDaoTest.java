@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RollingStockDaoTest {
     RollingStockDao rollingStockDao;
-    String testProductCode = "S299";
+    String testProductCode = "S5555";
     RollingStock testRollingStock;
 
     @BeforeEach
@@ -26,12 +26,12 @@ public class RollingStockDaoTest {
         rollingStockDao = new RollingStockDaoImpl();
         testRollingStock = new RollingStock(
                 testProductCode,
-                "Hornby",
-                "Corridor First",
+                "Bachmann",
+                ", GWR Toad Guards Van",
                 BigDecimal.valueOf(100),
-                Gauge.TT_GAUGE,
-                RollingStockType.CARRIAGE,
-                Era.ERA_1
+                Gauge.OO_GAUGE,
+                RollingStockType.WAGON,
+                Era.ERA_6
         );
     }
 
