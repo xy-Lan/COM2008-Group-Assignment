@@ -238,7 +238,7 @@ public class Staff extends javax.swing.JFrame {
                         .addComponent(btnRollingStock)
                         .addGap(11, 11, 11)
                         .addComponent(btnController, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
