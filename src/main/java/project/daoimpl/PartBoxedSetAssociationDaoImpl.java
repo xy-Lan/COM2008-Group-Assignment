@@ -1,13 +1,17 @@
 package project.daoimpl;
 
 import project.dao.PartBoxedSetAssociationDao;
+import project.model.product.abstractproduct.BoxedSet;
+import project.model.product.abstractproduct.Part;
 import project.model.product.association.PartBoxedSetAssociation;
 import project.service.MySqlService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDao {
@@ -28,23 +32,112 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
         }
     }
 
+
     @Override
     public PartBoxedSetAssociation getAssociation(String partProductCode, String boxedSetProductCode) {
+        String sql = "SELECT * FROM part_boxed_set_association WHERE part_product_code = ? AND boxed_set_product_code = ?";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, partProductCode);
+            stmt.setString(2, boxedSetProductCode);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int quantity = rs.getInt("quantity");
+
+                    Part part = getPartByProductCode(partProductCode);
+                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode);
+
+                    return new PartBoxedSetAssociation(boxedSet, part, quantity);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving association", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
         return null;
     }
 
-    @Override
-    public List<PartBoxedSetAssociation> getAllAssociations() {
-        return null;
+    private Part getPartByProductCode(String productCode) {
+        char firstChar = productCode.charAt(0);
+        try (Connection conn = MySqlService.getConnection()) {
+            switch (firstChar) {
+                case 'R':
+                    return new TrackDaoImpl().getTrack(productCode);
+                case 'C':
+                    return new ControllerDaoImpl().getController(productCode);
+                case 'L':
+                    return new LocomotiveDaoImpl().getLocomotive(productCode);
+                case 'S':
+                    return new RollingStockDaoImpl().getRollingStock(productCode);
+                default:
+                    return null;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving part with productCode: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+    }
+
+    private BoxedSet getBoxedSetByProductCode(String productCode) {
+        char firstChar = productCode.charAt(0);
+        try (Connection conn = MySqlService.getConnection()) {
+            switch (firstChar) {
+                case 'M':
+                    return new TrainSetDaoImpl().getTrainSet(productCode);
+                case 'P':
+                    return new TrackPackDaoImpl().getTrackPack(productCode);
+                default:
+                    return null;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving boxed set with productCode: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
     }
 
     @Override
     public void updateAssociation(PartBoxedSetAssociation association) {
+        String updateSql = "UPDATE part_boxed_set_association SET quantity = ? WHERE part_product_code = ? AND boxed_set_product_code = ?";
 
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+
+            stmt.setInt(1, association.getQuantity());
+            stmt.setString(2, association.getPart().getProductCode());
+            stmt.setString(3, association.getBoxedSet().getProductCode());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No association updated for part product code: " + association.getPart().getProductCode() + " and boxed set product code: " + association.getBoxedSet().getProductCode());
+                throw new RuntimeException("Updating association failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "SQL error occurred while updating association: " + e.getMessage(), e);
+            throw new RuntimeException("Error updating association", e);
+        }
     }
 
     @Override
     public void deleteAssociation(String partProductCode, String boxedSetProductCode) {
+        String sql = "DELETE FROM part_boxed_set_association WHERE part_product_code = ? AND boxed_set_product_code = ?";
 
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, partProductCode);
+            stmt.setString(2, boxedSetProductCode);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No association found for part product code: " + partProductCode + " and boxed set product code: " + boxedSetProductCode);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "SQL error occurred while deleting association: " + e.getMessage(), e);
+            throw new RuntimeException("Error deleting association from the database", e);
+        }
     }
+
 }
