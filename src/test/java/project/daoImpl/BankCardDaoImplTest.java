@@ -66,13 +66,10 @@ public class BankCardDaoImplTest {
 
     @Test
     public void testGetBankCardByUserID_ExistingUser() {
-        // 假设存在的用户ID
         int userId = 123;
 
-        // 执行测试
         BankCard result = bankCardDao.getBankCardByUserID(userId);
 
-        // 验证结果
         assertNotNull(result, "Bank card should not be null");
         System.out.println(result.getCardNumber());
         System.out.println(result.getSecurityCode());
