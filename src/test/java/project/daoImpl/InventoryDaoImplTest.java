@@ -24,8 +24,8 @@ public class InventoryDaoImplTest {
 
     @Test
     public void testAddInventory() {
-        String testProductCode = "testProduct123";
-        int newQuantity = 10;
+        String testProductCode = "L130";
+        inventoryDao.addInventory("L130",50);
 
     }
 

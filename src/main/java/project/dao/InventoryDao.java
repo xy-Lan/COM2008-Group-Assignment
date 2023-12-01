@@ -6,7 +6,7 @@ import java.util.List;
 import project.model.inventory.Inventory;
 
 public interface InventoryDao {
-    void addInventory(String productCode, int newQuantity) throws SQLException;
+    void addInventory(String productCode, int newQuantity) ;
     // Method to increase the stock of a product
     void increaseStock(String productCode, int nnewShipmentQuantity);
     // Method to decrease the stock of a product

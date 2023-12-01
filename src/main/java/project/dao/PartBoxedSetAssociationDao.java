@@ -8,7 +8,6 @@ import java.util.List;
 public interface PartBoxedSetAssociationDao {
     void addAssociation(PartBoxedSetAssociation association);
     PartBoxedSetAssociation getAssociation(String partProductCode, String boxedSetProductCode) ;
-    List<PartBoxedSetAssociation> getAllAssociations() ;
     void updateAssociation(PartBoxedSetAssociation association);
     void deleteAssociation(String partProductCode, String boxedSetProductCode) ;
 }
