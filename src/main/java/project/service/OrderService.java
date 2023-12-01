@@ -184,12 +184,13 @@ public class OrderService {
 		BigDecimal total = BigDecimal.ZERO;
 
 		for (OrderLine line : orderLines) {
+//			System.out.println("Line  " + line.getLineCost());
 			BigDecimal lineCost = line.getLineCost();
 			if (lineCost != null) {
-				total = total.add(lineCost.multiply(new BigDecimal(line.getQuantity())));
+				total = total.add(lineCost);
 			}
 		}
-
+//		System.out.println("Finish calculation");
 		return total;
 	}
     
