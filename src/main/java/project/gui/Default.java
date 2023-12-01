@@ -406,6 +406,9 @@ public class Default extends javax.swing.JFrame {
 
     private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
         title.setText("Rolling Stock");
+        RollingStockDao rollingStockDao = new RollingStockDaoImpl();
+        List<RollingStock> allRollingStocks = rollingStockDao.getAllRollingStock();
+        loadProductsByType(allRollingStocks);
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
     private void btnStaffDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDashboardActionPerformed

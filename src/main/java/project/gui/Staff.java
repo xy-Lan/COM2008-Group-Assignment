@@ -4,13 +4,10 @@
  */
 package project.gui;
 
-import project.dao.InventoryDao;
-import project.dao.OrderDao;
-import project.dao.ProductDao;
-import project.daoimpl.InventoryDaoImpl;
-import project.daoimpl.OrderDaoImpl;
-import project.daoimpl.ProductDaoImpl;
+import project.dao.*;
+import project.daoimpl.*;
 import project.model.order.Order;
+import project.model.product.*;
 import project.model.product.abstractproduct.Product;
 
 import javax.swing.*;
@@ -22,13 +19,13 @@ import java.util.List;
  * @author linyu
  */
 public class Staff extends javax.swing.JFrame {
+    private ButtonCell buttonCell = new ButtonCell();
 
     /**
      * Creates new form Default
      */
     public Staff() {
         initComponents();
-        loadProductTabel();
     }
     
     
@@ -44,24 +41,20 @@ public class Staff extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnTrainSets = new javax.swing.JButton();
-        btnTrackPacks = new javax.swing.JButton();
-        btnLocomotives = new javax.swing.JButton();
-        btnTrack = new javax.swing.JButton();
-        btnRollingStock = new javax.swing.JButton();
-        btnControllers = new javax.swing.JButton();
-        btnMyDetails = new javax.swing.JButton();
-        btnRecentOrders = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        editProductPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtProductCode = new javax.swing.JTextField();
-        btnEditProduct = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnLoadConfirmedOrders = new javax.swing.JButton();
+        btnLoadAllOrders = new javax.swing.JButton();
+        btnTrackPack = new javax.swing.JButton();
+        btnNewProduct = new javax.swing.JButton();
+        btnTrainSets = new javax.swing.JButton();
+        btnTrack = new javax.swing.JButton();
+        btnLocomotives = new javax.swing.JButton();
+        btnRollingStock = new javax.swing.JButton();
+        btnController = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Category");
@@ -75,215 +68,43 @@ public class Staff extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 102, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 800));
 
-        btnTrainSets.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrainSets.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrainSets.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrainSets.setText("Train Sets");
-        btnTrainSets.setBorder(null);
-        btnTrainSets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrainSetsActionPerformed(evt);
-            }
-        });
-
-        btnTrackPacks.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrackPacks.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrackPacks.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrackPacks.setText("Track Packs");
-        btnTrackPacks.setBorder(null);
-        btnTrackPacks.setBorderPainted(false);
-        btnTrackPacks.setFocusPainted(false);
-        btnTrackPacks.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackPacksActionPerformed(evt);
-            }
-        });
-
-        btnLocomotives.setBackground(new java.awt.Color(0, 102, 0));
-        btnLocomotives.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnLocomotives.setForeground(new java.awt.Color(255, 255, 255));
-        btnLocomotives.setText("Locomotives");
-        btnLocomotives.setBorder(null);
-        btnLocomotives.setBorderPainted(false);
-        btnLocomotives.setFocusPainted(false);
-        btnLocomotives.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocomotivesActionPerformed(evt);
-            }
-        });
-
-        btnTrack.setBackground(new java.awt.Color(0, 102, 0));
-        btnTrack.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnTrack.setForeground(new java.awt.Color(255, 255, 255));
-        btnTrack.setText("Track");
-        btnTrack.setBorder(null);
-        btnTrack.setBorderPainted(false);
-        btnTrack.setFocusPainted(false);
-        btnTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTrackActionPerformed(evt);
-            }
-        });
-
-        btnRollingStock.setBackground(new java.awt.Color(0, 102, 0));
-        btnRollingStock.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnRollingStock.setForeground(new java.awt.Color(255, 255, 255));
-        btnRollingStock.setText("Rolling Stock");
-        btnRollingStock.setBorder(null);
-        btnRollingStock.setBorderPainted(false);
-        btnRollingStock.setFocusPainted(false);
-        btnRollingStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRollingStockActionPerformed(evt);
-            }
-        });
-
-        btnControllers.setBackground(new java.awt.Color(0, 102, 0));
-        btnControllers.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
-        btnControllers.setForeground(new java.awt.Color(255, 255, 255));
-        btnControllers.setText("Controllers");
-        btnControllers.setBorder(null);
-        btnControllers.setBorderPainted(false);
-        btnControllers.setFocusPainted(false);
-        btnControllers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnControllersActionPerformed(evt);
-            }
-        });
-
-        btnMyDetails.setBackground(new java.awt.Color(0, 102, 0));
-        btnMyDetails.setForeground(new java.awt.Color(204, 204, 204));
-        btnMyDetails.setText("My Details");
-        btnMyDetails.setBorder(null);
-        btnMyDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMyDetailsActionPerformed(evt);
-            }
-        });
-
-        btnRecentOrders.setBackground(new java.awt.Color(0, 102, 0));
-        btnRecentOrders.setForeground(new java.awt.Color(204, 204, 204));
-        btnRecentOrders.setText("Recent Orders");
-        btnRecentOrders.setBorder(null);
-        btnRecentOrders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRecentOrdersActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTrainSets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocomotives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTrackPacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRollingStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                    .addComponent(btnTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnControllers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnRecentOrders))
-                            .addComponent(btnMyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGap(0, 120, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(btnMyDetails)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRecentOrders)
-                .addGap(117, 117, 117)
-                .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrackPacks, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRollingStock, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnControllers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(307, Short.MAX_VALUE))
+            .addGap(0, 800, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 250, 800);
+        jPanel2.setBounds(0, 0, 120, 800);
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel2.setText("Categories");
+        jLabel2.setText("Staff Dashboard");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
+        jLabel2.setBounds(140, 60, 350, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
-
-        title.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Train Sets");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(title)
-                .addContainerGap(601, Short.MAX_VALUE))
+            .addGap(0, 880, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(title)
-                .addGap(19, 19, 19))
+            .addGap(0, 70, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(250, 120, 750, 70);
+        jPanel3.setBounds(120, 120, 880, 70);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setText("Enter a product code to edit : ");
-
-        btnEditProduct.setText("Edit");
-        btnEditProduct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditProductActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout editProductPanelLayout = new javax.swing.GroupLayout(editProductPanel);
-        editProductPanel.setLayout(editProductPanelLayout);
-        editProductPanelLayout.setHorizontalGroup(
-            editProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(editProductPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(btnEditProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
-        );
-        editProductPanelLayout.setVerticalGroup(
-            editProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editProductPanelLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addGroup(editProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditProduct))
-                .addGap(22, 22, 22))
-        );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -298,31 +119,135 @@ public class Staff extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        btnLoadConfirmedOrders.setBackground(new java.awt.Color(0, 102, 0));
+        btnLoadConfirmedOrders.setForeground(new java.awt.Color(255, 255, 255));
+        btnLoadConfirmedOrders.setText("List confirmed orders");
+        btnLoadConfirmedOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadConfirmedOrdersActionPerformed(evt);
+            }
+        });
+
+        btnLoadAllOrders.setBackground(new java.awt.Color(0, 102, 0));
+        btnLoadAllOrders.setForeground(new java.awt.Color(255, 255, 255));
+        btnLoadAllOrders.setText("List all orders");
+        btnLoadAllOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadAllOrdersActionPerformed(evt);
+            }
+        });
+
+        btnTrackPack.setBackground(new java.awt.Color(0, 204, 102));
+        btnTrackPack.setText("List track packs");
+        btnTrackPack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTrackPackActionPerformed(evt);
+            }
+        });
+
+        btnNewProduct.setBackground(new java.awt.Color(0, 102, 0));
+        btnNewProduct.setForeground(new java.awt.Color(255, 255, 255));
+        btnNewProduct.setText("Add a product");
+        btnNewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewProductActionPerformed(evt);
+            }
+        });
+
+        btnTrainSets.setBackground(new java.awt.Color(0, 204, 102));
+        btnTrainSets.setText("List train sets");
+        btnTrainSets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTrainSetsActionPerformed(evt);
+            }
+        });
+
+        btnTrack.setBackground(new java.awt.Color(0, 204, 102));
+        btnTrack.setText("List track");
+        btnTrack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTrackActionPerformed(evt);
+            }
+        });
+
+        btnLocomotives.setBackground(new java.awt.Color(0, 204, 102));
+        btnLocomotives.setText("List Locomotives");
+        btnLocomotives.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocomotivesActionPerformed(evt);
+            }
+        });
+
+        btnRollingStock.setBackground(new java.awt.Color(0, 204, 102));
+        btnRollingStock.setText("List rolling stocks");
+        btnRollingStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRollingStockActionPerformed(evt);
+            }
+        });
+
+        btnController.setBackground(new java.awt.Color(0, 204, 102));
+        btnController.setText("List controllers");
+        btnController.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnControllerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(editProductPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(btnLoadAllOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(66, 66, 66)
+                        .addComponent(btnLoadConfirmedOrders)
+                        .addGap(70, 70, 70)
+                        .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTrackPack, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRollingStock)
+                        .addGap(11, 11, 11)
+                        .addComponent(btnController, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(editProductPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLoadAllOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLoadConfirmedOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTrackPack, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTrainSets, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLocomotives, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRollingStock, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnController, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel4);
-        jPanel4.setBounds(250, 190, 750, 610);
+        jPanel4.setBounds(120, 190, 880, 610);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -330,43 +255,62 @@ public class Staff extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTrackPacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPacksActionPerformed
-        title.setText("Track Packs");
-    }//GEN-LAST:event_btnTrackPacksActionPerformed
+    private void btnTrackPackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackPackActionPerformed
+        // TODO add your handling code here:
+        TrackPackDao TrackPackDao = new TrackPackDaoImpl();
+        List<TrackPack> allTrackPacks = TrackPackDao.getAllTrackPacks();
+        loadProductTabelByTable(allTrackPacks);
+    }//GEN-LAST:event_btnTrackPackActionPerformed
 
-    private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
-        title.setText("Locomotives");
-    }//GEN-LAST:event_btnLocomotivesActionPerformed
+    private void btnLoadAllOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadAllOrdersActionPerformed
+        // TODO add your handling code here:
+        loadAllOrderTable();
+    }//GEN-LAST:event_btnLoadAllOrdersActionPerformed
+
+    private void btnLoadConfirmedOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadConfirmedOrdersActionPerformed
+        // TODO add your handling code here:
+        loadConfirmedOrderTable();
+    }//GEN-LAST:event_btnLoadConfirmedOrdersActionPerformed
+
+    private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNewProductActionPerformed
 
     private void btnTrainSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrainSetsActionPerformed
-        title.setText("Train Sets");
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        loadProductTabelByTable(allTrainSets);
     }//GEN-LAST:event_btnTrainSetsActionPerformed
 
     private void btnTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackActionPerformed
-        title.setText("Track");
+        // TODO add your handling code here:
+        TrackDao TrackDao = new TrackDaoImpl();
+        List<Track> allTracks = TrackDao.getAllTracks();
+        loadProductTabelByTable(allTracks);
     }//GEN-LAST:event_btnTrackActionPerformed
 
+    private void btnLocomotivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocomotivesActionPerformed
+        // TODO add your handling code here:
+        LocomotiveDao LocomotiveDao = new LocomotiveDaoImpl();
+        List<Locomotive> allLocomotives = LocomotiveDao.getAllLocomotives();
+        loadProductTabelByTable(allLocomotives);
+    }//GEN-LAST:event_btnLocomotivesActionPerformed
+
     private void btnRollingStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollingStockActionPerformed
-        title.setText("Rolling Stock");
+        // TODO add your handling code here:
+        RollingStockDao rollingStockDao = new RollingStockDaoImpl();
+        List<RollingStock> allRollingStocks = rollingStockDao.getAllRollingStock();
+        loadProductTabelByTable(allRollingStocks);
     }//GEN-LAST:event_btnRollingStockActionPerformed
 
-    private void btnControllersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllersActionPerformed
-        title.setText("Controllers");
-    }//GEN-LAST:event_btnControllersActionPerformed
-
-    private void btnMyDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyDetailsActionPerformed
+    private void btnControllerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControllerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMyDetailsActionPerformed
+        ControllerDao ControllerDao = new ControllerDaoImpl();
+        List<Controller> allControllers = ControllerDao.getAllControllers();
+        loadProductTabelByTable(allControllers);
+    }//GEN-LAST:event_btnControllerActionPerformed
 
-    private void btnRecentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecentOrdersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRecentOrdersActionPerformed
-
-    private void btnEditProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProductActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditProductActionPerformed
-
-    private void loadProductTabel() {
+    private void loadProductTabelByTable(List<? extends Product> allProducts) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         model.setRowCount(0);
@@ -381,10 +325,10 @@ public class Staff extends javax.swing.JFrame {
         model.addColumn("Quantity");
         model.addColumn("Edit");
 
+        jTable1.getColumn("Edit").setCellRenderer(buttonCell);
+
         //Get all the products
-        ProductDao productDao = new ProductDaoImpl();
         InventoryDao inventoryDao = new InventoryDaoImpl();
-        List<Product> allProducts = productDao.getAllProducts();
 
         for (Product product : allProducts){
             //Add rows to the model
@@ -398,7 +342,9 @@ public class Staff extends javax.swing.JFrame {
             row[4] = product.getGaugeType();
             row[5] = inventoryDao.getStock(product.getProductCode());
             row[6] = editProduct;
+            model.addRow(row);
         }
+        jTable1.setModel(model);
     }
 
     private void loadAllOrderTable(){
@@ -420,6 +366,7 @@ public class Staff extends javax.swing.JFrame {
         List<Order> allOrders = orderDao.getAllOrders();
 
         for (Order order : allOrders){
+//            System.out.println("Order: " + order.getDate() + order.getOrderNumber());
             //Add rows to the model
             Object[] row = new Object[6];
             JButton btnFulfil = new JButton();
@@ -432,7 +379,9 @@ public class Staff extends javax.swing.JFrame {
             row[3] = order.getOrderStatus();
             row[4] = btnFulfil;
             row[5] = btnRefuse;
+            model.addRow(row);
         }
+        jTable1.setModel(model);
     }
 
     private void loadConfirmedOrderTable(){
@@ -449,9 +398,12 @@ public class Staff extends javax.swing.JFrame {
         model.addColumn("Fulfil");
         model.addColumn("Refuse");
 
+        jTable1.getColumn("Fulfil").setCellRenderer(buttonCell);
+        jTable1.getColumn("Refuse").setCellRenderer(buttonCell);
+
         //Get all the products
         OrderDao orderDao = new OrderDaoImpl();
-        List<Order> allOrders = orderDao.getAllOrders();
+        List<Order> allOrders = orderDao.getConfirmedOrder();
 
         for (Order order : allOrders){
             //Add rows to the model
@@ -466,22 +418,22 @@ public class Staff extends javax.swing.JFrame {
             row[3] = order.getOrderStatus();
             row[4] = btnFulfil;
             row[5] = btnRefuse;
+            model.addRow(row);
         }
+        jTable1.setModel(model);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnControllers;
-    private javax.swing.JButton btnEditProduct;
+    private javax.swing.JButton btnController;
+    private javax.swing.JButton btnLoadAllOrders;
+    private javax.swing.JButton btnLoadConfirmedOrders;
     private javax.swing.JButton btnLocomotives;
-    private javax.swing.JButton btnMyDetails;
-    private javax.swing.JButton btnRecentOrders;
+    private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnRollingStock;
     private javax.swing.JButton btnTrack;
-    private javax.swing.JButton btnTrackPacks;
+    private javax.swing.JButton btnTrackPack;
     private javax.swing.JButton btnTrainSets;
-    private javax.swing.JPanel editProductPanel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -489,7 +441,5 @@ public class Staff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel title;
-    private javax.swing.JTextField txtProductCode;
     // End of variables declaration//GEN-END:variables
 }

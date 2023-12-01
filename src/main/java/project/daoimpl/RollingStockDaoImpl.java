@@ -106,7 +106,7 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
     }
 
     @Override
-    public List<RollingStock> getAllRollingStock() throws SQLException {
+    public List<RollingStock> getAllRollingStock() {
         List<RollingStock> rollingStocks = new ArrayList<>();
         String sql = "SELECT p.product_code, p.brand_name, p.product_name, p.retail_price, p.gauge_type, r.rolling_stock_type, r.era FROM product p JOIN rolling_stock r ON p.product_code = r.product_code";
         try (Connection conn = MySqlService.getConnection();
