@@ -22,43 +22,24 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	// Register a new user
-//    public User signUp(String email, String password) {
-//		// Hash the plaintext password
-//		String hashedPassword = PasswordEncryption.hashPassword(password);
-//
-//		try {
-//			// Create a new User object
-//			User newUser = new User(email);
-//			newUser.setPasswordHash(hashedPassword);
-//			// Set additional user attributes as needed
-//
-//			// Add user to the database and get generated user ID
-//			int userId = userDao.addUser(newUser);
-//			if (userId == 0) {
-//				throw new SQLException("Failed to create user.");
-//			}
-//
-//			// Add hashed password associated with the user
-//			userDao.addUserPasswordHash(userId, hashedPassword);
-//
-//			// Set the user ID of the newUser object
-//			newUser.setUserID(userId);
-//
-//			return newUser;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			// Handle or log the exception as appropriate
-//			return null;
-//		}
-//    }
+	public boolean isUserManager(int userId) {
+		List<Role> roles = userDao.getUserRoles(userId);
+		return roles.contains(Role.MANAGER);
+	}
 
-    // User login
+	public boolean isUserStaff(int userId) {
+		List<Role> roles = userDao.getUserRoles(userId);
+		return roles.contains(Role.STAFF);
+	}
+
+
     public boolean loginUser(String email, String password) {
         // Implement the login logic here
         // For example, check if the email and password match
         return false; // Return whether the login was successful
     }
+
+
 
 	public boolean checkUserHasBankCard(int userId) {
 		return bankCardDao.userHasBankCard(userId);
