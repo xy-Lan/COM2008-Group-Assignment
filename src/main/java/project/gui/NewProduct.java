@@ -73,6 +73,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton4 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jComboBox10 = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -174,7 +175,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addControllerGUI();
+                // jButton6ActionPerformed(evt);
             }
         });
 
@@ -213,7 +214,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         jButton4.setText("Add");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addRailGUI(evt);
+                // jButton4ActionPerformed(evt);
             }
         });
 
@@ -245,19 +246,25 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STARTER_OVAL", "EXTENSION_PACK" }));
 
+        jLabel6.setText("Type of Track Pack");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addContainerGap(179, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(11, 11, 11)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(201, Short.MAX_VALUE))
         );
@@ -519,6 +526,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
