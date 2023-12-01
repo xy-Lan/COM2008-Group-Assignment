@@ -23,6 +23,13 @@ public class InventoryDaoImplTest {
     }
 
     @Test
+    public void testAddInventory() {
+        String testProductCode = "testProduct123";
+        int newQuantity = 10;
+
+    }
+
+    @Test
     public void testUpdateStockLevel() throws SQLException {
         String productCode = "P122";
         int newQuantity = 60;

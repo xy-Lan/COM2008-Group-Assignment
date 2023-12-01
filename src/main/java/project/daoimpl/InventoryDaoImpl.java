@@ -15,6 +15,27 @@ public class InventoryDaoImpl implements InventoryDao {
     private static final Logger LOGGER = Logger.getLogger(InventoryDaoImpl.class.getName());
 
     @Override
+    public void addInventory(String productCode, int newQuantity) {
+        String insertSql = "INSERT INTO inventory (product_code, quantity) VALUES (?, ?)";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+
+            insertStmt.setString(1, productCode);
+            insertStmt.setInt(2, newQuantity);
+            int affectedRows = insertStmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "No new inventory record created for product code: " + productCode);
+                throw new RuntimeException("Creating inventory record failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "SQL error occurred while adding inventory: " + e.getMessage(), e);
+            throw new RuntimeException("Error adding inventory for product code: " + productCode, e);
+        }
+    }
+
+    @Override
     public void increaseStock(String productCode, int newShipmentQuantity) {
         String sql = "UPDATE inventory SET quantity = quantity + ? WHERE product_code = ?";
 

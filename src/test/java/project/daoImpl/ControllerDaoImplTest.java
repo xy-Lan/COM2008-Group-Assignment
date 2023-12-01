@@ -39,8 +39,6 @@ public class ControllerDaoImplTest {
 //    public void testUpdateController() {
 //        String productCode = "C122";
 //        Controller testController = new Controller("C122", "testBrand", "testName", new BigDecimal("99.99"), Gauge.TT_GAUGE, ControllerType.STANDARD_CONTROLLER, true);
-//
-//        // 执行更新操作
 //        controllerDao.updateController(testController);
 //    }
 
