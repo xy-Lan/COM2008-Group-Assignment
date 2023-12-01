@@ -213,15 +213,20 @@ public class ProductEditor extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        if (isAnyFieldEmpty(txtProductCode,txtProductName)){
+        if (isAnyFieldEmpty(txtProductName)){
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
             //TODO update product
-            product.setProductCode(txtProductCode.getText().trim());
             product.setProductName(txtProductName.getText().trim());
             product.setBrandName(brandComboBox.getName());
-            product.setGaugeType((Gauge) gaugeTypeCombo.getSelectedItem());
+            String comboValue = gaugeTypeCombo.getSelectedItem().toString();
+            try {
+                Gauge gaugeType = Gauge.valueOf(comboValue.toUpperCase());
+                product.setGaugeType(gaugeType);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Unexpected gauge type");
+            }
             Object value = priceSpinner.getValue();
 
             BigDecimal price;
