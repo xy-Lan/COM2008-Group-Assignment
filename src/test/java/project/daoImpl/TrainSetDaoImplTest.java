@@ -29,7 +29,7 @@ public class TrainSetDaoImplTest {
     @Test
     public void testAddTrainSet() {
         TrainSetDao trainSetDao = new TrainSetDaoImpl();
-        TrainSet testTrainSet = new TrainSet("M229", "TestBrand", "TestName", new BigDecimal("99.99"), Gauge.N_GAUGE);
+        TrainSet testTrainSet = new TrainSet("M2290", "Hornby", "Mallard Record Breaker Train Set ", new BigDecimal("250"), Gauge.TT_GAUGE);
 
         trainSetDao.addTrainSet(testTrainSet);
 

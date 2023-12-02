@@ -34,24 +34,24 @@ public class LocomotiveDaoImplTest {
         productDao = new ProductDaoImpl();
     }
 
-//    @Test
-//    public void testAddLocomotive() {
-//        // 创建一个 Locomotive 对象
-//        String productCode = "test_code";
-//        String brandName = "Test Brand";
-//        String productName = "Test Product";
-//        BigDecimal retailPrice = new BigDecimal("100.00");
-//        Gauge gaugeType = Gauge.OO_GAUGE; // 示例规格类型
-//        DCCType dccType = DCCType.DCC_FITTED; // 示例 DCC 类型
-//        Era era = Era.ERA_3; // 示例时代
-//
-//        Locomotive locomotive = new Locomotive(productCode, brandName, productName, retailPrice, gaugeType, dccType, era);
-//
-//
-//        assertDoesNotThrow(() -> locomotiveDao.addLocomotive(locomotive));
-//
-//    }
-//
+    @Test
+    public void testAddLocomotive() {
+        // 创建一个 Locomotive 对象
+        String productCode = "L4400";
+        String brandName = "Hornby";
+        String productName = " Class 55 Deltic Diesel";
+        BigDecimal retailPrice = new BigDecimal("90.00");
+        Gauge gaugeType = Gauge.TT_GAUGE; // 示例规格类型
+        DCCType dccType = DCCType.DCC_SOUND; // 示例 DCC 类型
+        Era era = Era.ERA_10; // 示例时代
+
+        Locomotive locomotive = new Locomotive(productCode, brandName, productName, retailPrice, gaugeType, dccType, era);
+
+
+        assertDoesNotThrow(() -> locomotiveDao.addLocomotive(locomotive));
+
+    }
+
     @Test
     public void testGetAllLocomotives() {
         List<Locomotive> locomotives = locomotiveDao.getAllLocomotives();

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import project.model.user.User;
 import project.utils.PasswordUtils;
 import project.utils.UserSessionManager;
@@ -26,6 +28,7 @@ public class MySqlService {
     private static final String JDBC_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team015";
     private static final String USERNAME = "team015";
     private static final String PASSWORD = "eSh7Shahk";
+    private static final HikariDataSource dataSource;
 
     private static final MySqlService mySqlService = new MySqlService();
 
@@ -33,32 +36,51 @@ public class MySqlService {
         return mySqlService;
     }
 
-
     private static Connection connection;
 
-    public MySqlService() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load MySQL JDBC driver.");
-        }
+//    public MySqlService() {
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to load MySQL JDBC driver.");
+//        }
+//
+//        connect();
+//    }
 
-        connect();
+    static {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(JDBC_URL);
+        config.setUsername(USERNAME);
+        config.setPassword(PASSWORD);
+        dataSource = new HikariDataSource(config);
     }
 
     public static Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
-                connect();
-            }
+            return dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to check the connection status.");
+            e.printStackTrace(); // 或使用更复杂的日志记录机制
+            // 可以选择抛出运行时异常，或返回 null
+            throw new RuntimeException("Failed to get database connection", e);
+            // 或者: return null;
         }
-
-        return connection;
     }
+
+
+//    public static Connection getConnection() {
+//        try {
+//            if (connection == null || connection.isClosed()) {
+//                connect();
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to check the connection status.");
+//        }
+//
+//        return connection;
+//    }
 
     public Connection getInstanceConnection() {
         try {
@@ -196,42 +218,38 @@ public class MySqlService {
 //    }
 
     public static boolean login(String username, String password) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT u.user_id, u.email, u.address_id, p.password_hash FROM users u " +
+                             "JOIN hashed_passwords p ON u.user_id = p.user_id " +
+                             "WHERE u.email = ?")) {
 
-        Connection connection = getConnection();
-
-        String sql = "SELECT u.user_id, u.email, u.address_id, p.password_hash FROM users u " +
-                "JOIN hashed_passwords p ON u.user_id = p.user_id " +
-                "WHERE u.email = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet != null) {
-                while (resultSet.next()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     String hashedPassword = resultSet.getString("password_hash");
                     if (PasswordUtils.checkPassword(password, hashedPassword)) {
                         int id = resultSet.getInt("user_id");
                         int address_id = resultSet.getInt("address_id");
                         String email = resultSet.getString("email");
                         System.out.println("Found user with id: " + id);
+
                         User user = new User(email);
                         user.setUserID(id);
                         user.setAddressId(address_id);
                         UserSessionManager.getInstance().setLoggedInUser(user);
+
                         return true;
                     }
                 }
-                resultSet.close();
             }
-            connection.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return false;
     }
+
 
 
 

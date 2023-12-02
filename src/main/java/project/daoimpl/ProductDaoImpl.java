@@ -7,10 +7,14 @@ import project.model.product.enums.Gauge;
 import project.service.MySqlService;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoImpl.class.getName());
@@ -198,6 +202,24 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    public boolean checkProductCodeExists(String productCode) {
+        String sql = "SELECT COUNT(*) FROM product WHERE product_code = ?";
 
-    // Other necessary methods...
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, productCode);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if product code exists in the database", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return false;
+    }
 }
