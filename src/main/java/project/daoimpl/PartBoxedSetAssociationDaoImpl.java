@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,9 +61,39 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
         return null;
     }
 
-    private Part getPartByProductCode(String productCode) {
-        char firstChar = productCode.charAt(0);
-        try (Connection conn = MySqlService.getConnection()) {
+    @Override
+    public List<PartBoxedSetAssociation> getAssociationsForBoxedSet(String boxedSetProductCode) {
+        List<PartBoxedSetAssociation> associations = new ArrayList<>();
+        String sql = "SELECT * FROM part_boxed_set_association WHERE boxed_set_product_code = ?";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, boxedSetProductCode);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String partProductCode = rs.getString("part_product_code");
+                    int quantity = rs.getInt("quantity");
+
+                    Part part = getPartByProductCode(partProductCode);
+                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode);
+
+                    associations.add(new PartBoxedSetAssociation(boxedSet, part, quantity));
+
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving associations for boxed set: " + boxedSetProductCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+        return associations;
+    }
+
+
+    private Part getPartByProductCode(String productCode) {MySqlService mySqlService = new MySqlService();
+        try (Connection conn = mySqlService.getInstanceConnection()) {
+            char firstChar = productCode.charAt(0);
             switch (firstChar) {
                 case 'R':
                     return new TrackDaoImpl().getTrack(productCode);
@@ -82,8 +113,9 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
     }
 
     private BoxedSet getBoxedSetByProductCode(String productCode) {
-        char firstChar = productCode.charAt(0);
-        try (Connection conn = MySqlService.getConnection()) {
+        MySqlService mySqlService = new MySqlService();
+        try (Connection conn = mySqlService.getInstanceConnection()) {
+            char firstChar = productCode.charAt(0);
             switch (firstChar) {
                 case 'M':
                     return new TrainSetDaoImpl().getTrainSet(productCode);
@@ -97,6 +129,35 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
             throw new RuntimeException("Database operation failed", e);
         }
     }
+
+
+//    private BoxedSet getBoxedSetByProductCode(String productCode, Connection conn) {
+//        boolean shouldCloseConnection = false;
+//        if (conn == null) {
+//            conn = MySqlService.getConnection();
+//            shouldCloseConnection = true;
+//        }
+//        try {
+//            char firstChar = productCode.charAt(0);
+//            switch (firstChar) {
+//                case 'M':
+//                    return new TrainSetDaoImpl().getTrainSet(productCode);
+//                case 'P':
+//                    return new TrackPackDaoImpl().getTrackPack(productCode);
+//                default:
+//                    return null;
+//            }
+//        } finally {
+//            if (shouldCloseConnection && conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    LOGGER.log(Level.SEVERE, "Error closing connection", e);
+//                }
+//            }
+//        }
+//    }
+
 
     @Override
     public void updateAssociation(PartBoxedSetAssociation association) {
