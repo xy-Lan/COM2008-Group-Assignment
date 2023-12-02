@@ -5,6 +5,7 @@ import project.daoimpl.*;
 import project.model.order.Order;
 import project.model.order.OrderLine;
 import project.model.product.*;
+import project.model.product.abstractproduct.Part;
 import project.model.product.abstractproduct.Product;
 import project.model.user.User;
 import project.service.MySqlService;
@@ -14,6 +15,7 @@ import project.utils.UserSessionManager;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 import static javax.swing.JOptionPane.*;
@@ -30,6 +32,7 @@ public class ProductDetails extends javax.swing.JFrame {
     private Product product;
     private UserDao userDao = new UserDaoImpl();
     private UserService userService = new UserService(userDao);
+    private PartBoxedSetAssociationDao pbsad = new PartBoxedSetAssociationDaoImpl();
 
     public ProductDetails(Product product) {
         User user = UserSessionManager.getInstance().getLoggedInUser();
@@ -43,6 +46,7 @@ public class ProductDetails extends javax.swing.JFrame {
         if (userService.isUserStaff(user.getUserID())) {
             btnStaffInterface.setVisible(true);
         }
+        loadSpecialProperties();
     }
     
     
@@ -280,6 +284,80 @@ public class ProductDetails extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadSpecialProperties(){
+        char firstChar = product.getProductCode().charAt(0);
+        System.out.println("First Char is "+firstChar);
+        switch (firstChar) {
+            case 'R':
+                TrackDao trackDao = new TrackDaoImpl();
+                Track track = trackDao.getTrack(product.getProductCode());
+                JLabel lblTrackType = new JLabel("Track type: " + track.getTrackType());
+                lblTrackType.setBounds(630, 350, 310, 17);
+                jPanel1.add(lblTrackType);
+                System.out.println("it is a track");
+                break;
+
+            case 'C':
+                ControllerDao controllerDao = new ControllerDaoImpl();
+                Controller controller = controllerDao.getController(product.getProductCode());
+                JLabel lblConTrollerType = new JLabel("Controller type: " + controller.getControllerType());
+                lblConTrollerType.setBounds(630, 350, 310, 17);
+                JLabel lblIsDigit = new JLabel("Is digit: " + controller.getIsDigital());
+                lblIsDigit.setBounds(630, 375, 310, 17);
+                jPanel1.add(lblConTrollerType);
+                jPanel1.add(lblIsDigit);
+                System.out.println("it is a controller");
+                break;
+
+            case 'L':
+                LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
+                Locomotive locomotive = locomotiveDao.getLocomotive(product.getProductCode());
+                JLabel lblDCCType = new JLabel("DCC type: " + locomotive.getDccType());
+                lblDCCType.setBounds(630, 350, 310, 17);
+                JLabel lblLocomotiveEra = new JLabel("Era: " + locomotive.getEra());
+                lblLocomotiveEra.setBounds(630, 375, 310, 17);
+                jPanel1.add(lblDCCType);
+                jPanel1.add(lblLocomotiveEra);
+                System.out.println("it is a locomotive");
+                break;
+
+            case 'S':
+                RollingStockDao rollingStockDao = new RollingStockDaoImpl();
+                RollingStock rollingStock = null;
+                try {
+                    rollingStock = rollingStockDao.getRollingStock(product.getProductCode());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                JLabel lblRollingStockType = new JLabel("Rolling stock type: " + rollingStock.getRollingStockType());
+                lblRollingStockType.setBounds(630, 350, 310, 17);
+                JLabel lblRollingStockEra = new JLabel("Era: " + rollingStock.getEra());
+                lblRollingStockEra.setBounds(630, 375, 310, 17);
+                jPanel1.add(lblRollingStockType);
+                jPanel1.add(lblRollingStockEra);
+
+                System.out.println("it is a locomotive");
+                break;
+            case 'M':
+                TrainSetDao trainSetDao = new TrainSetDaoImpl();
+                List<Part> trainSetParts = null;
+                //TODO get parts
+//                Part trainSetPart = pbsad.getPartByProductCode();
+                System.out.println("it is a TrainSet");
+                break;
+            case 'P':
+                TrackPackDao trackPackDao = new TrackPackDaoImpl();
+                TrackPack trackPack = trackPackDao.getTrackPack(product.getProductCode());
+                List<Part> trackPackParts = null;
+                JLabel lblPackType = new JLabel("Pack type: " + trackPack.getPackType());
+                lblPackType.setBounds(630, 350, 310, 17);
+                jPanel1.add(lblPackType);
+                System.out.println("it is a TrackPack");
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown product type: " + firstChar);
+        }
+    }
     private void btnBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasketActionPerformed
         OrderLines OrderLinesFrame = new OrderLines();
         OrderLinesFrame.setVisible(true);
