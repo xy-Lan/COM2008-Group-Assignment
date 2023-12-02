@@ -76,8 +76,8 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
                     String partProductCode = rs.getString("part_product_code");
                     int quantity = rs.getInt("quantity");
 
-                    Part part = getPartByProductCode(partProductCode);
-                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode);
+                    Part part = getPartByProductCode(partProductCode, conn);
+                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode, conn);
 
                     associations.add(new PartBoxedSetAssociation(boxedSet, part, quantity));
 
@@ -111,6 +111,71 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
             throw new RuntimeException("Database operation failed", e);
         }
     }
+
+    private Part getPartByProductCode(String productCode, Connection conn) throws SQLException {
+        boolean createdNewConnection = false;
+        if (conn == null) {
+            conn = MySqlService.getConnection();
+            System.out.println("for part new conn has been created");
+            createdNewConnection = true;
+        }
+
+        try {
+            char firstChar = productCode.charAt(0);
+            switch (firstChar) {
+                case 'R':
+                    return new TrackDaoImpl().getTrack(productCode);
+                case 'C':
+                    return new ControllerDaoImpl().getController(productCode);
+                case 'L':
+                    return new LocomotiveDaoImpl().getLocomotive(productCode);
+                case 'S':
+                    return new RollingStockDaoImpl().getRollingStock(productCode);
+                default:
+                    return null;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving part with productCode: " + productCode, e);
+            throw new RuntimeException("Database operation failed", e);
+        } finally {
+            if (createdNewConnection && conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    LOGGER.log(Level.SEVERE, "Error closing connection", e);
+                }
+            }
+        }
+    }
+
+    private BoxedSet getBoxedSetByProductCode(String productCode, Connection conn) throws SQLException {
+        boolean createdNewConnection = false;
+        if (conn == null) {
+            conn = MySqlService.getConnection();
+            createdNewConnection = true;
+        }
+
+        try {
+            char firstChar = productCode.charAt(0);
+            switch (firstChar) {
+                case 'M':
+                    return new TrainSetDaoImpl().getTrainSet(productCode);
+                case 'P':
+                    return new TrackPackDaoImpl().getTrackPack(productCode);
+                default:
+                    return null;
+            }
+        } finally {
+            if (createdNewConnection && conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    LOGGER.log(Level.SEVERE, "Error closing connection", e);
+                }
+            }
+        }
+    }
+
 
     private BoxedSet getBoxedSetByProductCode(String productCode) {
         MySqlService mySqlService = new MySqlService();

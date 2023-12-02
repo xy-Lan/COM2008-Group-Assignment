@@ -37,7 +37,6 @@ public class PartBoxedSetAssociationDaoTest {
 
     @Test
     public void testGetAssociationsForBoxedSet() {
-        // 假设数据库中有一个boxed set，其product code为"BS123"，并且这个boxed set关联了至少一个part
         String boxedSetProductCode = "P123";
 
         // 调用方法
@@ -61,7 +60,7 @@ public class PartBoxedSetAssociationDaoTest {
     @Test
     public void testGetAssociation() {
 
-        String partProductCode = "C122"; // 替换为实际的产品代码
+        String partProductCode = "C122";
         String boxedSetProductCode = "P123"; // 替换为实际的产品代码
 
         PartBoxedSetAssociation association = partBoxedSetAssociationDao.getAssociation(partProductCode, boxedSetProductCode);
