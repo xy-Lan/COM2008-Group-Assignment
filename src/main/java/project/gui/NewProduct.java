@@ -30,13 +30,10 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
     private InventoryDao inventoryDao = new InventoryDaoImpl();
 
-    private List<JTextField> trainSetPartCodeFields = new ArrayList<>();
-    private List<JTextField> trackPackPartCodeFields = new ArrayList<>();
-    private List<JSpinner> trainSetPartSpinnerList = new ArrayList<>();
-    private List<JSpinner> trackPackPartSpinnerList = new ArrayList<>();
-
-    private int[] trainSetPartQuantities;
-    private int[] trackPackPartQuantities;
+    private List<String> trainSetPartCodes = new ArrayList<>();
+    private List<String> trackPackPartCodes = new ArrayList<>();
+    private List<Integer> trainSetPartQuantities = new ArrayList<>();
+    private List<Integer> trackPackPartQuantities = new ArrayList<>();
 
     /**
      * Creates new customizer NewProduct
@@ -680,361 +677,443 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
 
     private void btnAddTrainSetActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnAddTrainSetActionPerformed
         TrainSetDaoImpl TrainSetDao = new TrainSetDaoImpl();
+        ProductDaoImpl productDao = new ProductDaoImpl();
 
-        // Assuming jSpinner1.getValue() returns a BigDecimal
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        String partProductCode = txtTrainSetPartProductCode.toString();
-        int partQuantity = (Integer) trainSetPartQuantity.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
+        if (isAnyFieldEmpty(jTextField1, txtTrainSetPartProductCode)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("TRACK_PACK");
+            if (isSetsOrParts(txtTrainSetPartProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not add a set or a pack!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!productDao.checkProductCodeExists(txtTrainSetPartProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not find the part. Please check if the correct product code has been entered",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Assuming jSpinner1.getValue() returns a BigDecimal
+                int intValue = (Integer) priceVal.getValue();
+                int quantity = (Integer) quantityVal.getValue();
 
-        // Create a Locomotive object
-        TrainSet trainSet = new TrainSet(
-                productCode,
-                jComboBox1.getSelectedItem().toString(),
-                jTextField1.getText(),
-                retailPrice,
-                Gauge.valueOf(gaugeType)
-        );
-        addTrainSetPart(partProductCode, partQuantity, trainSet);
-        getTrainSetPartQuantity();
-        if (trainSetPartQuantities.length != 0) {
-            int i = 0;
-            for (JTextField partCode : trainSetPartCodeFields){
-                addTrainSetPart(partCode.getText().trim(), trainSetPartQuantities[i], trainSet);
-                i++;
+                BigDecimal retailPrice = new BigDecimal(intValue);
+
+                // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+                String gaugeType = jComboBox2.getSelectedItem().toString();
+                String productCode = MySqlService.generateProductCode("TRACK_PACK");
+
+                // Create a Locomotive object
+                TrainSet trainSet = new TrainSet(
+                        productCode,
+                        jComboBox1.getSelectedItem().toString(),
+                        jTextField1.getText(),
+                        retailPrice,
+                        Gauge.valueOf(gaugeType)
+                );
+
+//        getTrainSetPartQuantity();
+                String partProductCode = txtTrainSetPartProductCode.getText();
+                int partQuantity = (Integer) trainSetPartQuantity.getValue();
+                System.out.println(partProductCode);
+                addTrainSetPart(partProductCode, partQuantity, trainSet);
+                int i = 0;
+                for (String partCode : trainSetPartCodes) {
+                    addTrainSetPart(partCode, trainSetPartQuantities.get(i), trainSet);
+                    i++;
+                }
+                TrainSetDao.addTrainSet(trainSet);
+                JOptionPane.showMessageDialog(null, "Product successfully added",
+                        "Saved", JOptionPane.INFORMATION_MESSAGE);
+                inventoryDao.addInventory(productCode, quantity);
             }
         }
-        TrainSetDao.addTrainSet(trainSet);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
     }//GEN-LAST:event_btnAddTrainSetActionPerformed
 
     private void btnAddTrackPackActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnAddTrackPackActionPerformed
         TrackPackDaoImpl TrackPackDao = new TrackPackDaoImpl();
+        ProductDaoImpl productDao = new ProductDaoImpl();
 
-        // Assuming jSpinner1.getValue() returns a BigDecimal
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        int partQuantity = (Integer) trackPackPartQuantity.getValue();
-        String partProductCode = txtTrackPackProductCode.toString();
-        BigDecimal retailPrice = new BigDecimal(intValue);
 
-        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String packType = jComboBox10.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("TRACK_PACK");
+        if (isAnyFieldEmpty(jTextField1, txtTrackPackProductCode)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-        // Create a Locomotive object
-        TrackPack trackPack = new TrackPack(
-                productCode,
-                jComboBox1.getSelectedItem().toString(),
-                jTextField1.getText(),
-                retailPrice,
-                Gauge.valueOf(gaugeType),
-                TrackPackType.valueOf(packType)
-        );
-        //Add Parts
-        addTrackPackPart(partProductCode, partQuantity, trackPack);
-        getTrackPackPartQuantity();
-        if (trackPackPartQuantities.length != 0) {
-            int i = 0;
-            for (JTextField partCode : trackPackPartCodeFields){
-                addTrackPackPart(partCode.getText().trim(), trackPackPartQuantities[i], trackPack);
-                i++;
+            if (isSetsOrParts(txtTrackPackProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not add a set or a pack!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!productDao.checkProductCodeExists(txtTrackPackProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not find the part. Please check if the correct product code has been entered",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                // Assuming jSpinner1.getValue() returns a BigDecimal
+                int intValue = (Integer) priceVal.getValue();
+                int quantity = (Integer) quantityVal.getValue();
+
+                BigDecimal retailPrice = new BigDecimal(intValue);
+
+                // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+                String gaugeType = jComboBox2.getSelectedItem().toString();
+                String packType = jComboBox10.getSelectedItem().toString();
+                String productCode = MySqlService.generateProductCode("TRACK_PACK");
+
+                // Create a Locomotive object
+                TrackPack trackPack = new TrackPack(
+                        productCode,
+                        jComboBox1.getSelectedItem().toString(),
+                        jTextField1.getText(),
+                        retailPrice,
+                        Gauge.valueOf(gaugeType),
+                        TrackPackType.valueOf(packType)
+                );
+                //Add Parts
+                String partProductCode = txtTrackPackProductCode.getText();
+                int partQuantity = (Integer) trackPackPartQuantity.getValue();
+                System.out.println(partProductCode);
+                addTrackPackPart(partProductCode, partQuantity, trackPack);
+//        getTrackPackPartQuantity();
+                int i = 0;
+                for (String partCode : trackPackPartCodes) {
+                    addTrackPackPart(partCode, trackPackPartQuantities.get(i), trackPack);
+                    i++;
+                }
+
+                TrackPackDao.addTrackPack(trackPack);
+                JOptionPane.showMessageDialog(null, "Product successfully added",
+                        "Saved", JOptionPane.INFORMATION_MESSAGE);
+                inventoryDao.addInventory(productCode, quantity);
             }
         }
-        TrackPackDao.addTrackPack(trackPack);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
     }//GEN-LAST:event_btnAddTrackPackActionPerformed
 
     private void btnAddTrainSetPartPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTrainSetPartPanelActionPerformed
         // TODO add your handling code here:
-//        if (txtTrainSetPartProductCode.getText()){
-//            JOptionPane.showMessageDialog(null, "Can not find the part. Please check if the correct product code has been entered",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-        txtTrainSetPartProductCode.setText("");
-        trainSetPartQuantity.setValue(0);
-        addTrainSetPartPanel();
+        ProductDaoImpl productDao = new ProductDaoImpl();
+        if (!productDao.checkProductCodeExists(txtTrainSetPartProductCode.getText())){
+            JOptionPane.showMessageDialog(null, "Can not find the part. Please check if the correct product code has been entered",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (isSetsOrParts(txtTrainSetPartProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not add a set or a pack!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                trainSetPartCodes.add(txtTrainSetPartProductCode.getText());
+                trainSetPartQuantities.add((Integer) trainSetPartQuantity.getValue());
+                txtTrainSetPartProductCode.setText("");
+                trainSetPartQuantity.setValue(0);
+            }
+        }
     }//GEN-LAST:event_btnAddTrainSetPartPanelActionPerformed
 
     private void btnAddTrackPackPartPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTrackPackPartPanelActionPerformed
         // TODO add your handling code here:
-        addTrackPackPartPanel();
+        ProductDaoImpl productDao = new ProductDaoImpl();
+        System.out.println(txtTrackPackProductCode.getText());
+        if (!productDao.checkProductCodeExists(txtTrackPackProductCode.getText())){
+            JOptionPane.showMessageDialog(null, "Can not find the part. Please check if the correct product code has been entered",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (isSetsOrParts(txtTrackPackProductCode.getText())) {
+                JOptionPane.showMessageDialog(null, "Can not add a set or a pack!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("Found product");
+                trackPackPartCodes.add(txtTrackPackProductCode.getText());
+                trackPackPartQuantities.add((Integer) trackPackPartQuantity.getValue());
+                txtTrackPackProductCode.setText("");
+                trackPackPartQuantity.setValue(0);
+            }
+
+        }
     }//GEN-LAST:event_btnAddTrackPackPartPanelActionPerformed
 
     private void addLocomotiveGUI() throws SQLException {
         LocomotiveDaoImpl locomotiveDao = new LocomotiveDaoImpl();
 
-        // Assuming jSpinner1.getValue() returns a BigDecimal
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
+        if (isAnyFieldEmpty(jTextField1)) {
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-        // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String dccType = jComboBox3.getSelectedItem().toString();
-        String era = jComboBox4.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("LOCOMOTIVE");
+            // Assuming jSpinner1.getValue() returns a BigDecimal
+            int intValue = (Integer) priceVal.getValue();
+            int quantity = (Integer) quantityVal.getValue();
+            BigDecimal retailPrice = new BigDecimal(intValue);
 
-        // Create a Locomotive object
-        Locomotive locomotive = new Locomotive(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            DCCType.valueOf(dccType), // Assuming DCCType is an enum
-            Era.valueOf(era) // Assuming Era is an enum
-        );
+            // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
+            String gaugeType = jComboBox2.getSelectedItem().toString();
+            String dccType = jComboBox3.getSelectedItem().toString();
+            String era = jComboBox4.getSelectedItem().toString();
+            String productCode = MySqlService.generateProductCode("LOCOMOTIVE");
 
-        locomotiveDao.addLocomotive(locomotive);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
+            // Create a Locomotive object
+            Locomotive locomotive = new Locomotive(
+                    productCode,
+                    jComboBox1.getSelectedItem().toString(),
+                    jTextField1.getText(),
+                    retailPrice,
+                    Gauge.valueOf(gaugeType),
+                    DCCType.valueOf(dccType), // Assuming DCCType is an enum
+                    Era.valueOf(era) // Assuming Era is an enum
+            );
+
+            locomotiveDao.addLocomotive(locomotive);
+            JOptionPane.showMessageDialog(null, "Product successfully added",
+                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+            inventoryDao.addInventory(productCode, quantity);
+        }
     }
 
     private void addControllerGUI() throws SQLException {
         ControllerDaoImpl controllerDao = new ControllerDaoImpl();
 
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        ControllerType controllerType = ControllerType.valueOf(jComboBox7.getSelectedItem().toString());
-        Boolean isDigital = Boolean.valueOf(jComboBox9.getSelectedItem().toString());
-        String productCode = MySqlService.generateProductCode("CONTROLLER");
+        if (isAnyFieldEmpty(jTextField1)) {
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-        // Create a Controller object
-        Controller controller = new Controller(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            controllerType,
-            isDigital
-        );
+            int intValue = (Integer) priceVal.getValue();
+            int quantity = (Integer) quantityVal.getValue();
+            BigDecimal retailPrice = new BigDecimal(intValue);
+            String gaugeType = jComboBox2.getSelectedItem().toString();
+            ControllerType controllerType = ControllerType.valueOf(jComboBox7.getSelectedItem().toString());
+            Boolean isDigital = Boolean.valueOf(jComboBox9.getSelectedItem().toString());
+            String productCode = MySqlService.generateProductCode("CONTROLLER");
 
-        controllerDao.addController(controller);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
+            // Create a Controller object
+            Controller controller = new Controller(
+                    productCode,
+                    jComboBox1.getSelectedItem().toString(),
+                    jTextField1.getText(),
+                    retailPrice,
+                    Gauge.valueOf(gaugeType),
+                    controllerType,
+                    isDigital
+            );
+
+            controllerDao.addController(controller);
+            JOptionPane.showMessageDialog(null, "Product successfully added",
+                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+            inventoryDao.addInventory(productCode, quantity);
+        }
     }
 
     private void addRailGUI() throws SQLException {
         TrackDaoImpl trackDao = new TrackDaoImpl();
 
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String trackType = jComboBox8.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("TRACK");
-        
-        Track track = new Track(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            TrackType.valueOf(trackType)
-        );
-        
-        trackDao.addTrack(track);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
+        if (isAnyFieldEmpty(jTextField1)) {
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            int intValue = (Integer) priceVal.getValue();
+            int quantity = (Integer) quantityVal.getValue();
+            BigDecimal retailPrice = new BigDecimal(intValue);
+            String gaugeType = jComboBox2.getSelectedItem().toString();
+            String trackType = jComboBox8.getSelectedItem().toString();
+            String productCode = MySqlService.generateProductCode("TRACK");
+
+            Track track = new Track(
+                    productCode,
+                    jComboBox1.getSelectedItem().toString(),
+                    jTextField1.getText(),
+                    retailPrice,
+                    Gauge.valueOf(gaugeType),
+                    TrackType.valueOf(trackType)
+            );
+
+            trackDao.addTrack(track);
+            JOptionPane.showMessageDialog(null, "Product successfully added",
+                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+            inventoryDao.addInventory(productCode, quantity);
+        }
     }
 
     private void addCarriageGUI() throws SQLException {
-        RollingStockDaoImpl rollingStockDao = new RollingStockDaoImpl();
+        if (isAnyFieldEmpty(jTextField1)) {
+            JOptionPane.showMessageDialog(null, "Please enter valid inputs",
+                    "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else {
+            RollingStockDaoImpl rollingStockDao = new RollingStockDaoImpl();
 
-        int intValue = (Integer) priceVal.getValue();
-        int quantity = (Integer) quantityVal.getValue();
-        BigDecimal retailPrice = new BigDecimal(intValue);
-        String gaugeType = jComboBox2.getSelectedItem().toString();
-        String rollingStockType = jComboBox6.getSelectedItem().toString();
-        String era = jComboBox5.getSelectedItem().toString();
-        String productCode = MySqlService.generateProductCode("CARRIAGE");
+            int intValue = (Integer) priceVal.getValue();
+            int quantity = (Integer) quantityVal.getValue();
+            BigDecimal retailPrice = new BigDecimal(intValue);
+            String gaugeType = jComboBox2.getSelectedItem().toString();
+            String rollingStockType = jComboBox6.getSelectedItem().toString();
+            String era = jComboBox5.getSelectedItem().toString();
+            String productCode = MySqlService.generateProductCode("CARRIAGE");
 
-        RollingStock rollingStock = new RollingStock(
-            productCode,
-            jComboBox1.getSelectedItem().toString(),
-            jTextField1.getText(),
-            retailPrice,
-            Gauge.valueOf(gaugeType),
-            RollingStockType.valueOf(rollingStockType),
-            Era.valueOf(era)
-        );
+            RollingStock rollingStock = new RollingStock(
+                    productCode,
+                    jComboBox1.getSelectedItem().toString(),
+                    jTextField1.getText(),
+                    retailPrice,
+                    Gauge.valueOf(gaugeType),
+                    RollingStockType.valueOf(rollingStockType),
+                    Era.valueOf(era)
+            );
 
-        rollingStockDao.addRollingStock(rollingStock);
-        JOptionPane.showMessageDialog(null, "Product successfully added",
-                "Saved", JOptionPane.INFORMATION_MESSAGE);
-        inventoryDao.addInventory(productCode, quantity);
-    }
-
-    private void addTrainSetPartPanel() {
-        JPanel addTrainSetPartPanel3 = new javax.swing.JPanel();
-        JLabel jLabel16 = new javax.swing.JLabel();
-        JTextField txtTrainSetPartProductCode3 = new javax.swing.JTextField();
-        JLabel jLabel17 = new javax.swing.JLabel();
-        JSpinner trainSetPartQuantity3 = new javax.swing.JSpinner();
-
-
-        addTrainSetPartPanel3.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel16.setText("Part product code: ");
-
-        jLabel17.setText("Part quantity: ");
-
-        trainSetPartQuantity3.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-
-        javax.swing.GroupLayout addTrainSetPartPanel3Layout = new javax.swing.GroupLayout(addTrainSetPartPanel3);
-        addTrainSetPartPanel3.setLayout(addTrainSetPartPanel3Layout);
-        addTrainSetPartPanel3Layout.setHorizontalGroup(
-                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                                .addComponent(jLabel16)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtTrainSetPartProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                                .addComponent(jLabel17)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(trainSetPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(51, Short.MAX_VALUE))
-        );
-        addTrainSetPartPanel3Layout.setVerticalGroup(
-                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel16)
-                                        .addComponent(txtTrainSetPartProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel17)
-                                        .addComponent(trainSetPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout addTrainSetPartFieldPanelLayout = new javax.swing.GroupLayout(addTrainSetPartFieldPanel);
-        jPanel1.setLayout(addTrainSetPartFieldPanelLayout);
-        addTrainSetPartFieldPanelLayout.setHorizontalGroup(
-                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(addTrainSetPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(809, Short.MAX_VALUE))
-        );
-        addTrainSetPartFieldPanelLayout.setVerticalGroup(
-                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(addTrainSetPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(970, Short.MAX_VALUE))
-        );
-
-        trainSetPartCodeFields.add(txtTrainSetPartProductCode3);
-        trainSetPartSpinnerList.add(trainSetPartQuantity3);
-        pack();
-    }
-
-    private void addTrackPackPartPanel() {
-        JPanel addTrackPackPartPanel3 = new javax.swing.JPanel();
-        JLabel jLabel16 = new javax.swing.JLabel();
-        JTextField txtTrackPackProductCode3 = new javax.swing.JTextField();
-        JLabel jLabel17 = new javax.swing.JLabel();
-        JSpinner trackPackPartQuantity3 = new javax.swing.JSpinner();
-
-
-        addTrackPackPartPanel3.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel16.setText("Part product code: ");
-
-        jLabel17.setText("Part quantity: ");
-
-        trackPackPartQuantity3.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-
-        javax.swing.GroupLayout addTrainSetPartPanel3Layout = new javax.swing.GroupLayout(addTrackPackPartPanel3);
-        addTrackPackPartPanel3.setLayout(addTrainSetPartPanel3Layout);
-        addTrainSetPartPanel3Layout.setHorizontalGroup(
-                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                                .addComponent(jLabel16)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtTrackPackProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                                .addComponent(jLabel17)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(trackPackPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(51, Short.MAX_VALUE))
-        );
-        addTrainSetPartPanel3Layout.setVerticalGroup(
-                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel16)
-                                        .addComponent(txtTrackPackProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel17)
-                                        .addComponent(trackPackPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout addTrainSetPartFieldPanelLayout = new javax.swing.GroupLayout(addTrainSetPartFieldPanel);
-        jPanel1.setLayout(addTrainSetPartFieldPanelLayout);
-        addTrainSetPartFieldPanelLayout.setHorizontalGroup(
-                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(addTrackPackPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(809, Short.MAX_VALUE))
-        );
-        addTrainSetPartFieldPanelLayout.setVerticalGroup(
-                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(addTrackPackPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(970, Short.MAX_VALUE))
-        );
-
-        addTrackPackPartFieldPanel.add(txtTrackPackProductCode3);
-        trackPackPartSpinnerList.add(trackPackPartQuantity3);
-        pack();
-    }
-
-    private void getTrainSetPartQuantity(){
-        int i = 0;
-        for (JSpinner spinner : trainSetPartSpinnerList) {
-            trainSetPartQuantities[i] = (Integer)spinner.getValue();
-            i ++;
+            rollingStockDao.addRollingStock(rollingStock);
+            JOptionPane.showMessageDialog(null, "Product successfully added",
+                    "Saved", JOptionPane.INFORMATION_MESSAGE);
+            inventoryDao.addInventory(productCode, quantity);
         }
     }
 
-    private void getTrackPackPartQuantity(){
-        int i = 0;
-        for (JSpinner spinner : trackPackPartSpinnerList) {
-            trackPackPartQuantities[i] = (Integer)spinner.getValue();
-            i ++;
-        }
-    }
+//    private void addTrainSetPartPanel() {
+//        JPanel addTrainSetPartPanel3 = new javax.swing.JPanel();
+//        JLabel jLabel16 = new javax.swing.JLabel();
+//        JTextField txtTrainSetPartProductCode3 = new javax.swing.JTextField();
+//        JLabel jLabel17 = new javax.swing.JLabel();
+//        JSpinner trainSetPartQuantity3 = new javax.swing.JSpinner();
+//
+//
+//        addTrainSetPartPanel3.setBackground(new java.awt.Color(204, 204, 204));
+//
+//        jLabel16.setText("Part product code: ");
+//
+//        jLabel17.setText("Part quantity: ");
+//
+//        trainSetPartQuantity3.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+//
+//        javax.swing.GroupLayout addTrainSetPartPanel3Layout = new javax.swing.GroupLayout(addTrainSetPartPanel3);
+//        addTrainSetPartPanel3.setLayout(addTrainSetPartPanel3Layout);
+//        addTrainSetPartPanel3Layout.setHorizontalGroup(
+//                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                                .addComponent(jLabel16)
+//                                                .addGap(18, 18, 18)
+//                                                .addComponent(txtTrainSetPartProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                                .addComponent(jLabel17)
+//                                                .addGap(18, 18, 18)
+//                                                .addComponent(trainSetPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+//                                .addContainerGap(51, Short.MAX_VALUE))
+//        );
+//        addTrainSetPartPanel3Layout.setVerticalGroup(
+//                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                                        .addComponent(jLabel16)
+//                                        .addComponent(txtTrainSetPartProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                                        .addComponent(jLabel17)
+//                                        .addComponent(trainSetPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//        );
+//
+//        javax.swing.GroupLayout addTrainSetPartFieldPanelLayout = new javax.swing.GroupLayout(addTrainSetPartFieldPanel);
+//        jPanel1.setLayout(addTrainSetPartFieldPanelLayout);
+//        addTrainSetPartFieldPanelLayout.setHorizontalGroup(
+//                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
+//                                .addGap(23, 23, 23)
+//                                .addComponent(addTrainSetPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                .addContainerGap(809, Short.MAX_VALUE))
+//        );
+//        addTrainSetPartFieldPanelLayout.setVerticalGroup(
+//                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
+//                                .addGap(40, 40, 40)
+//                                .addComponent(addTrainSetPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                .addContainerGap(970, Short.MAX_VALUE))
+//        );
+//
+//        trainSetPartCodeFields.add(txtTrainSetPartProductCode3);
+//        trainSetPartSpinnerList.add(trainSetPartQuantity3);
+//        pack();
+//    }
+
+//    private void addTrackPackPartPanel() {
+//        JPanel addTrackPackPartPanel3 = new javax.swing.JPanel();
+//        JLabel jLabel16 = new javax.swing.JLabel();
+//        JTextField txtTrackPackProductCode3 = new javax.swing.JTextField();
+//        JLabel jLabel17 = new javax.swing.JLabel();
+//        JSpinner trackPackPartQuantity3 = new javax.swing.JSpinner();
+//
+//
+//        addTrackPackPartPanel3.setBackground(new java.awt.Color(204, 204, 204));
+//
+//        jLabel16.setText("Part product code: ");
+//
+//        jLabel17.setText("Part quantity: ");
+//
+//        trackPackPartQuantity3.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+//
+//        javax.swing.GroupLayout addTrainSetPartPanel3Layout = new javax.swing.GroupLayout(addTrackPackPartPanel3);
+//        addTrackPackPartPanel3.setLayout(addTrainSetPartPanel3Layout);
+//        addTrainSetPartPanel3Layout.setHorizontalGroup(
+//                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                                .addComponent(jLabel16)
+//                                                .addGap(18, 18, 18)
+//                                                .addComponent(txtTrackPackProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                                .addComponent(jLabel17)
+//                                                .addGap(18, 18, 18)
+//                                                .addComponent(trackPackPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+//                                .addContainerGap(51, Short.MAX_VALUE))
+//        );
+//        addTrainSetPartPanel3Layout.setVerticalGroup(
+//                addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartPanel3Layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                                        .addComponent(jLabel16)
+//                                        .addComponent(txtTrackPackProductCode3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+//                                .addGroup(addTrainSetPartPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                                        .addComponent(jLabel17)
+//                                        .addComponent(trackPackPartQuantity3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//        );
+//
+//        javax.swing.GroupLayout addTrainSetPartFieldPanelLayout = new javax.swing.GroupLayout(addTrainSetPartFieldPanel);
+//        jPanel1.setLayout(addTrainSetPartFieldPanelLayout);
+//        addTrainSetPartFieldPanelLayout.setHorizontalGroup(
+//                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
+//                                .addGap(23, 23, 23)
+//                                .addComponent(addTrackPackPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                .addContainerGap(809, Short.MAX_VALUE))
+//        );
+//        addTrainSetPartFieldPanelLayout.setVerticalGroup(
+//                addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(addTrainSetPartFieldPanelLayout.createSequentialGroup()
+//                                .addGap(40, 40, 40)
+//                                .addComponent(addTrackPackPartPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                .addContainerGap(970, Short.MAX_VALUE))
+//        );
+//
+//        addTrackPackPartFieldPanel.add(txtTrackPackProductCode3);
+//        trackPackPartSpinnerList.add(trackPackPartQuantity3);
+//        pack();
+//    }
+
+//    private void getTrainSetPartQuantity(){
+//        int i = 0;
+//        for (JSpinner spinner : trainSetPartSpinnerList) {
+//            trainSetPartQuantities[i] = (Integer)spinner.getValue();
+//            i ++;
+//        }
+//    }
+
+//    private void getTrackPackPartQuantity(){
+//        int i = 0;
+//        for (JSpinner spinner : trackPackPartSpinnerList) {
+//            trackPackPartQuantities[i] = (Integer)spinner.getValue();
+//            i ++;
+//        }
+//    }
 
     private void addTrainSetPart(String partCode, int partQuantity, TrainSet trainSet){
         Part part = null;
@@ -1104,6 +1183,25 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
         PartBoxedSetAssociation partBoxedSetAssociation = new PartBoxedSetAssociation(trackPack, part, partQuantity);
         PartBoxedSetAssociationDao partBoxedSetAssociationDao = new PartBoxedSetAssociationDaoImpl();
         partBoxedSetAssociationDao.addAssociation(partBoxedSetAssociation);
+    }
+
+    private boolean isAnyFieldEmpty(JTextField... fields) {
+        for (JTextField field : fields) {
+            if (field.getText() == null || field.getText().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSetsOrParts(String code){
+        char firstChar = code.charAt(0);
+        switch (firstChar) {
+            case 'M', 'P':
+                return true;
+            default:
+                return false;
+        }
     }
 
 

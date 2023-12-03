@@ -7,6 +7,7 @@ import project.model.order.OrderLine;
 import project.model.product.*;
 import project.model.product.abstractproduct.Part;
 import project.model.product.abstractproduct.Product;
+import project.model.product.association.PartBoxedSetAssociation;
 import project.model.user.User;
 import project.service.MySqlService;
 import project.service.OrderService;
@@ -32,7 +33,6 @@ public class ProductDetails extends javax.swing.JFrame {
     private Product product;
     private UserDao userDao = new UserDaoImpl();
     private UserService userService = new UserService(userDao);
-    private PartBoxedSetAssociationDao pbsad = new PartBoxedSetAssociationDaoImpl();
 
     public ProductDetails(Product product) {
         User user = UserSessionManager.getInstance().getLoggedInUser();
@@ -340,18 +340,65 @@ public class ProductDetails extends javax.swing.JFrame {
                 break;
             case 'M':
                 TrainSetDao trainSetDao = new TrainSetDaoImpl();
-                List<Part> trainSetParts = null;
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao = new PartBoxedSetAssociationDaoImpl();
+                //List all parts
+                JLabel jLabel = new JLabel("Part: ");
+                jLabel.setBounds(630, 350, 310, 17);
+                List<PartBoxedSetAssociation> partBoxedSetAssociations = partBoxedSetAssociationDao.getAssociationsForBoxedSet(product.getProductCode());
+                int i = 35;
+                for (PartBoxedSetAssociation partBoxedSetAssociation : partBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    JLabel part = new JLabel("Name: " + partBoxedSetAssociation.getPart().getProductName() +
+                            "Quantity: " + partBoxedSetAssociation.getQuantity());
+                    part.setBounds(630, 350+i, 310, 17);
+                    i+=35;
+                    JButton viewDetail = new JButton();
+                    viewDetail.setText("view details");
+                    viewDetail.setBounds(630, 350+i, 310, 17);
+                    i+=35;
+                    viewDetail.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            viewProductDetails(partBoxedSetAssociation.getPart());
+                        }
+                    });
+                    jPanel1.add(part);
+                    jPanel1.add(viewDetail);
+                }
+                jPanel1.add(jLabel);
                 //TODO get parts
 //                Part trainSetPart = pbsad.getPartByProductCode();
                 System.out.println("it is a TrainSet");
                 break;
             case 'P':
                 TrackPackDao trackPackDao = new TrackPackDaoImpl();
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao1 = new PartBoxedSetAssociationDaoImpl();
                 TrackPack trackPack = trackPackDao.getTrackPack(product.getProductCode());
-                List<Part> trackPackParts = null;
                 JLabel lblPackType = new JLabel("Pack type: " + trackPack.getPackType());
                 lblPackType.setBounds(630, 350, 310, 17);
+                JLabel jLabel1 = new JLabel("Part: ");
+                jLabel1.setBounds(630, 350, 310, 17);
+                List<PartBoxedSetAssociation> trackPackPartBoxedSetAssociations = partBoxedSetAssociationDao1.getAssociationsForBoxedSet(product.getProductCode());
+                int interval = 35;
+                for (PartBoxedSetAssociation partBoxedSetAssociation : trackPackPartBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    JLabel part = new JLabel("Name: " + partBoxedSetAssociation.getPart().getProductName() +
+                            "Quantity: " + partBoxedSetAssociation.getQuantity());
+                    part.setBounds(630, 350+interval, 310, 17);
+                    interval+=35;
+                    JButton viewDetail = new JButton();
+                    viewDetail.setText("view details");
+                    viewDetail.setBounds(630, 350+interval, 310, 17);
+                    interval+=35;
+                    viewDetail.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            viewProductDetails(partBoxedSetAssociation.getPart());
+                        }
+                    });
+                    jPanel1.add(part);
+                    jPanel1.add(viewDetail);
+                }
                 jPanel1.add(lblPackType);
+                jPanel1.add(jLabel1);
                 System.out.println("it is a TrackPack");
                 break;
             default:
@@ -432,6 +479,15 @@ public class ProductDetails extends javax.swing.JFrame {
         DefaultFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnBack1ActionPerformed
+
+    private void viewProductDetails(Product product){
+//        new ProductDetails(productCode, price);
+        ProductDetails ProductDetailsFrame = new ProductDetails(product);
+        ProductDetailsFrame.setVisible(true);
+        ProductDetailsFrame.pack();
+        ProductDetailsFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

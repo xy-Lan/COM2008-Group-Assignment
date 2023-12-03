@@ -165,9 +165,11 @@ public class OrderLines extends javax.swing.JFrame {
                         total + " £", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION){
                     if (userService.checkUserHasBankCard(currentUser.getUserID())){
+
+                        inventoryService.updateInventoryForOrder(order);
+                        orderService.confirmOrder(order);
                         JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
                                 "Order Placed", INFORMATION_MESSAGE);
-                        inventoryService.updateInventoryForOrder(order);
                     } else {
                         CheckOut CheckOutFrame = new CheckOut(order);
                         CheckOutFrame.setVisible(true);

@@ -6,14 +6,17 @@ package project.gui;
 
 import project.dao.BankCardDao;
 import project.dao.InventoryDao;
+import project.dao.OrderDao;
 import project.daoimpl.BankCardDaoImpl;
 import project.daoimpl.InventoryDaoImpl;
+import project.daoimpl.OrderDaoImpl;
 import project.model.bankcard.BankCard;
 import project.model.order.Order;
 import project.model.user.User;
 import project.service.BankCardService;
 import project.service.InventoryService;
 import project.service.MySqlService;
+import project.service.OrderService;
 import project.utils.UserSessionManager;
 
 import javax.swing.*;
@@ -27,6 +30,8 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 public class CheckOut extends javax.swing.JFrame {
 
     private Order order;
+    private OrderDao orderDao = new OrderDaoImpl();
+    private OrderService orderService = new OrderService(orderDao);
 
     /**
      * Creates new form CheckOut
@@ -261,6 +266,7 @@ public class CheckOut extends javax.swing.JFrame {
                 bankCardDao.addBankCard(bankCard);
                 InventoryService inventoryService = new InventoryService();
                 inventoryService.updateInventoryForOrder(order);
+                orderService.confirmOrder(order);
                 JOptionPane.showMessageDialog(null, "Successfully purchased! Please check recent orders.",
                         "Order Placed", INFORMATION_MESSAGE);
                 this.dispose();
