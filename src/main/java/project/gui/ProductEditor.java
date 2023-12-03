@@ -14,6 +14,7 @@ import project.service.InventoryService;
 import project.service.MySqlService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,13 +33,18 @@ public class ProductEditor extends javax.swing.JFrame {
     private List<JSpinner> trainSetSpinners = new ArrayList<>();
 
     private List<JSpinner> trackPackSpinners = new ArrayList<>();
-
+    private GridBagConstraints gbc = new GridBagConstraints();
     /**
      * Creates new form ProductEidtor
      */
     public ProductEditor(Product product) {
         this.product = product;
         initComponents();
+        partContainer.setLayout(new GridBagLayout());
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(10,20,10,20);
         loadSpecialProperties();
     }
 
@@ -66,8 +72,6 @@ public class ProductEditor extends javax.swing.JFrame {
         priceSpinner = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
         partContainer = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -164,33 +168,14 @@ public class ProductEditor extends javax.swing.JFrame {
         partContainer.setLayout(partContainerLayout);
         partContainerLayout.setHorizontalGroup(
             partContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
+            .addGap(0, 382, Short.MAX_VALUE)
         );
         partContainerLayout.setVerticalGroup(
             partContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
+            .addGap(0, 259, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(partContainer);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-
-        jScrollPane1.setViewportView(jPanel3);
+        jScrollPane1.setViewportView(partContainer);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -245,11 +230,10 @@ public class ProductEditor extends javax.swing.JFrame {
         controllerTabLayout.setHorizontalGroup(
             controllerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(controllerTabLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
                 .addGroup(controllerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(comboControllerType, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(controllerTabLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(comboIsDigit, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(comboIsDigit, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
         controllerTabLayout.setVerticalGroup(
@@ -299,11 +283,10 @@ public class ProductEditor extends javax.swing.JFrame {
         rollingStockTabLayout.setHorizontalGroup(
             rollingStockTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rollingStockTabLayout.createSequentialGroup()
+                .addGap(72, 72, 72)
                 .addGroup(rollingStockTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(comboRollingStockType, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(rollingStockTabLayout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(comboRollingStockEra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(comboRollingStockEra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
         rollingStockTabLayout.setVerticalGroup(
@@ -477,35 +460,13 @@ public class ProductEditor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            //TODO update product
-            product.setProductName(txtProductName.getText().trim());
-            product.setBrandName(brandComboBox.getSelectedItem().toString());
-            String comboValue = gaugeTypeCombo.getSelectedItem().toString();
             try {
-                Gauge gaugeType = Gauge.valueOf(comboValue.toUpperCase());
-                product.setGaugeType(gaugeType);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Unexpected gauge type");
+                updateProperties();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            Object value = priceSpinner.getValue();
+            //TODO update product
 
-            BigDecimal price;
-            if (value instanceof Double) {
-                price = BigDecimal.valueOf((Double) value);
-            } else if (value instanceof Integer) {
-                price = BigDecimal.valueOf((Integer) value);
-            } else {
-                throw new IllegalArgumentException("Unexpected value type");
-            }
-            product.setRetailPrice(price);
-            ProductDao productDao = new ProductDaoImpl();
-            productDao.updateProduct(product, MySqlService.getConnection());
-            int quantity = (Integer) quantityVal.getValue();
-            InventoryService inventoryService = new InventoryService();
-            inventoryService.updateStockLevel(product.getProductCode(), quantity);
-            JOptionPane.showMessageDialog(null, "Details updated",
-                    "", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -620,8 +581,8 @@ public class ProductEditor extends javax.swing.JFrame {
                     JSpinner partQuantity = new JSpinner();
                     partQuantity.setModel(new SpinnerNumberModel(partBoxedSetAssociation.getQuantity(), 0, Integer.MAX_VALUE, 1));
                     trainSetSpinners.add(partQuantity);
-                    partContainer.add(part);
-                    partContainer.add(partQuantity);
+                    partContainer.add(part, gbc);
+                    partContainer.add(partQuantity, gbc);
 
                 }
                 jTabbedPane1.remove(controllerTab);
@@ -644,8 +605,8 @@ public class ProductEditor extends javax.swing.JFrame {
                     JSpinner partQuantity = new JSpinner();
                     partQuantity.setModel(new SpinnerNumberModel(partBoxedSetAssociation.getQuantity(), 0, Integer.MAX_VALUE, 1));
                     trackPackSpinners.add(partQuantity);
-                    partContainer.add(part);
-                    partContainer.add(partQuantity);
+                    partContainer.add(part, gbc);
+                    partContainer.add(partQuantity, gbc);
                 }
                 jTabbedPane1.remove(controllerTab);
                 jTabbedPane1.remove(locomotiveTab);
@@ -659,7 +620,7 @@ public class ProductEditor extends javax.swing.JFrame {
         }
     }
 
-    private void getProperties() throws SQLException {
+    private void updateProperties() throws SQLException {
         char firstChar = product.getProductCode().charAt(0);
         switch (firstChar) {
             case 'R':
@@ -924,9 +885,7 @@ public class ProductEditor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel locomotiveTab;
     private javax.swing.JPanel partContainer;

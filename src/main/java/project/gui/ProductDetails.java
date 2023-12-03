@@ -433,10 +433,10 @@ public class ProductDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void btnStaffInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffInterfaceActionPerformed
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
+        Staff StaffFrame = new Staff();
+        StaffFrame.setVisible(true);
+        StaffFrame.pack();
+        StaffFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnStaffInterfaceActionPerformed
 
