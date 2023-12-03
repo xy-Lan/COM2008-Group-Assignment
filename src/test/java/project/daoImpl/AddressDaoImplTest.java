@@ -26,7 +26,7 @@ public class AddressDaoImplTest {
     public void testAddAddressIfNotExist_NewAddress() {
         Address newAddress = new Address();
         newAddress.setHouseNumber("TestHouse123");
-        newAddress.setPostCode("TestPost123");
+        newAddress.setPostCode("TestPost12");
         newAddress.setRoadName("TestRoad");
         newAddress.setCityName("TestCity");
         Integer addressId = addressDao.addAddressIfNotExist(newAddress);

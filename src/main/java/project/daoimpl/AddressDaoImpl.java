@@ -60,7 +60,7 @@ public class AddressDaoImpl implements AddressDao{
     public Integer addAddressIfNotExist(Address address) {
         Integer addressId = null;
         if (!isAddressExist(address.getHouseNumber(), address.getPostCode())) {
-            addAddressReturnId(address);
+            addressId = addAddressReturnId(address);
         } else {
             addressId = getAddressId(address.getHouseNumber(), address.getPostCode());
             LOGGER.info("Address already exists: " + address.getHouseNumber() + ", " + address.getPostCode());
