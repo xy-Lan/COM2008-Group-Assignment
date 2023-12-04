@@ -654,7 +654,8 @@ public class ProductEditor extends javax.swing.JFrame {
                     throw new IllegalArgumentException("Unexpected value type");
                 }
                 track.setRetailPrice(price);
-                track.setTrackType((TrackType) comboTrackType.getSelectedItem());
+                TrackType trackType = Enum.valueOf(TrackType.class, comboTrackType.getSelectedItem().toString());
+                track.setTrackType(trackType);
                 trackDao.updateTrack(track);
                 //update stock
 //                int quantity = (Integer) quantityVal.getValue();
@@ -689,13 +690,11 @@ public class ProductEditor extends javax.swing.JFrame {
                     throw new IllegalArgumentException("Unexpected value type");
                 }
                 controller.setRetailPrice(controllerPrice);
-                controller.setControllerType((ControllerType) comboControllerType.getSelectedItem());
-                controller.setIsDigital((Boolean) comboIsDigit.getSelectedItem());
+                ControllerType controllerType = Enum.valueOf(ControllerType.class, comboControllerType.getSelectedItem().toString());
+                controller.setControllerType(controllerType);
+                controller.setIsDigital(Boolean.parseBoolean(comboIsDigit.getSelectedItem().toString()));
                 controllerDao.updateController(controller);
                 //update stock
-                int controllerQuantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService1 = new InventoryService();
-                inventoryService1.updateStockLevel(product.getProductCode(), controllerQuantity);
                 JOptionPane.showMessageDialog(null, "Details updated",
                         "", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
@@ -725,8 +724,10 @@ public class ProductEditor extends javax.swing.JFrame {
                     throw new IllegalArgumentException("Unexpected value type");
                 }
                 locomotive.setRetailPrice(locomotivePrice);
-                locomotive.setDccType((DCCType) coomboDCCtype.getSelectedItem());
-                locomotive.setEra((Era) comboLocomotiveEra.getSelectedItem());
+                DCCType locomotiveDCCType = Enum.valueOf(DCCType.class, coomboDCCtype.getSelectedItem().toString());
+                locomotive.setDccType(locomotiveDCCType);
+                Era locomotiveEra = Enum.valueOf(Era.class, comboLocomotiveEra.getSelectedItem().toString());
+                locomotive.setEra(locomotiveEra);
                 locomotiveDao.updateLocomotive(locomotive);
                 //update stock
 //                int locomotiveQuantity = (Integer) quantityVal.getValue();
@@ -766,8 +767,10 @@ public class ProductEditor extends javax.swing.JFrame {
                     throw new IllegalArgumentException("Unexpected value type");
                 }
                 rollingStock.setRetailPrice(rollingStockPrice);
-                rollingStock.setRollingStockType((RollingStockType) comboRollingStockType.getSelectedItem());
-                rollingStock.setEra((Era) comboLocomotiveEra.getSelectedItem());
+                RollingStockType rollingStockType = Enum.valueOf(RollingStockType.class, comboRollingStockType.getSelectedItem().toString());
+                rollingStock.setRollingStockType(rollingStockType);
+                Era rollingStockEra = Enum.valueOf(Era.class, comboRollingStockEra.getSelectedItem().toString());
+                rollingStock.setEra(rollingStockEra);
                 rollingStockDao.updateRollingStock(rollingStock);
                 //update stock
 //                int rollingStockQuantity = (Integer) quantityVal.getValue();
@@ -852,7 +855,9 @@ public class ProductEditor extends javax.swing.JFrame {
                     throw new IllegalArgumentException("Unexpected value type");
                 }
                 trackPack.setRetailPrice(trackPackPrice);
-                trackPack.setPackType((TrackPackType) comboPackType.getSelectedItem());
+                TrackPackType type = Enum.valueOf(TrackPackType.class, comboPackType.getSelectedItem().toString());
+                trackPack.setPackType(type);
+
                 trackPackDao.updateTrackPack(trackPack);
                 //update stock
 //                int trackPackQuantity = (Integer) quantityVal.getValue();
