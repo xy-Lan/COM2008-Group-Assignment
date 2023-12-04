@@ -20,6 +20,8 @@ public interface UserDao {
     void addUserPasswordHash(int userId, String passwordHash);
 
     Boolean updateUserPasswordHash(int userId, String newPassword);
+    void removeAddressFromUser(int userId);
+    void updateUserAddressId(int userId, int addressId);
 
     String getUserPasswordHash(int userId);
 

@@ -16,6 +16,7 @@ import project.daoimpl.UserDaoImpl;
 import project.model.address.Address;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
+import project.service.AddressService;
 import project.service.BankCardService;
 import project.utils.UserSessionManager;
 
@@ -36,6 +37,7 @@ public class MyDetails extends javax.swing.JFrame {
 
     private String newPassword;
     private AddressDao addressDao = new AddressDaoImpl();
+    private AddressService addressService = new AddressService();
 
     /**
      * Creates new form Default
@@ -646,13 +648,14 @@ public class MyDetails extends javax.swing.JFrame {
                 address.setCityName(txtCityName.getText().trim());
                 address.setPostCode(txtPostcode.getText().trim());
 
-                System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
-                addressDao.updateAddress(address);
+//                System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
+//                addressDao.updateAddress(address);
+                addressService.updateUserAddress(address, user.getUserID());
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
 //                initComponents();
             }
-            addressDao.updateAddress(address);
+            addressService.updateUserAddress(address, user.getUserID());
         }
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
