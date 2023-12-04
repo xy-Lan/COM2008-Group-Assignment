@@ -85,7 +85,7 @@ public class InventoryService {
             String query5 = "DELETE FROM track_pack WHERE product_code = ?";
             String query6 = "DELETE FROM part_boxed_set_association WHERE part_product_code = ?";
             String query7 = "DELETE FROM controller WHERE product_code = ?";
-//            String query8 = "DELETE FROM orderline WHERE product_code = ?";
+            String query8 = "DELETE FROM orderline WHERE product_code = ?";
             String query9 = "DELETE FROM boxed_set WHERE product_code = ?";
             String query10 = "DELETE FROM part WHERE product_code = ?";
             String query11 = "DELETE FROM inventory WHERE product_code = ?";
@@ -97,7 +97,7 @@ public class InventoryService {
             PreparedStatement preparedStatement5 = conn.prepareStatement(query5);
             PreparedStatement preparedStatement6 = conn.prepareStatement(query6);
             PreparedStatement preparedStatement7 = conn.prepareStatement(query7);
-//            PreparedStatement preparedStatement8 = conn.prepareStatement(query8);
+            PreparedStatement preparedStatement8 = conn.prepareStatement(query8);
             PreparedStatement preparedStatement9 = conn.prepareStatement(query9);
             PreparedStatement preparedStatement10 = conn.prepareStatement(query10);
             PreparedStatement preparedStatement11 = conn.prepareStatement(query11);
@@ -116,6 +116,8 @@ public class InventoryService {
             preparedStatement6.executeUpdate();
             preparedStatement7.setString(1, productCode);
             preparedStatement7.executeUpdate();
+            preparedStatement8.setString(1, productCode);
+            preparedStatement8.executeUpdate();
             preparedStatement9.setString(1, productCode);
             preparedStatement9.executeUpdate();
             preparedStatement10.setString(1, productCode);
