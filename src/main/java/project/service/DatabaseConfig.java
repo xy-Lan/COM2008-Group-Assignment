@@ -5,7 +5,10 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
 
+import static project.service.MySqlService.dataSource;
+
 public class DatabaseConfig {
+    private static HikariDataSource dataSource;
 
     public static DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
@@ -18,5 +21,12 @@ public class DatabaseConfig {
         config.setMaximumPoolSize(50);
 
         return new HikariDataSource(config);
+    }
+
+    public static HikariDataSource getHikariDataSource() {
+        if (dataSource == null) {
+            getDataSource();
+        }
+        return dataSource;
     }
 }
