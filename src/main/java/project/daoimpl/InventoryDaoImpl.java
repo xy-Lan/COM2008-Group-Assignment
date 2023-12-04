@@ -86,6 +86,7 @@ public class InventoryDaoImpl implements InventoryDao {
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+            conn.setAutoCommit(false);
 
             stmt.setInt(1, Math.max(0, newQuantity));
             stmt.setString(2, productCode);
@@ -94,6 +95,7 @@ public class InventoryDaoImpl implements InventoryDao {
             if (affectedRows == 0) {
                 LOGGER.log(Level.WARNING, "No inventory record found for product code: " + productCode);
             }
+            conn.commit();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating inventory for product code: " + productCode, e);
             throw new RuntimeException("Database operation failed", e);

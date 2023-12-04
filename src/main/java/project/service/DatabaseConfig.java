@@ -1,10 +1,4 @@
-//package project.service;
-//
-//import com.zaxxer.hikari.HikariConfig;
-//import com.zaxxer.hikari.HikariDataSource;
-//
-//import javax.sql.DataSource;
-//
+
 //import static project.service.MySqlService.dataSource;
 //
 //public class DatabaseConfig {

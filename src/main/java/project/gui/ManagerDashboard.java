@@ -269,13 +269,13 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
         txtUserId.setText("User ID");
         jPanel1.add(txtUserId);
-        txtUserId.setBounds(530, 720, 180, 23);
+        txtUserId.setBounds(460, 720, 180, 23);
         jPanel1.add(roleChoice);
-        roleChoice.setBounds(720, 720, 60, 20);
+        roleChoice.setBounds(670, 720, 60, 20);
 
         label1.setText("Change User Role:");
         jPanel1.add(label1);
-        label1.setBounds(420, 720, 110, 20);
+        label1.setBounds(340, 720, 110, 20);
 
         btnAddRole.setActionCommand("Confirm");
         btnAddRole.setBackground(new java.awt.Color(0, 102, 0));
@@ -287,7 +287,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAddRole);
-        btnAddRole.setBounds(790, 720, 50, 30);
+        btnAddRole.setBounds(750, 720, 70, 30);
 
         button2.setActionCommand("Confirm");
         button2.setBackground(new java.awt.Color(0, 102, 0));
@@ -330,7 +330,7 @@ public class ManagerDashboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRemoveRole);
-        btnRemoveRole.setBounds(860, 720, 70, 30);
+        btnRemoveRole.setBounds(860, 720, 80, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);

@@ -49,6 +49,10 @@ public class Default extends javax.swing.JFrame {
             btnStaffDashboard1.setVisible(true);
         }
 
+        title.setText("Train Sets");
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        loadProductsByType(allTrainSets);
     }
 
     /**
@@ -263,7 +267,7 @@ public class Default extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Categories");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
+        jLabel2.setBounds(279, 56, 310, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -459,6 +463,8 @@ public class Default extends javax.swing.JFrame {
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.anchor = GridBagConstraints.CENTER;
             gbc.insets = new Insets(10,20,10,20);
+            InventoryDao inventoryDao = new InventoryDaoImpl();
+
 
             JLabel lblName = new JLabel(product.getProductName());
             JLabel lblPrice = new JLabel("Price: " + " £" + product.getRetailPrice() );
@@ -486,6 +492,13 @@ public class Default extends javax.swing.JFrame {
             productPanel.add(defaultImage, gbc);
             productPanel.add(lblName, gbc);
             productPanel.add(lblPrice, gbc);
+            if (inventoryDao.getStock(product.getProductCode()).intValue() == 0){
+                JLabel lblStock = new JLabel();
+                lblStock.setText("Out of Stock!");
+                lblStock.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 19)); // NOI18N
+                lblStock.setForeground(new java.awt.Color(208, 36, 36));
+                productPanel.add(lblStock, gbc);
+            }
             productPanel.add(btnViewDetails, gbc);
             productPanel.add(quantityVal, gbc);
             productPanel.add(btnAddOrderLine, gbc);
