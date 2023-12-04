@@ -76,8 +76,8 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
                     String partProductCode = rs.getString("part_product_code");
                     int quantity = rs.getInt("quantity");
 
-                    Part part = getPartByProductCode(partProductCode, conn);
-                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode, conn);
+                    Part part = getPartByProductCode(partProductCode);
+                    BoxedSet boxedSet = getBoxedSetByProductCode(boxedSetProductCode);
 
                     associations.add(new PartBoxedSetAssociation(boxedSet, part, quantity));
 

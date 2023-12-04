@@ -19,8 +19,6 @@ import java.util.logging.Logger;
 public class BoxedSetDaoImpl implements BoxedSetDao {
     private static final Logger LOGGER = Logger.getLogger(BoxedSetDaoImpl.class.getName());
     private ProductDao productDao;
-    
-
 
     @Override
     public void addBoxedSet(BoxedSet boxedSet, Connection connection) {

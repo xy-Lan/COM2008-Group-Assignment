@@ -28,7 +28,7 @@ public class MySqlService {
     private static final String JDBC_URL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team015";
     private static final String USERNAME = "team015";
     private static final String PASSWORD = "eSh7Shahk";
-    private static final HikariDataSource dataSource;
+//    static final HikariDataSource dataSource;
 
     private static final MySqlService mySqlService = new MySqlService();
 
@@ -37,50 +37,53 @@ public class MySqlService {
     }
 
     private static Connection connection;
-
-//    public MySqlService() {
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("Failed to load MySQL JDBC driver.");
-//        }
-//
-//        connect();
+//    public static int getMaximumPoolSize() {
+//        return dataSource.getMaximumPoolSize();
 //    }
 
-    static {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(JDBC_URL);
-        config.setUsername(USERNAME);
-        config.setPassword(PASSWORD);
-        dataSource = new HikariDataSource(config);
-    }
-
-    public static Connection getConnection() {
+    public MySqlService() {
         try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace(); // 或使用更复杂的日志记录机制
-            // 可以选择抛出运行时异常，或返回 null
-            throw new RuntimeException("Failed to get database connection", e);
-            // 或者: return null;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load MySQL JDBC driver.");
         }
+
+        connect();
     }
 
+//    static {
+//        HikariConfig config = new HikariConfig();
+//        config.setJdbcUrl(JDBC_URL);
+//        config.setUsername(USERNAME);
+//        config.setPassword(PASSWORD);
+//        config.setMaximumPoolSize(50);
+//        dataSource = new HikariDataSource(config);
+//    }
 
 //    public static Connection getConnection() {
 //        try {
-//            if (connection == null || connection.isClosed()) {
-//                connect();
-//            }
+//            return dataSource.getConnection();
 //        } catch (SQLException e) {
 //            e.printStackTrace();
-//            throw new RuntimeException("Failed to check the connection status.");
-//        }
+//            throw new RuntimeException("Failed to get database connection", e);
 //
-//        return connection;
+//        }
 //    }
+
+
+    public static Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connect();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to check the connection status.");
+        }
+
+        return connection;
+    }
 
     public Connection getInstanceConnection() {
         try {
