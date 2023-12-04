@@ -35,6 +35,7 @@ public class MyDetails extends javax.swing.JFrame {
     private BankCard bankCard;
 
     private String newPassword;
+    private AddressDao addressDao = new AddressDaoImpl();
 
     /**
      * Creates new form Default
@@ -57,6 +58,7 @@ public class MyDetails extends javax.swing.JFrame {
         if (bankCard == null) {
             JLabel nullMessage = new JLabel("You do not have a bank card yet, Please fill in details to add a bank card");
             nullMessage.setForeground(Color.red);
+            nullMessage.setBounds(635, 500, 310, 17);
             bankCardPanel.add(nullMessage);
         }
 
@@ -636,20 +638,21 @@ public class MyDetails extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter valid inputs",
                         "Invalid Input", JOptionPane.WARNING_MESSAGE);
             } else {
-                System.out.println(txtHouseNum.getText());
-                System.out.println(txtRoadName.getText());
-                System.out.println(txtCityName.getText());
+//                System.out.println(txtHouseNum.getText());
+//                System.out.println(txtRoadName.getText());
+//                System.out.println(txtCityName.getText());
                 address.setHouseNumber(txtHouseNum.getText().trim());
                 address.setRoadName(txtRoadName.getText().trim());
                 address.setCityName(txtCityName.getText().trim());
                 address.setPostCode(txtPostcode.getText().trim());
-                AddressDao addressDao = new AddressDaoImpl();
+
                 System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
                 addressDao.updateAddress(address);
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
 //                initComponents();
             }
+            addressDao.updateAddress(address);
         }
     }//GEN-LAST:event_btnSavePersonalDetailsActionPerformed
 
