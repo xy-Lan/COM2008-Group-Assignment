@@ -31,8 +31,8 @@ public class InventoryDaoImplTest {
 
     @Test
     public void testUpdateStockLevel() throws SQLException {
-        String productCode = "P122";
-        int newQuantity = 60;
+        String productCode = "M123";
+        int newQuantity = 5;
 
 
         inventoryDao.updateStockLevel(productCode, newQuantity);

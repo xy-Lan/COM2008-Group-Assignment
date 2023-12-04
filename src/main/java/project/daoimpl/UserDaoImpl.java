@@ -260,6 +260,27 @@ public class UserDaoImpl implements UserDao {
         return roles;
     }
 
+    public Boolean hasCustomerRole(int userId) {
+        String sql = "SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role_id = 1";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if user has CUSTOMER role", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return false;
+    }
+
     @Override
     public void addUserRole(int userId, Role role) {
         // First, get the role_id corresponding to the role name

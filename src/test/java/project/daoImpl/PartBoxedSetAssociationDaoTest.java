@@ -39,14 +39,11 @@ public class PartBoxedSetAssociationDaoTest {
     public void testGetAssociationsForBoxedSet() {
         String boxedSetProductCode = "P123";
 
-        // 调用方法
         List<PartBoxedSetAssociation> associations = partBoxedSetAssociationDao.getAssociationsForBoxedSet(boxedSetProductCode);
 
-        // 检查返回的列表不为空，并且至少包含一个关联
         assertNotNull(associations);
         assertFalse(associations.isEmpty());
 
-        // 对列表中的每个关联关系进行进一步验证
         for (PartBoxedSetAssociation association : associations) {
             assertNotNull(association.getPart());
             assertNotNull(association.getBoxedSet());

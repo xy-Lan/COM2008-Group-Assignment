@@ -27,6 +27,7 @@ public interface UserDao {
 
     // Methods for handling user roles
     List<Role> getUserRoles(int userId);
+    Boolean hasCustomerRole(int userId);
     void addUserRole(int userId, Role role);
     int getRoleId(String roleName);
     void removeUserRole(int userId, Role role);
