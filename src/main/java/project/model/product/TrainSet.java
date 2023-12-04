@@ -28,12 +28,12 @@ public class TrainSet extends BoxedSet {
 
     @Override
     public String getSubclassTableSql() {
-        // Since TrainSet doesn't have a specific table, returning an empty string here.
+
         return "";
     }
 
     @Override
     public void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException {
-        // Since TrainSet has no parameters specific to it, nothing is done here.
+
     }
 }

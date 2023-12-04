@@ -26,14 +26,11 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // First, add the generic product attributes
+            connection.setAutoCommit(false);
             super.addProduct(rollingStock, connection);
             PartDao partDao = new PartDaoImpl();
             partDao.addPart(rollingStock, connection);
 
-            // Then, add the specific attributes of the RollingStock
             String sqlRollingStock = "INSERT INTO rolling_stock (product_code, rolling_stock_type, era) VALUES (?, ?, ?)";
             preparedStatement = connection.prepareStatement(sqlRollingStock);
 
@@ -43,11 +40,11 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
 
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -131,12 +128,9 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // Update common Product attributes
+            connection.setAutoCommit(false);
             super.updateProduct(rollingStock, connection);
 
-            // Update specific RollingStock attributes
             String sqlRollingStock = "UPDATE rolling_stock SET rolling_stock_type = ?, era = ? WHERE product_code = ?";
             preparedStatement = connection.prepareStatement(sqlRollingStock);
 
@@ -145,13 +139,13 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
             preparedStatement.setString(3, rollingStock.getProductCode());
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("RollingStock updated successfully for productCode: " + rollingStock.getProductCode());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating RollingStock: " + e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -166,33 +160,29 @@ public class RollingStockDaoImpl extends ProductDaoImpl implements RollingStockD
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // Delete from rolling_stock table
+            connection.setAutoCommit(false);
             String sqlRollingStock = "DELETE FROM rolling_stock WHERE product_code = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlRollingStock)) {
                 preparedStatement.setString(1, productCode);
                 preparedStatement.executeUpdate();
             }
 
-            // Delete from part table if necessary
             PartDao partDao = new PartDaoImpl();
             partDao.deletePart(productCode, connection);
 
-            // Delete from product table
             String sqlProduct = "DELETE FROM product WHERE product_code = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlProduct)) {
                 preparedStatement.setString(1, productCode);
                 preparedStatement.executeUpdate();
             }
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("RollingStock deleted successfully for productCode: " + productCode);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting RollingStock with productCode: " + productCode, e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }

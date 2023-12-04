@@ -37,9 +37,7 @@ public class MySqlService {
     }
 
     private static Connection connection;
-//    public static int getMaximumPoolSize() {
-//        return dataSource.getMaximumPoolSize();
-//    }
+
 
     public MySqlService() {
         try {
@@ -51,25 +49,6 @@ public class MySqlService {
 
         connect();
     }
-
-//    static {
-//        HikariConfig config = new HikariConfig();
-//        config.setJdbcUrl(JDBC_URL);
-//        config.setUsername(USERNAME);
-//        config.setPassword(PASSWORD);
-//        config.setMaximumPoolSize(50);
-//        dataSource = new HikariDataSource(config);
-//    }
-
-//    public static Connection getConnection() {
-//        try {
-//            return dataSource.getConnection();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("Failed to get database connection", e);
-//
-//        }
-//    }
 
 
     public static Connection getConnection() {
@@ -172,53 +151,6 @@ public class MySqlService {
     }
 
 
-//    public static boolean login(String username, String password) {
-//
-//        Connection connection = getConnection();
-//
-//        String sql = "SELECT u.user_id, u.email, u.address_id FROM users u " +
-//                "JOIN hashed_passwords p ON u.user_id = p.user_id " +
-//                "WHERE u.email = ? AND p.password_hash = ?";
-//
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//            preparedStatement.setString(1, username);
-//            preparedStatement.setString(2, password);
-//
-//            System.out.println(preparedStatement.toString());
-//
-//            ResultSet resultSet =  preparedStatement.executeQuery();
-//
-//            if (resultSet != null) {
-//                try {
-//                    while (resultSet.next()) {
-//                        int id = resultSet.getInt("user_id");
-//                        int address_id = resultSet.getInt("address_id");
-//                        String email = resultSet.getString("email");
-//                        System.out.println("Found user with id: " + id);
-//                        User user = new User(email);
-//                        user.setUserID(id);
-//                        user.setAddressId(address_id);
-//                        UserSessionManager.getInstance().setLoggedInUser(user);
-//                        return true;
-//                    }
-//                    connection.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    try {
-//                        resultSet.close();
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return false;
-//    }
 
     public static boolean login(String username, String password) {
         try (Connection connection = getConnection();

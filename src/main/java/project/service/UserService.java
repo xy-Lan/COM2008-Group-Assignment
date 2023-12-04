@@ -34,9 +34,7 @@ public class UserService {
 
 
     public boolean loginUser(String email, String password) {
-        // Implement the login logic here
-        // For example, check if the email and password match
-        return false; // Return whether the login was successful
+        return false;
     }
 
 
@@ -73,101 +71,36 @@ public class UserService {
     }
 
     public void viewOrders(int userId) {
-		// TODO - implement Customer.viewOrders
 		throw new UnsupportedOperationException();
 	}
 
-    /**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'STAFF' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
+
 	public void viewPendingOrders(int userID) {
-		// TODO - implement Staff.viewPendingOrders
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
+
 	public void updateBankingDetails(int userID) {
-		// TODO - implement Customer.updateBankingDetails
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
+
 	public void addCard(int userID) {
-		// TODO - implement Customer.addCard
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'CUSTOMER' role
-	 * in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
 	public void removeCard(int userID) {
-		// TODO - implement Customer.removeCard
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
 	public void appointUserAsStaff(int userID) {
-		// TODO - implement Manager.appointUserAsStaff
+
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Views the pending orders.
-	 * <p>
-	 * <b>Note:</b> This method can only be used by users with the 'MANAGER' role in
-	 * their Role list.
-	 * </p>
-	 * 
-	 * @throws UnsupportedOperationException if the user doesn't have the 'STAFF'
-	 *                                       role
-	 */
+
 	public void removeUserFromStaff(int userID) {
-		// TODO - implement Manager.removeUserFromStaff
 		throw new UnsupportedOperationException();
 	}
-    // Additional business methods related to users...
+
 }

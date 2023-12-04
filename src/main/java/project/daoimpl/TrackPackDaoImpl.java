@@ -26,26 +26,23 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // First, add the generic product attributes
+            connection.setAutoCommit(false);
             super.addProduct(trackPack, connection);
             BoxedSetDao boxedSetDao = new BoxedSetDaoImpl();
             boxedSetDao.addBoxedSet(trackPack, connection);
 
-            // Then, add the specific attributes of the TrackPack
             String sqlTrackPack = "INSERT INTO track_pack (product_code, pack_type) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(sqlTrackPack);
             preparedStatement.setString(1, trackPack.getProductCode());
-            preparedStatement.setString(2, trackPack.getPackType().name()); // Storing the enum value as String
+            preparedStatement.setString(2, trackPack.getPackType().name());
 
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -112,7 +109,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                // Using the Create TrackPack from ResultSet method
+
                 TrackPack trackPack = TrackPack.fromResultSet(rs);
                 trackPacks.add(trackPack);
             }
@@ -135,20 +132,19 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
 
             super.updateProduct(trackPack, connection);
 
-            // Update specific TrackPack attributes
             String sqlTrackPack = "UPDATE track_pack SET pack_type = ? WHERE product_code = ?";
             preparedStatement = connection.prepareStatement(sqlTrackPack);
             preparedStatement.setString(1, trackPack.getPackType().name());
             preparedStatement.setString(2, trackPack.getProductCode());
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("TrackPack updated successfully for productCode: " + trackPack.getProductCode());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating TrackPack: " + e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -165,8 +161,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
+            connection.setAutoCommit(false);
             String sqlTrackPack = "DELETE FROM track_pack WHERE product_code = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlTrackPack)) {
                 preparedStatement.setString(1, productCode);
@@ -178,7 +173,7 @@ public class TrackPackDaoImpl extends  ProductDaoImpl implements TrackPackDao {
 
             super.deleteProduct(productCode, connection);
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("TrackPack deleted successfully for productCode: " + productCode);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting TrackPack with productCode: " + productCode, e);

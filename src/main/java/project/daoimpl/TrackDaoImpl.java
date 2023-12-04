@@ -26,14 +26,11 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // First, add the generic product attributes
+            connection.setAutoCommit(false);
             super.addProduct(track, connection);
             PartDao partDao = new PartDaoImpl();
             partDao.addPart(track, connection);
 
-            // Then, add the specific attributes of the Track
             String sqlTrack = "INSERT INTO track (product_code, track_type) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(sqlTrack);
 
@@ -42,11 +39,11 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -112,7 +109,7 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                // Using the fromResultSet method to create a Track instance from the current row in the ResultSet
+
                 Track track = Track.fromResultSet(rs);
                 tracks.add(track);
             }
@@ -131,16 +128,12 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // Update common Product attributes
+            connection.setAutoCommit(false);
             super.updateProduct(track, connection);
 
-            // Assuming Track has a specific attribute like 'trackType'
             String sqlTrack = "UPDATE track SET track_type = ? WHERE product_code = ?";
             preparedStatement = connection.prepareStatement(sqlTrack);
 
-            // Setting the specific attribute of the Track
             preparedStatement.setString(1, track.getTrackType().name());
             preparedStatement.setString(2, track.getProductCode());
 
@@ -149,13 +142,13 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
                 throw new SQLException("Updating track failed, no rows affected.");
             }
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("Track updated successfully for productCode: " + track.getProductCode());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating track: " + e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -171,9 +164,7 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // Delete from track table
+            connection.setAutoCommit(false);
             String sqlTrack = "DELETE FROM track WHERE product_code = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlTrack)) {
                 preparedStatement.setString(1, productCode);
@@ -190,12 +181,12 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
 
             super.deleteProduct(productCode, connection);
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting track with productCode: " + productCode, e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -204,6 +195,4 @@ public class TrackDaoImpl extends ProductDaoImpl implements TrackDao {
         }
     }
 
-
-    // Other necessary methods...
 }

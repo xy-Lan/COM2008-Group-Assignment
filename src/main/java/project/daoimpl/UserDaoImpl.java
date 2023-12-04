@@ -188,7 +188,7 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting all users", e);
-            // You might want to throw an exception or handle the error based on your application's requirements
+
         }
 
         return users;
@@ -233,9 +233,6 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    // The following methods would be similarly implemented, with JDBC operations
-    // to handle the corresponding user-related actions in the database.
-
     @Override
     public List<Role> getUserRoles(int userId) {
         List<Role> roles = new ArrayList<>();
@@ -260,9 +257,30 @@ public class UserDaoImpl implements UserDao {
         return roles;
     }
 
+    public Boolean hasCustomerRole(int userId) {
+        String sql = "SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role_id = 1";
+
+        try (Connection conn = MySqlService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking if user has CUSTOMER role", e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+
+        return false;
+    }
+
     @Override
     public void addUserRole(int userId, Role role) {
-        // First, get the role_id corresponding to the role name
+
         int roleId = getRoleId(role.name());
 
         String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)";
@@ -349,10 +367,6 @@ public class UserDaoImpl implements UserDao {
     public void addOrderToUser(int userID, Order order) {
     }
 
-    // @Override
-    // this method has been implement in OrderDao
-    // public void updateOrderStatus(int userID, String orderId, OrderStatus status) {
-    // }
 
     @Override
     public Address getUserAddress(int userID) {

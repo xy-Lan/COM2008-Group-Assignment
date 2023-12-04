@@ -24,23 +24,19 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // First, the super class method is called to handle the generic Product property
+            connection.setAutoCommit(false);
             super.addProduct(carriage, connection);
 
-            // Then, add Carriage-specific properties
             String sqlCarriage = "INSERT INTO carriage (product_code, carriage_type, era) VALUES (?, ?, ?)";
             preparedStatement = connection.prepareStatement(sqlCarriage);
 
-            // Setting the parameters of a preparedStatement
             preparedStatement.setString(1, carriage.getProductCode());
             preparedStatement.setString(2, carriage.getCarriageType().name());
             preparedStatement.setString(3, carriage.getEra().name());
 
             preparedStatement.executeUpdate();
 
-            connection.commit(); // submit transaction
+            connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
                 try {
@@ -129,5 +125,4 @@ public class CarriageDaoImpl extends  ProductDaoImpl implements CarriageDao {
         // Implement logic to delete a carriage from the database
     }
 
-    // Other necessary methods...
 }

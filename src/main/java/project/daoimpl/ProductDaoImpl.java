@@ -26,11 +26,9 @@ public class ProductDaoImpl implements ProductDao {
 
         try {
 
-            // Insert common attributes into the product table
             String sqlProduct = "INSERT INTO product (product_code, brand_name, product_name, retail_price, gauge_type) VALUES (?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(sqlProduct);
 
-            // Set parameters for the product table
             product.setProductTableParameters(preparedStatement);
             preparedStatement.executeUpdate();
 
@@ -42,7 +40,6 @@ public class ProductDaoImpl implements ProductDao {
                 try {
                     preparedStatement.close();
                 } catch (SQLException e) {
-                    // Log the exception but do not rethrow it, as it is non-critical
                     LOGGER.log(Level.WARNING, "Failed to close PreparedStatement", e);
                 }
             }
@@ -161,16 +158,13 @@ public class ProductDaoImpl implements ProductDao {
         try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            // Setting Parameters in Update Statements
             preparedStatement.setString(1, product.getBrandName());
             preparedStatement.setString(2, product.getProductName());
             preparedStatement.setBigDecimal(3, product.getRetailPrice());
             preparedStatement.setString(4, product.getGaugeType().name());
 
-            // The WHERE clause is used to specify the specific product to be updated, product_code is used here.
             preparedStatement.setString(5, product.getProductCode());
 
-            // Implementation Updates
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Updating product failed, no rows affected.");
@@ -188,10 +182,9 @@ public class ProductDaoImpl implements ProductDao {
         try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            // Setting the productCode parameter in a PreparedStatement
             preparedStatement.setString(1, productCode);
 
-            // Performing a delete operation
+
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Deleting product failed, no rows affected.");

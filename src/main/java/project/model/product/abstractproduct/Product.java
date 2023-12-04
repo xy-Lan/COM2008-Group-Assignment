@@ -23,11 +23,6 @@ public abstract class Product {
 		this.gaugeType = gaugeType;
 	}
 
-
-	// public Product (String productCode) {
-	// 	this.productCode = productCode;
-	// }
-
 	public void setProductTableParameters(PreparedStatement preparedStatement) throws SQLException {
 		preparedStatement.setString(1, this.getProductCode());
 		preparedStatement.setString(2, this.getBrandName());
@@ -35,11 +30,10 @@ public abstract class Product {
 		preparedStatement.setBigDecimal(4, this.getRetailPrice());
 		preparedStatement.setString(5, this.getGaugeType().name());
 	}
-    
-	// Each subclass must implement this method to provide the SQL statement to insert into its particular table.
+
 	public abstract String getSubclassTableSql();
     
-	// Each subclass must implement this method to set table-specific parameters
+
 	public abstract void setSubclassTableParameters(PreparedStatement preparedStatement) throws SQLException;
 
 	public String getProductCode() {

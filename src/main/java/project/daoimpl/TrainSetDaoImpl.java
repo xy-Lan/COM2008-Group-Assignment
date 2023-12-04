@@ -25,9 +25,7 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // First, add the generic product attributes
+            connection.setAutoCommit(false);
             super.addProduct(trainSet, connection);
             BoxedSetDao boxedSetDao = new BoxedSetDaoImpl();
             boxedSetDao.addBoxedSet(trainSet, connection);
@@ -38,11 +36,11 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
             preparedStatement.executeUpdate();
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -120,18 +118,16 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-
-            // Update common Product attributes
+            connection.setAutoCommit(false);
             super.updateProduct(trainSet, connection);
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             LOGGER.info("TrainSet updated successfully for productCode: " + trainSet.getProductCode());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating TrainSet: " + e.getMessage(), e);
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
                 }
@@ -147,7 +143,7 @@ public class TrainSetDaoImpl extends  ProductDaoImpl implements TrainSetDao {
 
         try {
             connection = MySqlService.getConnection();
-            connection.setAutoCommit(false); // Start transaction
+            connection.setAutoCommit(false);
 
             String sqlTrainSet = "DELETE FROM train_set WHERE product_code = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlTrainSet)) {

@@ -212,7 +212,9 @@ public class OrderService {
 
 		// Check and update user roles
 		User user = order.getUser();
-		if (user != null && !user.hasRole(Role.CUSTOMER)) {
+		int userId = user.getUserID();
+
+		if (user != null && !userDao.hasCustomerRole(userId)) {
 			user.addRole(Role.CUSTOMER);
 			// Update user information to the database as needed
 			userDao.addUserRole(user.getUserID(), Role.CUSTOMER);
