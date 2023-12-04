@@ -13,6 +13,7 @@ import project.service.MySqlService;
 import project.service.OrderService;
 import project.service.UserService;
 import project.utils.UserSessionManager;
+import java.net.URL;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -210,12 +211,14 @@ public class ProductDetails extends javax.swing.JFrame {
         });
         jPanel1.add(btnManagerInterface);
         btnManagerInterface.setBounds(840, 50, 150, 17);
-        jPanel1.add(defaultImage);
-        defaultImage.setBounds(270, 210, 240, 160);
+
+//        defaultImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/tran_sets.jpg"))); // NOI18N
+//        jPanel1.add(defaultImage);
+//        defaultImage.setBounds(270, 210, 240, 160);
 
         nameLabel.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 24)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(0, 102, 0));
-        nameLabel.setText("Price: "+"£"+product.getRetailPrice());
+        nameLabel.setText("Price: "+product.getRetailPrice()+"£");
         jPanel1.add(nameLabel);
         nameLabel.setBounds(630, 207, 320, 40);
 
@@ -241,11 +244,11 @@ public class ProductDetails extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAddOrderLine);
-        btnAddOrderLine.setBounds(770, 610, 160, 60);
+        btnAddOrderLine.setBounds(280, 500, 140, 60);
 
         quantityVal.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         jPanel1.add(quantityVal);
-        quantityVal.setBounds(770, 550, 150, 40);
+        quantityVal.setBounds(280, 430, 140, 40);
 
         typeLabel.setForeground(new java.awt.Color(102, 102, 102));
         typeLabel.setText("Product code: " + product.getProductCode());
@@ -263,7 +266,7 @@ public class ProductDetails extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnBasket);
-        btnBasket.setBounds(620, 610, 140, 60);
+        btnBasket.setBounds(280, 580, 140, 60);
 
         btnBack1.setBackground(new java.awt.Color(0, 102, 0));
         btnBack1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
@@ -276,7 +279,7 @@ public class ProductDetails extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnBack1);
-        btnBack1.setBounds(480, 610, 120, 60);
+        btnBack1.setBounds(280, 660, 140, 60);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1000, 800);
@@ -376,18 +379,18 @@ public class ProductDetails extends javax.swing.JFrame {
                 JLabel lblPackType = new JLabel("Pack type: " + trackPack.getPackType());
                 lblPackType.setBounds(630, 350, 310, 17);
                 JLabel jLabel1 = new JLabel("Part: ");
-                jLabel1.setBounds(630, 350, 310, 17);
+                jLabel1.setBounds(630, 375, 310, 17);
                 List<PartBoxedSetAssociation> trackPackPartBoxedSetAssociations = partBoxedSetAssociationDao1.getAssociationsForBoxedSet(product.getProductCode());
                 int interval = 35;
                 for (PartBoxedSetAssociation partBoxedSetAssociation : trackPackPartBoxedSetAssociations) {
 //                    parts.add(partBoxedSetAssociation.getPart());
                     JLabel part = new JLabel("Name: " + partBoxedSetAssociation.getPart().getProductName() +
                             "Quantity: " + partBoxedSetAssociation.getQuantity());
-                    part.setBounds(630, 350+interval, 310, 17);
+                    part.setBounds(630, 375+interval, 310, 17);
                     interval+=35;
                     JButton viewDetail = new JButton();
                     viewDetail.setText("view details");
-                    viewDetail.setBounds(630, 350+interval, 310, 17);
+                    viewDetail.setBounds(630, 375+interval, 310, 17);
                     interval+=35;
                     viewDetail.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,10 +433,10 @@ public class ProductDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRecentOrdersActionPerformed
 
     private void btnStaffInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffInterfaceActionPerformed
-        StaffDashboard StaffDashboardFrame = new StaffDashboard();
-        StaffDashboardFrame.setVisible(true);
-        StaffDashboardFrame.pack();
-        StaffDashboardFrame.setLocationRelativeTo(null);
+        Staff StaffFrame = new Staff();
+        StaffFrame.setVisible(true);
+        StaffFrame.pack();
+        StaffFrame.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnStaffInterfaceActionPerformed
 

@@ -4,17 +4,21 @@
  */
 package project.gui;
 
-import project.dao.InventoryDao;
-import project.dao.ProductDao;
-import project.daoimpl.InventoryDaoImpl;
-import project.daoimpl.ProductDaoImpl;
+import project.dao.*;
+import project.daoimpl.*;
+import project.model.product.*;
 import project.model.product.abstractproduct.Product;
-import project.model.product.enums.Gauge;
+import project.model.product.association.PartBoxedSetAssociation;
+import project.model.product.enums.*;
 import project.service.InventoryService;
 import project.service.MySqlService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -26,12 +30,22 @@ public class ProductEditor extends javax.swing.JFrame {
     
     private InventoryDao inventoryDao = new InventoryDaoImpl();
 
+    private List<JSpinner> trainSetSpinners = new ArrayList<>();
+
+    private List<JSpinner> trackPackSpinners = new ArrayList<>();
+    private GridBagConstraints gbc = new GridBagConstraints();
     /**
      * Creates new form ProductEidtor
      */
     public ProductEditor(Product product) {
         this.product = product;
         initComponents();
+        partContainer.setLayout(new GridBagLayout());
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(10,20,10,20);
+        loadSpecialProperties();
     }
 
     /**
@@ -57,6 +71,26 @@ public class ProductEditor extends javax.swing.JFrame {
         gaugeTypeCombo = new javax.swing.JComboBox<>();
         priceSpinner = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        partContainer = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        locomotiveTab = new javax.swing.JPanel();
+        coomboDCCtype = new javax.swing.JComboBox<>();
+        comboLocomotiveEra = new javax.swing.JComboBox<>();
+        controllerTab = new javax.swing.JPanel();
+        comboControllerType = new javax.swing.JComboBox<>();
+        comboIsDigit = new javax.swing.JComboBox<>();
+        trackTab = new javax.swing.JPanel();
+        comboTrackType = new javax.swing.JComboBox<>();
+        rollingStockTab = new javax.swing.JPanel();
+        comboRollingStockEra = new javax.swing.JComboBox<>();
+        comboRollingStockType = new javax.swing.JComboBox<>();
+        trainSetTab = new javax.swing.JPanel();
+        addTrainSetPartFieldPanel = new javax.swing.JPanel();
+        trackPackTab = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        comboPackType = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,6 +164,200 @@ public class ProductEditor extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout partContainerLayout = new javax.swing.GroupLayout(partContainer);
+        partContainer.setLayout(partContainerLayout);
+        partContainerLayout.setHorizontalGroup(
+            partContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 382, Short.MAX_VALUE)
+        );
+        partContainerLayout.setVerticalGroup(
+            partContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(partContainer);
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Parts");
+
+        locomotiveTab.setToolTipText("");
+
+        coomboDCCtype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ANALOGUE", "DCC_READY", "DCC_FITTED", "DCC_SOUND" }));
+
+        comboLocomotiveEra.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
+
+        javax.swing.GroupLayout locomotiveTabLayout = new javax.swing.GroupLayout(locomotiveTab);
+        locomotiveTab.setLayout(locomotiveTabLayout);
+        locomotiveTabLayout.setHorizontalGroup(
+            locomotiveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locomotiveTabLayout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addGroup(locomotiveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(coomboDCCtype, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboLocomotiveEra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(93, Short.MAX_VALUE))
+        );
+        locomotiveTabLayout.setVerticalGroup(
+            locomotiveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locomotiveTabLayout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(coomboDCCtype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(comboLocomotiveEra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Locomotive", locomotiveTab);
+
+        comboControllerType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STANDARD_CONTROLLER", "DCC_CONTROLLER", "DCC_EDIT_CONTROLLER" }));
+        comboControllerType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboControllerTypeActionPerformed(evt);
+            }
+        });
+
+        comboIsDigit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "true", "false" }));
+        comboIsDigit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboIsDigitActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout controllerTabLayout = new javax.swing.GroupLayout(controllerTab);
+        controllerTab.setLayout(controllerTabLayout);
+        controllerTabLayout.setHorizontalGroup(
+            controllerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controllerTabLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(controllerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(comboControllerType, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboIsDigit, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
+        );
+        controllerTabLayout.setVerticalGroup(
+            controllerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controllerTabLayout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(comboControllerType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(comboIsDigit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Controller", controllerTab);
+
+        comboTrackType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STRAIGHT", "CURVE", "POINT", "CROSSOVER" }));
+
+        javax.swing.GroupLayout trackTabLayout = new javax.swing.GroupLayout(trackTab);
+        trackTab.setLayout(trackTabLayout);
+        trackTabLayout.setHorizontalGroup(
+            trackTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackTabLayout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(comboTrackType, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
+        trackTabLayout.setVerticalGroup(
+            trackTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trackTabLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(comboTrackType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Track", trackTab);
+
+        comboRollingStockEra.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ERA_1", "ERA_2", "ERA_3", "ERA_4", "ERA_5", "ERA_6", "ERA_8", "ERA_7", "ERA_9", "ERA_10", "ERA_11", "ERA_12" }));
+        comboRollingStockEra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboRollingStockEraActionPerformed(evt);
+            }
+        });
+
+        comboRollingStockType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARRIAGE", "WAGON" }));
+
+        javax.swing.GroupLayout rollingStockTabLayout = new javax.swing.GroupLayout(rollingStockTab);
+        rollingStockTab.setLayout(rollingStockTabLayout);
+        rollingStockTabLayout.setHorizontalGroup(
+            rollingStockTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rollingStockTabLayout.createSequentialGroup()
+                .addGap(72, 72, 72)
+                .addGroup(rollingStockTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(comboRollingStockType, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboRollingStockEra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(91, Short.MAX_VALUE))
+        );
+        rollingStockTabLayout.setVerticalGroup(
+            rollingStockTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rollingStockTabLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(comboRollingStockType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(comboRollingStockEra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(139, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Rolling Stock", rollingStockTab);
+
+        javax.swing.GroupLayout addTrainSetPartFieldPanelLayout = new javax.swing.GroupLayout(addTrainSetPartFieldPanel);
+        addTrainSetPartFieldPanel.setLayout(addTrainSetPartFieldPanelLayout);
+        addTrainSetPartFieldPanelLayout.setHorizontalGroup(
+            addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 336, Short.MAX_VALUE)
+        );
+        addTrainSetPartFieldPanelLayout.setVerticalGroup(
+            addTrainSetPartFieldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout trainSetTabLayout = new javax.swing.GroupLayout(trainSetTab);
+        trainSetTab.setLayout(trainSetTabLayout);
+        trainSetTabLayout.setHorizontalGroup(
+            trainSetTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(trainSetTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addTrainSetPartFieldPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        trainSetTabLayout.setVerticalGroup(
+            trainSetTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, trainSetTabLayout.createSequentialGroup()
+                .addGap(98, 98, 98)
+                .addComponent(addTrainSetPartFieldPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(88, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Train sets", trainSetTab);
+
+        jLabel7.setText("Pack:");
+
+        comboPackType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STARTER_OVAL", "EXTENSION_PACK" }));
+
+        javax.swing.GroupLayout trackPackTabLayout = new javax.swing.GroupLayout(trackPackTab);
+        trackPackTab.setLayout(trackPackTabLayout);
+        trackPackTabLayout.setHorizontalGroup(
+            trackPackTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, trackPackTabLayout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(43, 43, 43)
+                .addComponent(comboPackType, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
+        );
+        trackPackTabLayout.setVerticalGroup(
+            trackPackTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, trackPackTabLayout.createSequentialGroup()
+                .addContainerGap(81, Short.MAX_VALUE)
+                .addGroup(trackPackTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboPackType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(182, 182, 182))
+        );
+
+        jTabbedPane1.addTab("Track Pack", trackPackTab);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -137,52 +365,70 @@ public class ProductEditor extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(priceSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                        .addComponent(gaugeTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(priceSpinner)
+                        .addComponent(gaugeTypeCombo, 0, 177, Short.MAX_VALUE)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(quantityVal, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                        .addComponent(quantityVal)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(brandComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                        .addComponent(txtProductName))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(55, 55, 55))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(76, 76, 76))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(brandComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(priceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(gaugeTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(brandComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(priceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(gaugeTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(quantityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         brandComboBox.setSelectedItem(product.getBrandName());
@@ -192,9 +438,7 @@ public class ProductEditor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,35 +460,13 @@ public class ProductEditor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     "Invalid Input", JOptionPane.WARNING_MESSAGE);
         } else {
-            //TODO update product
-            product.setProductName(txtProductName.getText().trim());
-            product.setBrandName(brandComboBox.getSelectedItem().toString());
-            String comboValue = gaugeTypeCombo.getSelectedItem().toString();
             try {
-                Gauge gaugeType = Gauge.valueOf(comboValue.toUpperCase());
-                product.setGaugeType(gaugeType);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Unexpected gauge type");
+                updateProperties();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            Object value = priceSpinner.getValue();
+            //TODO update product
 
-            BigDecimal price;
-            if (value instanceof Double) {
-                price = BigDecimal.valueOf((Double) value);
-            } else if (value instanceof Integer) {
-                price = BigDecimal.valueOf((Integer) value);
-            } else {
-                throw new IllegalArgumentException("Unexpected value type");
-            }
-            product.setRetailPrice(price);
-            ProductDao productDao = new ProductDaoImpl();
-            productDao.updateProduct(product, MySqlService.getConnection());
-            int quantity = (Integer) quantityVal.getValue();
-            InventoryService inventoryService = new InventoryService();
-            inventoryService.updateStockLevel(product.getProductCode(), quantity);
-            JOptionPane.showMessageDialog(null, "Details updated",
-                    "", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -269,6 +491,18 @@ public class ProductEditor extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void comboControllerTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboControllerTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboControllerTypeActionPerformed
+
+    private void comboIsDigitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboIsDigitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboIsDigitActionPerformed
+
+    private void comboRollingStockEraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRollingStockEraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboRollingStockEraActionPerformed
+
     private boolean isAnyFieldEmpty(JTextField... fields) {
         for (JTextField field : fields) {
             if (field.getText() == null || field.getText().trim().isEmpty()) {
@@ -278,21 +512,389 @@ public class ProductEditor extends javax.swing.JFrame {
         return false;
     }
 
+    private void loadSpecialProperties(){
+        char firstChar = product.getProductCode().charAt(0);
+        switch (firstChar) {
+            case 'R':
+                TrackDao trackDao = new TrackDaoImpl();
+                Track track = trackDao.getTrack(product.getProductCode());
+                comboTrackType.setSelectedItem(track.getTrackType());
+                jTabbedPane1.remove(controllerTab);
+                jTabbedPane1.remove(locomotiveTab);
+                jTabbedPane1.remove(rollingStockTab);
+                jTabbedPane1.remove(trackPackTab);
+                jTabbedPane1.remove(trainSetTab);
+                System.out.println("it is a track");
+                break;
+
+            case 'C':
+                ControllerDao controllerDao = new ControllerDaoImpl();
+                Controller controller = controllerDao.getController(product.getProductCode());
+                comboControllerType.setSelectedItem(controller.getControllerType());
+                comboIsDigit.setSelectedItem(controller.getIsDigital());
+                jTabbedPane1.remove(trackTab);
+                jTabbedPane1.remove(locomotiveTab);
+                jTabbedPane1.remove(rollingStockTab);
+                jTabbedPane1.remove(trackPackTab);
+                jTabbedPane1.remove(trainSetTab);
+                System.out.println("it is a controller");
+                break;
+
+            case 'L':
+                LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
+                Locomotive locomotive = locomotiveDao.getLocomotive(product.getProductCode());
+                coomboDCCtype.setSelectedItem(locomotive.getDccType());
+                comboLocomotiveEra.setSelectedItem(locomotive.getEra());
+                jTabbedPane1.remove(controllerTab);
+                jTabbedPane1.remove(trackTab);
+                jTabbedPane1.remove(rollingStockTab);
+                jTabbedPane1.remove(trackPackTab);
+                jTabbedPane1.remove(trainSetTab);
+                System.out.println("it is a locomotive");
+                break;
+
+            case 'S':
+                RollingStockDao rollingStockDao = new RollingStockDaoImpl();
+                RollingStock rollingStock = null;
+                try {
+                    rollingStock = rollingStockDao.getRollingStock(product.getProductCode());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                comboRollingStockType.setSelectedItem(rollingStock.getRollingStockType());
+                comboRollingStockEra.setSelectedItem(rollingStock.getEra());
+                jTabbedPane1.remove(controllerTab);
+                jTabbedPane1.remove(locomotiveTab);
+                jTabbedPane1.remove(trackTab);
+                jTabbedPane1.remove(trackPackTab);
+                jTabbedPane1.remove(trainSetTab);
+                System.out.println("it is a locomotive");
+                break;
+            case 'M':
+                TrainSetDao trainSetDao = new TrainSetDaoImpl();
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao = new PartBoxedSetAssociationDaoImpl();
+                List<PartBoxedSetAssociation> partBoxedSetAssociations = partBoxedSetAssociationDao.getAssociationsForBoxedSet(product.getProductCode());
+
+                for (PartBoxedSetAssociation partBoxedSetAssociation : partBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    JLabel part = new JLabel("Name: " + partBoxedSetAssociation.getPart().getProductName());
+                    JSpinner partQuantity = new JSpinner();
+                    partQuantity.setModel(new SpinnerNumberModel(partBoxedSetAssociation.getQuantity(), 0, Integer.MAX_VALUE, 1));
+                    trainSetSpinners.add(partQuantity);
+                    partContainer.add(part, gbc);
+                    partContainer.add(partQuantity, gbc);
+
+                }
+                jTabbedPane1.remove(controllerTab);
+                jTabbedPane1.remove(locomotiveTab);
+                jTabbedPane1.remove(rollingStockTab);
+                jTabbedPane1.remove(trackPackTab);
+                jTabbedPane1.remove(trackTab);
+                System.out.println("it is a TrainSet");
+                break;
+            case 'P':
+                TrackPackDao trackPackDao = new TrackPackDaoImpl();
+                TrackPack trackPack = trackPackDao.getTrackPack(product.getProductCode());
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao1 = new PartBoxedSetAssociationDaoImpl();
+                comboPackType.setSelectedItem(trackPack.getPackType());
+                List<PartBoxedSetAssociation> trackPackPartBoxedSetAssociations = partBoxedSetAssociationDao1.getAssociationsForBoxedSet(product.getProductCode());
+//                int interval = 35;
+                for (PartBoxedSetAssociation partBoxedSetAssociation : trackPackPartBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    JLabel part = new JLabel("Name: " + partBoxedSetAssociation.getPart().getProductName());
+                    JSpinner partQuantity = new JSpinner();
+                    partQuantity.setModel(new SpinnerNumberModel(partBoxedSetAssociation.getQuantity(), 0, Integer.MAX_VALUE, 1));
+                    trackPackSpinners.add(partQuantity);
+                    partContainer.add(part, gbc);
+                    partContainer.add(partQuantity, gbc);
+                }
+                jTabbedPane1.remove(controllerTab);
+                jTabbedPane1.remove(locomotiveTab);
+                jTabbedPane1.remove(rollingStockTab);
+                jTabbedPane1.remove(trackTab);
+                jTabbedPane1.remove(trainSetTab);
+                System.out.println("it is a TrackPack");
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown product type: " + firstChar);
+        }
+    }
+
+    private void updateProperties() throws SQLException {
+        char firstChar = product.getProductCode().charAt(0);
+        switch (firstChar) {
+            case 'R':
+                TrackDao trackDao = new TrackDaoImpl();
+                Track track = trackDao.getTrack(product.getProductCode());
+                track.setProductName(txtProductName.getText().trim());
+                track.setBrandName(brandComboBox.getSelectedItem().toString());
+                String comboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(comboValue.toUpperCase());
+                    track.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object value = priceSpinner.getValue();
+
+                BigDecimal price;
+                if (value instanceof Double) {
+                    price = BigDecimal.valueOf((Double) value);
+                } else if (value instanceof Integer) {
+                    price = BigDecimal.valueOf((Integer) value);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                track.setRetailPrice(price);
+                track.setTrackType((TrackType) comboTrackType.getSelectedItem());
+                trackDao.updateTrack(track);
+                //update stock
+                int quantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService = new InventoryService();
+                inventoryService.updateStockLevel(product.getProductCode(), quantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a track");
+                break;
+
+            case 'C':
+                ControllerDao controllerDao = new ControllerDaoImpl();
+                Controller controller = controllerDao.getController(product.getProductCode());
+                controller.setProductName(txtProductName.getText().trim());
+                controller.setBrandName(brandComboBox.getSelectedItem().toString());
+                String controllerComboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(controllerComboValue.toUpperCase());
+                    controller.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object controllerValue = priceSpinner.getValue();
+
+                BigDecimal controllerPrice;
+                if (controllerValue instanceof Double) {
+                    controllerPrice = BigDecimal.valueOf((Double) controllerValue);
+                } else if (controllerValue instanceof Integer) {
+                    controllerPrice = BigDecimal.valueOf((Integer) controllerValue);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                controller.setRetailPrice(controllerPrice);
+                controller.setControllerType((ControllerType) comboControllerType.getSelectedItem());
+                controller.setIsDigital((Boolean) comboIsDigit.getSelectedItem());
+                controllerDao.updateController(controller);
+                //update stock
+                int controllerQuantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService1 = new InventoryService();
+                inventoryService1.updateStockLevel(product.getProductCode(), controllerQuantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a controller");
+                break;
+
+            case 'L':
+                LocomotiveDao locomotiveDao = new LocomotiveDaoImpl();
+                Locomotive locomotive = locomotiveDao.getLocomotive(product.getProductCode());
+                locomotive.setProductName(txtProductName.getText().trim());
+                locomotive.setBrandName(brandComboBox.getSelectedItem().toString());
+                String locomotiveComboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(locomotiveComboValue.toUpperCase());
+                    locomotive.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object locomotiveValue = priceSpinner.getValue();
+
+                BigDecimal locomotivePrice;
+                if (locomotiveValue instanceof Double) {
+                    locomotivePrice = BigDecimal.valueOf((Double) locomotiveValue);
+                } else if (locomotiveValue instanceof Integer) {
+                    locomotivePrice = BigDecimal.valueOf((Integer) locomotiveValue);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                locomotive.setRetailPrice(locomotivePrice);
+                locomotive.setDccType((DCCType) coomboDCCtype.getSelectedItem());
+                locomotive.setEra((Era) comboLocomotiveEra.getSelectedItem());
+                locomotiveDao.updateLocomotive(locomotive);
+                //update stock
+                int locomotiveQuantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService2 = new InventoryService();
+                inventoryService2.updateStockLevel(product.getProductCode(), locomotiveQuantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a locomotive");
+                break;
+
+            case 'S':
+                RollingStockDao rollingStockDao = new RollingStockDaoImpl();
+                RollingStock rollingStock = null;
+                try {
+                    rollingStock = rollingStockDao.getRollingStock(product.getProductCode());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                rollingStock.setProductName(txtProductName.getText().trim());
+                rollingStock.setBrandName(brandComboBox.getSelectedItem().toString());
+                String rollingStockComboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(rollingStockComboValue.toUpperCase());
+                    rollingStock.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object rollingStockValue = priceSpinner.getValue();
+
+                BigDecimal rollingStockPrice;
+                if (rollingStockValue instanceof Double) {
+                    rollingStockPrice = BigDecimal.valueOf((Double) rollingStockValue);
+                } else if (rollingStockValue instanceof Integer) {
+                    rollingStockPrice = BigDecimal.valueOf((Integer) rollingStockValue);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                rollingStock.setRetailPrice(rollingStockPrice);
+                rollingStock.setRollingStockType((RollingStockType) comboRollingStockType.getSelectedItem());
+                rollingStock.setEra((Era) comboLocomotiveEra.getSelectedItem());
+                rollingStockDao.updateRollingStock(rollingStock);
+                //update stock
+                int rollingStockQuantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService3 = new InventoryService();
+                inventoryService3.updateStockLevel(product.getProductCode(), rollingStockQuantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a locomotive");
+                break;
+            case 'M':
+                TrainSetDao trainSetDao = new TrainSetDaoImpl();
+                TrainSet trainSet = trainSetDao.getTrainSet(product.getProductCode());
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao = new PartBoxedSetAssociationDaoImpl();
+                List<PartBoxedSetAssociation> partBoxedSetAssociations = partBoxedSetAssociationDao.getAssociationsForBoxedSet(product.getProductCode());
+
+                int i = 0;
+                for (PartBoxedSetAssociation partBoxedSetAssociation : partBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    partBoxedSetAssociation.setQuantity((Integer) trainSetSpinners.get(i).getValue());
+                    i++;
+
+                }
+                trainSet.setProductName(txtProductName.getText().trim());
+                trainSet.setBrandName(brandComboBox.getSelectedItem().toString());
+                String trainSetComboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(trainSetComboValue.toUpperCase());
+                    trainSet.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object trainSetValue = priceSpinner.getValue();
+
+                BigDecimal trainSetPrice;
+                if (trainSetValue instanceof Double) {
+                    trainSetPrice = BigDecimal.valueOf((Double) trainSetValue);
+                } else if (trainSetValue instanceof Integer) {
+                    trainSetPrice = BigDecimal.valueOf((Integer) trainSetValue);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                trainSet.setRetailPrice(trainSetPrice);
+                trainSetDao.updateTrainSet(trainSet);
+                //update stock
+                int trainSetQuantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService4 = new InventoryService();
+                inventoryService4.updateStockLevel(product.getProductCode(), trainSetQuantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a TrainSet");
+                break;
+            case 'P':
+                TrackPackDao trackPackDao = new TrackPackDaoImpl();
+                TrackPack trackPack = trackPackDao.getTrackPack(product.getProductCode());
+                PartBoxedSetAssociationDao partBoxedSetAssociationDao1 = new PartBoxedSetAssociationDaoImpl();
+                List<PartBoxedSetAssociation> trackPackPartBoxedSetAssociations = partBoxedSetAssociationDao1.getAssociationsForBoxedSet(product.getProductCode());
+//                int interval = 35;
+                int index = 0;
+                for (PartBoxedSetAssociation partBoxedSetAssociation : trackPackPartBoxedSetAssociations) {
+//                    parts.add(partBoxedSetAssociation.getPart());
+                    partBoxedSetAssociation.setQuantity((Integer)trackPackSpinners.get(index).getValue());
+                }
+                trackPack.setProductName(txtProductName.getText().trim());
+                trackPack.setBrandName(brandComboBox.getSelectedItem().toString());
+                String trackPackComboValue = gaugeTypeCombo.getSelectedItem().toString();
+                try {
+                    Gauge gaugeType = Gauge.valueOf(trackPackComboValue.toUpperCase());
+                    trackPack.setGaugeType(gaugeType);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Unexpected gauge type");
+                }
+                Object trackPackValue = priceSpinner.getValue();
+
+                BigDecimal trackPackPrice;
+                if (trackPackValue instanceof Double) {
+                    trackPackPrice = BigDecimal.valueOf((Double) trackPackValue);
+                } else if (trackPackValue instanceof Integer) {
+                    trackPackPrice = BigDecimal.valueOf((Integer) trackPackValue);
+                } else {
+                    throw new IllegalArgumentException("Unexpected value type");
+                }
+                trackPack.setRetailPrice(trackPackPrice);
+                trackPack.setPackType((TrackPackType) comboPackType.getSelectedItem());
+                trackPackDao.updateTrackPack(trackPack);
+                //update stock
+                int trackPackQuantity = (Integer) quantityVal.getValue();
+                InventoryService inventoryService5 = new InventoryService();
+                inventoryService5.updateStockLevel(product.getProductCode(), trackPackQuantity);
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                System.out.println("it is a TrackPack");
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown product type: " + firstChar);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel addTrainSetPartFieldPanel;
     private javax.swing.JComboBox<String> brandComboBox;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> comboControllerType;
+    private javax.swing.JComboBox<String> comboIsDigit;
+    private javax.swing.JComboBox<String> comboLocomotiveEra;
+    private javax.swing.JComboBox<String> comboPackType;
+    private javax.swing.JComboBox<String> comboRollingStockEra;
+    private javax.swing.JComboBox<String> comboRollingStockType;
+    private javax.swing.JComboBox<String> comboTrackType;
+    private javax.swing.JPanel controllerTab;
+    private javax.swing.JComboBox<String> coomboDCCtype;
     private javax.swing.JComboBox<String> gaugeTypeCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel locomotiveTab;
+    private javax.swing.JPanel partContainer;
     private javax.swing.JSpinner priceSpinner;
     private javax.swing.JSpinner quantityVal;
+    private javax.swing.JPanel rollingStockTab;
+    private javax.swing.JPanel trackPackTab;
+    private javax.swing.JPanel trackTab;
+    private javax.swing.JPanel trainSetTab;
     private javax.swing.JTextField txtProductName;
     // End of variables declaration//GEN-END:variables
 }

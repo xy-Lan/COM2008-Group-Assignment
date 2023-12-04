@@ -27,6 +27,7 @@ public class Main {
         }
 
         System.out.println("Starting");
+        System.out.println(Main.class.getResource("/images/train_sets.jpg"));
         MySqlService.getInstance();
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
