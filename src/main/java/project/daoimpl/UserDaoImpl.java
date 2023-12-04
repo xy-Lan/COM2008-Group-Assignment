@@ -138,7 +138,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> getUserById(int userId) {
         String query = "SELECT * FROM users WHERE user_id = ?";
         MySqlService mySqlService = new MySqlService();
-        try (Connection connection = MySqlService.getConnection();      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = mySqlService.getInstanceConnection();      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
