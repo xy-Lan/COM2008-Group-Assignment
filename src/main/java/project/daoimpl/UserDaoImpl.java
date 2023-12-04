@@ -81,6 +81,35 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public void removeAddressFromUser(int userId) {
+
+    }
+
+    @Override
+    public void updateUserAddressId(int userId, int addressId) {
+        String sql = "UPDATE users SET address_id = ? WHERE user_id = ?";
+
+        try (Connection connection = MySqlService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            System.out.println("In updateUserAddressId method , new address id is " + addressId);
+            preparedStatement.setInt(1, addressId);
+            preparedStatement.setInt(2, userId);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.info("No user found with ID " + userId + ", address ID not updated.");
+            } else {
+                LOGGER.info("Address ID updated successfully for user ID: " + userId);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating address ID for user ID: " + userId, e);
+            throw new RuntimeException("Database operation failed", e);
+        }
+    }
+
+
 
     @Override
     public String getUserPasswordHash(int userId) {
@@ -102,8 +131,6 @@ public class UserDaoImpl implements UserDao {
 
         return null;
     }
-
-
 
 
 
@@ -175,6 +202,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             user.prepareStatement(preparedStatement);
+            preparedStatement.setInt(5, user.getUserID());
 
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {

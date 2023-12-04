@@ -16,6 +16,7 @@ import project.daoimpl.UserDaoImpl;
 import project.model.address.Address;
 import project.model.bankcard.BankCard;
 import project.model.user.User;
+import project.service.AddressService;
 import project.service.BankCardService;
 import project.utils.UserSessionManager;
 
@@ -644,8 +645,9 @@ public class MyDetails extends javax.swing.JFrame {
                 address.setCityName(txtCityName.getText().trim());
                 address.setPostCode(txtPostcode.getText().trim());
                 AddressDao addressDao = new AddressDaoImpl();
-                System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
-                addressDao.updateAddress(address);
+                AddressService addressService = new AddressService();                System.out.println(address.getCityName() + address.getRoadName() + address.getHouseNumber());
+//                addressDao.updateAddress(address);
+                addressService.updateUserAddress(address, user.getUserID());
                 JOptionPane.showMessageDialog(null, "Details successfully updated",
                         "Saved", JOptionPane.INFORMATION_MESSAGE);
 //                initComponents();
