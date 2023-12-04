@@ -154,7 +154,6 @@ public class AddressDaoImpl implements AddressDao{
     
             stmt.setInt(1, addressId);
 
-//            System.out.println(stmt);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println(rs);
@@ -174,7 +173,6 @@ public class AddressDaoImpl implements AddressDao{
     public List<Address> getAllAddresses() {
         List<Address> addresses = new ArrayList<>();
         String sql = "SELECT * FROM address";
-        // SQL query to retrieve all addresses from the database
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -195,35 +193,29 @@ public class AddressDaoImpl implements AddressDao{
     @Override
     public void updateAddress(Address address) {
         String sql = "UPDATE address SET road_name = ?, city_name = ? WHERE house_number = ? AND post_code = ?";
-        // SQL query to update an existing address in the database
 
         try (Connection conn = MySqlService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Setting parameters for the PreparedStatement
             stmt.setString(1, address.getRoadName());
             stmt.setString(2, address.getCityName());
             stmt.setString(3, address.getHouseNumber());
             stmt.setString(4, address.getPostCode());
 
-            // Executing the update statement
             int rowsAffected = stmt.executeUpdate();
             System.out.println(rowsAffected);
             if (rowsAffected == 0) {
-                // Handle the situation when no rows are affected
+
                 throw new SQLException("Updating address failed, no rows affected.");
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating address in the database", e);
-            // Handle exceptions and possibly throw a runtime exception
             throw new RuntimeException("Database operation failed", e);
         }
     }
 
     @Override
     public void deleteAddress(String houseNumber, String postCode) {
-        // Implement logic to delete an address from the database
     }
 
-    // Additional methods and database handling as needed...
 }

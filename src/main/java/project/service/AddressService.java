@@ -25,7 +25,7 @@ public class AddressService {
             LOGGER.info("User's address updated successfully for user ID: " + userId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating user's address", e);
-            // Handle exception (possibly re-throw or log)
+
             throw new RuntimeException("Error updating user's address", e);
         }
     }

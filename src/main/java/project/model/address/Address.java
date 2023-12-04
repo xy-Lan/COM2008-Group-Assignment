@@ -8,7 +8,6 @@ import project.model.user.*;
 
 public class Address {
 
-//	Collection<User> users = new ArrayList<>();
 	private String houseNumber;
 	private String postCode;
 	private String roadName;
@@ -34,13 +33,6 @@ public class Address {
         return address;
     }
 
-//	public Collection<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Collection<User> users) {
-//        this.users = users;
-//    }
 
     public String getHouseNumber() {
         return houseNumber;

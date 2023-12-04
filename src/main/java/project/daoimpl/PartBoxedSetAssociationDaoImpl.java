@@ -195,35 +195,6 @@ public class PartBoxedSetAssociationDaoImpl implements PartBoxedSetAssociationDa
         }
     }
 
-
-//    private BoxedSet getBoxedSetByProductCode(String productCode, Connection conn) {
-//        boolean shouldCloseConnection = false;
-//        if (conn == null) {
-//            conn = MySqlService.getConnection();
-//            shouldCloseConnection = true;
-//        }
-//        try {
-//            char firstChar = productCode.charAt(0);
-//            switch (firstChar) {
-//                case 'M':
-//                    return new TrainSetDaoImpl().getTrainSet(productCode);
-//                case 'P':
-//                    return new TrackPackDaoImpl().getTrackPack(productCode);
-//                default:
-//                    return null;
-//            }
-//        } finally {
-//            if (shouldCloseConnection && conn != null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    LOGGER.log(Level.SEVERE, "Error closing connection", e);
-//                }
-//            }
-//        }
-//    }
-
-
     @Override
     public void updateAssociation(PartBoxedSetAssociation association) {
         String updateSql = "UPDATE part_boxed_set_association SET quantity = ? WHERE part_product_code = ? AND boxed_set_product_code = ?";

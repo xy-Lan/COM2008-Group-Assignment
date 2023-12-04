@@ -54,12 +54,10 @@ public class BoxedSetDaoImpl implements BoxedSetDao {
                     BigDecimal retail_price = resultSet.getBigDecimal("retail_price");
                     Gauge gauge = Gauge.fromString(resultSet.getString("gauge_type"));
 
-                    // return new BoxedSet(productCode, brand_name, product_name, retail_price, gauge);
                 }
             }
 
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, "Error adding part to the database", e);
             throw new RuntimeException("Database operation failed", e);
         }
         return null;

@@ -80,25 +80,18 @@ public class BankCard {
 		this.customer = customer;
 	}
 
-//	public String getCardNumber() {
-//		return EncryptionUtils.decrypt(this.cardNumber);
-//	}
+
     public String getCardNumber() {
 	return cardNumber;
     }
 
-//	public void setCardNumber(String cardNumber) {
-//		this.cardNumber = EncryptionUtils.encrypt(cardNumber);
-//		System.out.println(this.cardNumber);
-//	}
+
 
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 
-//	public String getEncryptedCardNumber() {
-//		return this.cardNumber;
-//	}
+
     public String getEncryptedCardNumber() {
 	return this.cardNumber;
 }
@@ -124,35 +117,14 @@ public class BankCard {
 		this.expiryYear = expiryYear;
 	}
 
-//	public void setSecurityCode(String securityCode) {
-//		this.securityCode = EncryptionUtils.encrypt(securityCode);
-//		System.out.println("Security code is "+EncryptionUtils.encrypt(securityCode));
-//	}
 
 	public void setSecurityCode(String securityCode) {
 		this.securityCode = securityCode;
 	}
 
 
-	//	public String getSecurityCode() {
-//		LOGGER.info("Encrypted security code is " + this.securityCode);
-//		String decryptedCode = EncryptionUtils.decrypt(this.securityCode);
-//		LOGGER.info("Decrypted security code is " + decryptedCode);
-//        return decryptedCode;
-//	}
-public String getSecurityCode() {
+	public String getSecurityCode() {
 	return this.securityCode;
 }
-
-
-//	public void processPayment() {
-//		// TODO - implement BankCard.processPayment
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	public void validatePaymentDetails() {
-//		// TODO - implement BankCard.validatePaymentDetails
-//		throw new UnsupportedOperationException();
-//	}
 
 }

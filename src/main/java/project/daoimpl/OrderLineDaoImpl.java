@@ -163,6 +163,4 @@ public class OrderLineDaoImpl implements OrderLineDao {
         }
     }
 
-
-    // Other necessary methods...
 }
