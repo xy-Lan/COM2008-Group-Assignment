@@ -462,6 +462,14 @@ public class ProductEditor extends javax.swing.JFrame {
         } else {
             try {
                 updateProperties();
+                int quantity = (Integer) quantityVal.getValue();
+                System.out.println(quantity);
+                InventoryService inventoryService = new InventoryService();
+                inventoryService.updateStockLevel(product.getProductCode(), quantity);
+                System.out.println(inventoryDao.getStock(product.getProductCode()).intValue());
+                JOptionPane.showMessageDialog(null, "Details updated",
+                        "", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -649,13 +657,13 @@ public class ProductEditor extends javax.swing.JFrame {
                 track.setTrackType((TrackType) comboTrackType.getSelectedItem());
                 trackDao.updateTrack(track);
                 //update stock
-                int quantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService = new InventoryService();
-                inventoryService.updateStockLevel(product.getProductCode(), quantity);
-                JOptionPane.showMessageDialog(null, "Details updated",
-                        "", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                System.out.println("it is a track");
+//                int quantity = (Integer) quantityVal.getValue();
+//                InventoryService inventoryService = new InventoryService();
+//                inventoryService.updateStockLevel(product.getProductCode(), quantity);
+//                JOptionPane.showMessageDialog(null, "Details updated",
+//                        "", JOptionPane.INFORMATION_MESSAGE);
+//                this.dispose();
+//                System.out.println("it is a track");
                 break;
 
             case 'C':
@@ -721,13 +729,13 @@ public class ProductEditor extends javax.swing.JFrame {
                 locomotive.setEra((Era) comboLocomotiveEra.getSelectedItem());
                 locomotiveDao.updateLocomotive(locomotive);
                 //update stock
-                int locomotiveQuantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService2 = new InventoryService();
-                inventoryService2.updateStockLevel(product.getProductCode(), locomotiveQuantity);
-                JOptionPane.showMessageDialog(null, "Details updated",
-                        "", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                System.out.println("it is a locomotive");
+//                int locomotiveQuantity = (Integer) quantityVal.getValue();
+//                InventoryService inventoryService2 = new InventoryService();
+//                inventoryService2.updateStockLevel(product.getProductCode(), locomotiveQuantity);
+//                JOptionPane.showMessageDialog(null, "Details updated",
+//                        "", JOptionPane.INFORMATION_MESSAGE);
+//                this.dispose();
+//                System.out.println("it is a locomotive");
                 break;
 
             case 'S':
@@ -762,13 +770,13 @@ public class ProductEditor extends javax.swing.JFrame {
                 rollingStock.setEra((Era) comboLocomotiveEra.getSelectedItem());
                 rollingStockDao.updateRollingStock(rollingStock);
                 //update stock
-                int rollingStockQuantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService3 = new InventoryService();
-                inventoryService3.updateStockLevel(product.getProductCode(), rollingStockQuantity);
-                JOptionPane.showMessageDialog(null, "Details updated",
-                        "", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                System.out.println("it is a locomotive");
+//                int rollingStockQuantity = (Integer) quantityVal.getValue();
+//                InventoryService inventoryService3 = new InventoryService();
+//                inventoryService3.updateStockLevel(product.getProductCode(), rollingStockQuantity);
+//                JOptionPane.showMessageDialog(null, "Details updated",
+//                        "", JOptionPane.INFORMATION_MESSAGE);
+//                this.dispose();
+//                System.out.println("it is a locomotive");
                 break;
             case 'M':
                 TrainSetDao trainSetDao = new TrainSetDaoImpl();
@@ -805,13 +813,13 @@ public class ProductEditor extends javax.swing.JFrame {
                 trainSet.setRetailPrice(trainSetPrice);
                 trainSetDao.updateTrainSet(trainSet);
                 //update stock
-                int trainSetQuantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService4 = new InventoryService();
-                inventoryService4.updateStockLevel(product.getProductCode(), trainSetQuantity);
-                JOptionPane.showMessageDialog(null, "Details updated",
-                        "", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                System.out.println("it is a TrainSet");
+//                int trainSetQuantity = (Integer) quantityVal.getValue();
+//                InventoryService inventoryService4 = new InventoryService();
+//                inventoryService4.updateStockLevel(product.getProductCode(), trainSetQuantity);
+//                JOptionPane.showMessageDialog(null, "Details updated",
+//                        "", JOptionPane.INFORMATION_MESSAGE);
+//                this.dispose();
+//                System.out.println("it is a TrainSet");
                 break;
             case 'P':
                 TrackPackDao trackPackDao = new TrackPackDaoImpl();
@@ -847,13 +855,13 @@ public class ProductEditor extends javax.swing.JFrame {
                 trackPack.setPackType((TrackPackType) comboPackType.getSelectedItem());
                 trackPackDao.updateTrackPack(trackPack);
                 //update stock
-                int trackPackQuantity = (Integer) quantityVal.getValue();
-                InventoryService inventoryService5 = new InventoryService();
-                inventoryService5.updateStockLevel(product.getProductCode(), trackPackQuantity);
-                JOptionPane.showMessageDialog(null, "Details updated",
-                        "", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                System.out.println("it is a TrackPack");
+//                int trackPackQuantity = (Integer) quantityVal.getValue();
+//                InventoryService inventoryService5 = new InventoryService();
+//                inventoryService5.updateStockLevel(product.getProductCode(), trackPackQuantity);
+//                JOptionPane.showMessageDialog(null, "Details updated",
+//                        "", JOptionPane.INFORMATION_MESSAGE);
+//                this.dispose();
+//                System.out.println("it is a TrackPack");
                 break;
             default:
                 throw new IllegalArgumentException("Unknown product type: " + firstChar);

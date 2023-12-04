@@ -695,7 +695,7 @@ public class NewProduct extends javax.swing.JFrame {
 
                 // Assuming jComboBox1, jComboBox3, and jComboBox4 return the selected items as Strings
                 String gaugeType = jComboBox2.getSelectedItem().toString();
-                String productCode = MySqlService.generateProductCode("TRACK_PACK");
+                String productCode = MySqlService.generateProductCode("TRAIN_SET");
 
                 // Create a Locomotive object
                 TrainSet trainSet = new TrainSet(
