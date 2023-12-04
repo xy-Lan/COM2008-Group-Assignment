@@ -32,7 +32,9 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
  *
  * @author linyu
  */
-public class OrderLines extends javax.swing.JFrame {
+public class OrderLines extends javax.swing.JFrame implements java.beans.Customizer {
+
+    private Object bean;
     private User currentUser = UserSessionManager.getInstance().getLoggedInUser();
     private OrderDao orderDao = new OrderDaoImpl();
 
@@ -306,5 +308,10 @@ public class OrderLines extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel orderContainer;
     private javax.swing.JLabel title;
+
+    @Override
+    public void setObject(Object bean) {
+        this.bean = bean;
+    }
     // End of variables declaration//GEN-END:variables
 }

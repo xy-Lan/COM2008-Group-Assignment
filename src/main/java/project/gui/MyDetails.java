@@ -44,10 +44,9 @@ public class MyDetails extends javax.swing.JFrame {
      */
     public MyDetails() {
         user = UserSessionManager.getInstance().getLoggedInUser();
-        AddressDao addressDao = new AddressDaoImpl();
         System.out.println("ID: " + user.getAddressId());
         address = addressDao.getAddress(user.getAddressId());
-        System.out.println("ADDRESS : "+address.getCityName()+address.getRoadName());
+        System.out.println("ADDRESS : "+address.getCityName()+address.getRoadName()+address.getHouseNumber());
 //        if (address != null) {
 //            // Check if address is not null before accessing its properties
 //            txtRoadName.setText(address.getRoadName());

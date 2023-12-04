@@ -24,9 +24,8 @@ import project.service.MySqlService;
  *
  * @author thoma
  */
-public class NewProduct extends javax.swing.JFrame implements java.beans.Customizer {
-    
-    private Object bean;
+public class NewProduct extends javax.swing.JFrame {
+
 
     private InventoryDao inventoryDao = new InventoryDaoImpl();
 
@@ -41,10 +40,7 @@ public class NewProduct extends javax.swing.JFrame implements java.beans.Customi
     public NewProduct() {
         initComponents();
     }
-    
-    public void setObject(Object bean) {
-        this.bean = bean;
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

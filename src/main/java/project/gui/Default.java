@@ -49,6 +49,10 @@ public class Default extends javax.swing.JFrame {
             btnStaffDashboard1.setVisible(true);
         }
 
+        title.setText("Train Sets");
+        TrainSetDao TrainSetDao = new TrainSetDaoImpl();
+        List<TrainSet> allTrainSets = TrainSetDao.getAllTrainSets();
+        loadProductsByType(allTrainSets);
     }
 
     /**
@@ -263,7 +267,7 @@ public class Default extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("Categories");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(279, 56, 192, 47);
+        jLabel2.setBounds(279, 56, 310, 47);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 

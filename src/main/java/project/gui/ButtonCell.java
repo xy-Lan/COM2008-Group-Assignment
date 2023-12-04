@@ -97,6 +97,8 @@ public class ButtonCell extends AbstractCellEditor implements TableCellRenderer,
                         JOptionPane.showMessageDialog(null, "Status changed",
                                 "", JOptionPane.INFORMATION_MESSAGE);
                     } catch (StaffOrderException ex) {
+                        JOptionPane.showMessageDialog(null, "Can not fulfil a fulfilled order",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                         throw new RuntimeException(ex);
                     }
 
@@ -111,6 +113,8 @@ public class ButtonCell extends AbstractCellEditor implements TableCellRenderer,
                         JOptionPane.showMessageDialog(null, "Status changed",
                                 "", JOptionPane.INFORMATION_MESSAGE);
                     } catch (StaffOrderException ex) {
+                        JOptionPane.showMessageDialog(null, "Can not refuse a refused order",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                         throw new RuntimeException(ex);
                         }
                 }
