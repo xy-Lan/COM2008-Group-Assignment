@@ -46,6 +46,7 @@ public class MyDetails extends javax.swing.JFrame {
         user = UserSessionManager.getInstance().getLoggedInUser();
         System.out.println(user.getForename() + " " + user.getSurname());
         System.out.println("ID: " + user.getAddressId());
+        System.out.println("User forename is " + user.getForename());
         address = addressDao.getAddress(user.getAddressId());
         System.out.println("ADDRESS : "+address.getCityName()+address.getRoadName()+address.getHouseNumber());
 //        if (address != null) {

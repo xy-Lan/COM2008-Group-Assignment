@@ -155,8 +155,8 @@ public class MySqlService {
     public static boolean login(String username, String password) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT u.user_id, u.email, u.address_id, p.password_hash FROM users u " +
-                             "JOIN hashed_passwords p ON u.user_id = p.user_id " +
+                     "SELECT u.user_id, u.email, u.forename, u.surname, u.address_id, p.password_hash " +
+                             "FROM users u JOIN hashed_passwords p ON u.user_id = p.user_id " +
                              "WHERE u.email = ?")) {
 
             preparedStatement.setString(1, username);
@@ -164,14 +164,16 @@ public class MySqlService {
                 if (resultSet.next()) {
                     String hashedPassword = resultSet.getString("password_hash");
                     if (PasswordUtils.checkPassword(password, hashedPassword)) {
-                        int id = resultSet.getInt("user_id");
-                        int address_id = resultSet.getInt("address_id");
-                        String email = resultSet.getString("email");
-                        System.out.println("Found user with id: " + id);
+//                        int id = resultSet.getInt("user_id");
+//                        int address_id = resultSet.getInt("address_id");
+//                        String email = resultSet.getString("email");
+//                        System.out.println("Found user with id: " + id);
+//
+//                        User user = new User(email);
+//                        user.setUserID(id);
+//                        user.setAddressId(address_id);
+                        User user = User.fromResultSet(resultSet);
 
-                        User user = new User(email);
-                        user.setUserID(id);
-                        user.setAddressId(address_id);
                         UserSessionManager.getInstance().setLoggedInUser(user);
 
                         return true;
