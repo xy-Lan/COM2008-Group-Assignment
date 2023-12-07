@@ -295,6 +295,11 @@ public class ManagerDashboard extends javax.swing.JFrame {
         button2.setLabel("All");
         jPanel1.add(button2);
         button2.setBounds(300, 220, 70, 30);
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button2ActionPerformed(evt);
+            }
+        });
 
         button3.setActionCommand("Confirm");
         button3.setBackground(new java.awt.Color(0, 102, 0));
@@ -559,10 +564,14 @@ public class ManagerDashboard extends javax.swing.JFrame {
             // Handle the exception (log or show an error message)
         }
     }
-    
-    
 
-    
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt){
+        loadManagerData();
+    }
+
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button btnAddRole;
     private javax.swing.JButton btnLogOut;
